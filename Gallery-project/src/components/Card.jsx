@@ -39,7 +39,7 @@ const Card = ({ elem, idx }) => {
           {elem.author}
         </h3>
         <span className="text-zinc-400 text-xs font-sans mt-1">
-          {elem.width} × {elem.height}
+          {elem.width} x {elem.height}
         </span>
       </div>
 
