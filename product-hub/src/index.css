@@ -1,0 +1,15 @@
+@import "tailwindcss";
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: #fafaf8;
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+}
