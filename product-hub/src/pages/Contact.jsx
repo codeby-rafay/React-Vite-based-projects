@@ -53,7 +53,7 @@ function Contact() {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="John Doe"
+                placeholder="Your name"
                 className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
               />
             </div>
@@ -67,7 +67,7 @@ function Contact() {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                placeholder="john@example.com"
+                placeholder="hello@gmail.com"
                 className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
               />
             </div>
@@ -100,9 +100,9 @@ function Contact() {
       {/* Contact Info */}
       <div className="grid grid-cols-3 gap-4 mt-8">
         {[
-          { icon: '📧', label: 'Email', value: 'hello@shopnest.com' },
-          { icon: '📞', label: 'Phone', value: '+1 (555) 123-4567' },
-          { icon: '📍', label: 'Location', value: 'New York, USA' },
+          { icon: '📧', label: 'Email', value: 'hello@producthub.com' },
+          { icon: '📞', label: 'Phone', value: '+92 3009777344' },
+          { icon: '📍', label: 'Location', value: 'Islamabad, Pakistan' },
         ].map((item) => (
           <div key={item.label} className="bg-white border border-gray-100 rounded-xl p-4 text-center">
             <div className="text-2xl mb-1">{item.icon}</div>

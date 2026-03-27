@@ -42,7 +42,7 @@ function About() {
 
       {/* Mission */}
       <div className="bg-orange-50 border border-orange-100 rounded-2xl p-6">
-        <h2 className="text-lg font-bold text-orange-800 mb-3">🚀 Our Mission</h2>
+        <h2 className="text-lg font-bold text-orange-800 mb-3">Our Mission</h2>
         <p className="text-sm text-orange-700 leading-relaxed">
           Our goal is to provide a simple, fast, and user-friendly platform for users to explore 
           products online. Product Hub focuses on delivering a smooth browsing experience with 

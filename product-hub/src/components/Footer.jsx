@@ -10,7 +10,7 @@ function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
+                <span className="text-white font-bold text-sm">PH</span>
               </div>
               <span className="text-white text-xl font-bold" style={{ fontFamily: 'Playfair Display, serif' }}>Producthub</span>
             </div>
