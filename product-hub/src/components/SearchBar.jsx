@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function SearchBar({ onSearch, placeholder = "Search products..." }) {
+function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
   const [query, setQuery] = useState('')
 
   const handleSubmit = (e) => {
@@ -17,7 +17,7 @@ function SearchBar({ onSearch, placeholder = "Search products..." }) {
 
   return (
     <form onSubmit={handleSubmit} className="flex gap-2 w-full max-w-lg">
-      <div className="relative flex-grow">
+      <div className="relative grow">
         {/* Search icon */}
         <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
           <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

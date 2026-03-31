@@ -29,7 +29,7 @@ function Home() {
 
   return (
     <div>
-      {/* Hero Section */}
+      {/* Main Section */}
       <section className="bg-linear-to-br from-orange-50 to-amber-50 py-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <span className="bg-orange-100 text-orange-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
@@ -168,7 +168,7 @@ function Home() {
           <div className="text-center mt-10 flex justify-center">
             <Link
               to="/products"
-              className="bg-orange-500 hover:bg-orange-600 w-1/5 justify-center text-white px-10 py-3 rounded-xl flex items-center gap-2 font-semibold text-sm transition-colors"
+              className="btn bg-orange-500 hover:bg-orange-600 w-1/5 justify-center text-white px-10 py-3 rounded-xl flex items-center gap-2 font-semibold text-sm transition-colors"
             >
               See All Products <ArrowRight size={16} strokeWidth={2} />
             </Link>
