@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 function ProductCard({ product }) {
-  // Show star rating
+  // star rating
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (
       <span key={i} className={i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'}>
