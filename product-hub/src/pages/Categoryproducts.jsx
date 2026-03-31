@@ -72,7 +72,7 @@ function CategoryProducts() {
       <div className="mt-10">
         <Link
           to="/categories"
-          className="inline-flex items-center gap-2 text-orange-500 hover:text-orange-600 font-medium text-sm"
+          className="inline-flex items-center gap-2 text-orange-500 hover:text-orange-600 font-bold text-lg"
         >
           ← Back to Categories
         </Link>

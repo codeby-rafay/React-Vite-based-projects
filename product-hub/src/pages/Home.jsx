@@ -98,7 +98,7 @@ function Home() {
           </div>
           <Link
             to="/products"
-            className="text-orange-500 hover:text-orange-600 text-sm font-medium flex items-center gap-1"
+            className="text-orange-500 hover:text-orange-600 text-lg font-bold flex items-center gap-1"
           >
             View all
             <svg
