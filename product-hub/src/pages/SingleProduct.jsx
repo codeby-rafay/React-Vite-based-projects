@@ -77,7 +77,7 @@ function SingleProduct() {
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${
+                  className={`shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${
                     selectedImage === index ? 'border-orange-500' : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
@@ -156,7 +156,7 @@ function SingleProduct() {
 
           {/* Add to cart button (UI only) */}
           <div className="flex gap-3 mt-6">
-            <button className="flex-grow bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-xl font-semibold text-sm transition-colors">
+            <button className="grow bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-xl font-semibold text-sm transition-colors">
               Add to Cart 🛒
             </button>
             <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-xl transition-colors">
