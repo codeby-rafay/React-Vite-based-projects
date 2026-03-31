@@ -100,12 +100,12 @@ function Contact() {
       {/* Contact Info */}
       <div className="grid grid-cols-3 gap-4 mt-8">
         {[
-          { icon: '📧', label: 'Email', value: 'hello@producthub.com' },
-          { icon: '📞', label: 'Phone', value: '+92 3009777344' },
-          { icon: '📍', label: 'Location', value: 'Islamabad, Pakistan' },
+          { icon: <img className="size-10" src="https://www.svgrepo.com/show/502648/email.svg" alt="Email" />, label: 'Email', value: 'hello@producthub.com' },
+          { icon: <img className="size-10" src="https://www.svgrepo.com/show/522677/telephone.svg" alt="Phone" />, label: 'Phone', value: '+92 3009777344' },
+          { icon: <img className="size-10" src="https://www.svgrepo.com/show/532540/location-pin-alt-1.svg" alt="Location" />, label: 'Location', value: 'Islamabad, Pakistan' },
         ].map((item) => (
           <div key={item.label} className="bg-white border border-gray-100 rounded-xl p-4 text-center">
-            <div className="text-2xl mb-1">{item.icon}</div>
+            <div className="text-2xl mb-1 flex justify-center">{item.icon}</div>
             <div className="text-xs text-gray-400">{item.label}</div>
             <div className="text-xs font-medium text-gray-700 mt-1">{item.value}</div>
           </div>
