@@ -1,72 +1,75 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { getCategoryList } from '../App'
-import { Loading, ErrorMessage } from '../components/LoadingError'
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getCategoryList } from "../App";
+import { Loading, ErrorMessage } from "../components/LoadingError";
+import { ShoppingCart, Armchair, House, CookingPot, Laptop, Shirt, Watch, Smartphone, Motorbike, Tablet, Gem, Handbag, SoapDispenserDroplet, WandSparkles } from "lucide-react";
 
 // Nice emoji icons for categories
 const categoryIcons = {
-  'beauty': '💄',
-  'fragrances': '🌸',
-  'furniture': '🪑',
-  'groceries': '🛒',
-  'home-decoration': '🏠',
-  'kitchen-accessories': '🍳',
-  'laptops': '💻',
-  'mens-shirts': '👔',
-  'mens-shoes': '👟',
-  'mens-watches': '⌚',
-  'mobile-accessories': '📱',
-  'motorcycle': '🏍️',
-  'skin-care': '🧴',
-  'smartphones': '📲',
-  'sports-accessories': '⚽',
-  'sunglasses': '🕶️',
-  'tablets': '📱',
-  'tops': '👗',
-  'vehicle': '🚗',
-  'womens-bags': '👜',
-  'womens-dresses': '👗',
-  'womens-jewellery': '💍',
-  'womens-shoes': '👠',
-  'womens-watches': '⌚',
-}
+  "beauty": <WandSparkles size={38} strokeWidth={1.75} />,
+  "fragrances": <img className="size-10" src="https://www.svgrepo.com/show/322156/delicate-perfume.svg" alt="Fragrances" />,
+  "furniture": <Armchair size={38} strokeWidth={1.75} />,
+  "groceries": <ShoppingCart size={38} strokeWidth={1.75} />,
+  "home-decoration": <House size={38} strokeWidth={1.75} />,
+  "kitchen-accessories": <CookingPot size={38} strokeWidth={1.75} />,
+  "laptops": <Laptop size={38} strokeWidth={1.75} />,
+  "mens-shirts": <Shirt size={38} strokeWidth={1.75} />,
+  "mens-shoes": <img className="size-10" src="https://www.svgrepo.com/show/482542/shoes-4.svg" alt="Mens Shoes" />,
+  "mens-watches": <Watch size={38} strokeWidth={1.75} />,
+  "mobile-accessories": <Smartphone size={38} strokeWidth={1.75} />,
+  "motorcycle": <Motorbike size={38} strokeWidth={1.75} />,
+  "skin-care": <SoapDispenserDroplet size={38} strokeWidth={1.75} />,
+  "smartphones": <img className="size-10" src="https://www.svgrepo.com/show/499623/mobile.svg" alt="Smartphones" />,
+  "sports-accessories": <img className="size-10" src="https://www.svgrepo.com/show/446025/sports-soccer.svg" alt="Sports Accessories" />,
+  "sunglasses": <img className="size-10" src="https://www.svgrepo.com/show/488212/glasses.svg" alt="Sunglasses" />,
+  "tablets": <Tablet size={38} strokeWidth={1.75} />,
+  "tops": <img className="size-10" src="https://www.svgrepo.com/show/482584/dress-4.svg" alt="Tops" />,
+  "vehicle": <img className="size-10" src="https://www.svgrepo.com/show/490616/car-hatchback.svg" alt="Vehicle" />,
+  "womens-bags": <Handbag size={38} strokeWidth={1.75} />,
+  "womens-dresses": <img className="size-10" src="https://www.svgrepo.com/show/290769/dress.svg" alt="Womens Dresses" />,
+  "womens-jewellery": <Gem size={38} strokeWidth={1.75} />,
+  "womens-shoes": <img className="size-10" src="https://www.svgrepo.com/show/288714/high-heel-shoe.svg" alt="Womens Shoes" />,
+  "womens-watches": <Watch size={38} strokeWidth={1.75} />,
+};
 
 function Categories() {
-  const [categories, setCategories] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Fetch category list when component loads
     const fetchCategories = async () => {
       try {
-        setLoading(true)
-        setError(null)
-        const data = await getCategoryList()
-        setCategories(data)
+        setLoading(true);
+        setError(null);
+        const data = await getCategoryList();
+        setCategories(data);
       } catch (err) {
-        setError(err.message)
+        setError(err.message);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchCategories()
-  }, [])
+    fetchCategories();
+  }, []);
 
   const formatName = (slug) => {
     return slug
-      .split('-')
+      .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ')
-  }
+      .join(" ");
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900" style={{ fontFamily: 'Playfair Display, serif' }}>
+        <h1
+          className="text-3xl font-bold text-gray-900"
+          style={{ fontFamily: "Playfair Display, serif" }}
+        >
           Product Categories
         </h1>
         <p className="text-gray-500 text-sm mt-1">
@@ -81,10 +84,10 @@ function Categories() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {categories.map((slug) => (
             <Link key={slug} to={`/category/${slug}`}>
-              <div className="bg-white border border-gray-100 rounded-2xl p-5 hover:shadow-md hover:border-orange-200 hover:-translate-y-1 transition-all duration-200 text-center group cursor-pointer">
+              <div className="bg-white border border-gray-100 rounded-2xl p-5 hover:shadow-md hover:border-orange-200 hover:-translate-y-1 transition-all duration-200 text-center group cursor-pointer flex flex-col items-center justify-center min-h-30">
                 {/* Emoji icon */}
-                <div className="text-4xl mb-3">
-                  {categoryIcons[slug] || '📦'}
+                <div className="text-4xl mb-3 mt-6">
+                  {categoryIcons[slug] || "📦"}
                 </div>
                 {/* Category name */}
                 <h3 className="text-sm font-semibold text-gray-800 group-hover:text-orange-500 transition-colors">
@@ -100,7 +103,7 @@ function Categories() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default Categories
+export default Categories;

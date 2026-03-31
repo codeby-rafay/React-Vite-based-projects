@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getSingleProduct } from '../App'
 import { Loading, ErrorMessage } from '../components/LoadingError'
+import { Star } from 'lucide-react'
 
 function SingleProduct() {
   const { id } = useParams() // get product id from URL
@@ -32,7 +33,7 @@ function SingleProduct() {
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (
       <span key={i} className={`text-lg ${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'}`}>
-        ★
+        <Star strokeWidth={3} fill='currentColor' size={18}/>
       </span>
     ))
   }

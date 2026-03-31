@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getAllProducts } from "../App";
 import ProductCard from "../components/ProductCard";
 import { Loading, ErrorMessage } from "../components/LoadingError";
+import { ArrowRight, Sparkle } from "lucide-react";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -29,7 +30,7 @@ function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-50 to-amber-50 py-16 px-4">
+      <section className="bg-linear-to-br from-orange-50 to-amber-50 py-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <span className="bg-orange-100 text-orange-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
             New Arrivals 2026
@@ -134,8 +135,8 @@ function Home() {
           <div className="flex gap-8 animate-pulse">
             <div className="flex gap-8 whitespace-nowrap">
               {products.concat(products).map((product, i) => (
-                <span key={i} className="text-gray-400 text-sm font-medium">
-                  ✦ {product.title}
+                <span key={i} className="text-gray-400 text-sm font-medium flex gap-1 items-center">
+                  <Sparkle size={14} strokeWidth={1.75} fill="currentColor" /> {product.title}
                 </span>
               ))}
             </div>
@@ -164,12 +165,12 @@ function Home() {
             ))}
           </div>
 
-          <div className="text-center mt-10">
+          <div className="text-center mt-10 flex justify-center">
             <Link
               to="/products"
-              className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-3 rounded-xl font-semibold text-sm transition-colors inline-block"
+              className="bg-orange-500 hover:bg-orange-600 w-1/5 justify-center text-white px-10 py-3 rounded-xl flex items-center gap-2 font-semibold text-sm transition-colors"
             >
-              See All Products →
+              See All Products <ArrowRight size={16} strokeWidth={2} />
             </Link>
           </div>
         </section>
