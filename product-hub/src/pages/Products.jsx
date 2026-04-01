@@ -72,7 +72,7 @@ function Products() {
         {searchQuery && (
           <button
             onClick={() => handleSearch('')}
-            className="text-sm text-gray-500 hover:text-orange-500 underline"
+            className="text-sm text-gray-500 hover:text-orange-500 underline cursor-pointer"
           >
             Clear search
           </button>

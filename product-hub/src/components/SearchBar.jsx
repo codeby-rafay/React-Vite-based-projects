@@ -49,7 +49,7 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
 
       <button
         type="submit"
-        className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
+        className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer"
       >
         Search
       </button>
