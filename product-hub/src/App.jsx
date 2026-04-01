@@ -20,31 +20,27 @@ export const getAllProducts = async (limit = 30) => {
   return response.data;
 };
 
-// (get a single product by ID)
 export const getSingleProduct = async (id) => {
   const response = await axios.get(`${BASE_URL}/products/${id}`);
   return response.data;
 };
 
-// (search products)
 export const searchProducts = async (query) => {
   const response = await axios.get(`${BASE_URL}/products/search?q=${query}`);
   return response.data;
 };
 
-// (get all categories)
 export const getAllCategories = async () => {
   const response = await axios.get(`${BASE_URL}/products/categories`);
   return response.data;
 };
 
-// (get category list (just names/basic info))
+// (just names/basic info)
 export const getCategoryList = async () => {
   const response = await axios.get(`${BASE_URL}/products/category-list`);
   return response.data;
 };
 
-// (get products by category)
 export const getProductsByCategory = async (category) => {
   const response = await axios.get(`${BASE_URL}/products/category/${category}`);
   return response.data;
