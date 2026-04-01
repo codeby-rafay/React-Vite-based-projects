@@ -12,7 +12,7 @@ export function Loading() {
 export function ErrorMessage({ message }) {
   return (
     <div className="flex flex-col items-center justify-center py-20">
-      <div className="text-5xl mb-4">😕</div>
+      <div className="text-5xl mb-4"><img className="size-12" src="https://www.svgrepo.com/show/444337/gui-check-no.svg" alt="Error-Icon" /></div>
       <h3 className="text-lg font-semibold text-gray-800 mb-2">Something went wrong</h3>
       <p className="text-gray-500 text-sm">{message || 'Failed to load data. Please try again.'}</p>
     </div>
