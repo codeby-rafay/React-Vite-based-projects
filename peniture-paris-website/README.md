@@ -190,9 +190,9 @@ Contributions are welcome! Please follow these steps:
 
 This project is private. All rights reserved.
 
-## Support
+## Author
 
-For questions or support, please contact.
+Rafay Ali Saleem
 
 ---
 
