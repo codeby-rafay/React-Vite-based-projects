@@ -166,10 +166,6 @@ This project is open-source and available for educational purposes.
 
 Feel free to fork this project and submit pull requests for any improvements.
 
-## Purpose
-
-Created as a React learning project demonstrating component composition, API integration, and modern UI design patterns.
-
 ## Author
 
 Rafay Ali Saleem
