@@ -7,6 +7,7 @@ const App = () => {
   const [from, setFrom] = useState("usd");
   const [to, setTo] = useState("pkr");
   const [convertedAmount, setConvertedAmount] = useState(0);
+  const [resetAmount, setResetAmount] = useState(0);
 
   const currencyInfo = useCurrencyInfo(from);
 
@@ -21,6 +22,10 @@ const App = () => {
 
   const convert = () => {
     setConvertedAmount((amount * currencyInfo[to]).toFixed(2));
+  };
+
+  const reset = () => {
+    setAmount(resetAmount);
   };
 
   return (
@@ -72,6 +77,13 @@ const App = () => {
               className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg cursor-pointer active:scale-95 active:bg-blue-800 transition-transform "
             >
               Convert {from.toUpperCase()} to {to.toUpperCase()}
+            </button>
+             <button
+              type="submit"
+              onClick={reset}
+              className="w-full bg-blue-600 mt-2 text-white px-4 py-3 rounded-lg cursor-pointer active:scale-95 active:bg-blue-800 transition-transform "
+            >
+              Reset Amount
             </button>
           </form>
         </div>
