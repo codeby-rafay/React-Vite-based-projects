@@ -188,7 +188,7 @@ Contributions are welcome! Please follow these steps:
 
 ## License
 
-This project is private. All rights reserved.
+This project is open source and available for personal and educational use.
 
 ## Author
 
