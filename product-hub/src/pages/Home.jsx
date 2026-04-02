@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { getAllProducts } from "../App";
 import ProductCard from "../components/ProductCard";
 import { Loading, ErrorMessage } from "../components/LoadingError";
 import { Sparkle } from "lucide-react";
-import BrowseProductBtn from "../components/HomePageButons/BrowseProductBtn";
+import BrowseAllProductBtn from "../components/HomePageButons/BrowseAllProductBtn";
 import ShopbyCategoryBtn from "../components/HomePageButons/ShopbyCategoryBtn";
 import SeeAllProductsBtn from "../components/HomePageButons/SeeAllProductsBtn";
+import ViewAllLink from "../components/HomePageButons/ViewAllLink";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -51,7 +51,7 @@ function Home() {
             shipped fast and priced right.
           </p>
           <div className="mt-8 flex items-center sm:flex-row gap-4 justify-center">
-            <BrowseProductBtn />
+            <BrowseAllProductBtn />
             <ShopbyCategoryBtn />
           </div>
         </div>
@@ -89,25 +89,7 @@ function Home() {
             </h2>
             <p className="text-gray-500 text-sm mt-1">Hand-picked for you</p>
           </div>
-          <Link
-            to="/products"
-            className="text-orange-500 hover:text-orange-600 text-lg font-bold flex items-center gap-1"
-          >
-            View all
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </Link>
+          <ViewAllLink />
         </div>
 
         {loading && <Loading />}
