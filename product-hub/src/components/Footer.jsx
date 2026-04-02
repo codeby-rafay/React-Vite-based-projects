@@ -88,7 +88,7 @@ function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-6 text-center text-xs text-gray-500">
-          © 2026 Producthub. All rights reserved..
+          © 2026 Producthub. All rights reserved.
         </div>
       </div>
     </footer>

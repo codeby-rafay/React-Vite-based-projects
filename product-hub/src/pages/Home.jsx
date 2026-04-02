@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import { getAllProducts } from "../App";
 import ProductCard from "../components/ProductCard";
 import { Loading, ErrorMessage } from "../components/LoadingError";
-import { ArrowRight, Sparkle } from "lucide-react";
+import { Sparkle } from "lucide-react";
+import BrowseProductBtn from "../components/HomePageButons/BrowseProductBtn";
+import ShopbyCategoryBtn from "../components/HomePageButons/ShopbyCategoryBtn";
+import SeeAllProductsBtn from "../components/HomePageButons/SeeAllProductsBtn";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -47,19 +50,9 @@ function Home() {
             Discover thousands of quality products across all categories,
             shipped fast and priced right.
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/products"
-              className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-xl font-semibold text-sm transition-colors"
-            >
-              Browse All Products
-            </Link>
-            <Link
-              to="/categories"
-              className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 px-8 py-3 rounded-xl font-semibold text-sm transition-colors"
-            >
-              Shop by Category
-            </Link>
+          <div className="mt-8 flex items-center sm:flex-row gap-4 justify-center">
+            <BrowseProductBtn />
+            <ShopbyCategoryBtn />
           </div>
         </div>
       </section>
@@ -135,8 +128,12 @@ function Home() {
           <div className="flex gap-8 animate-pulse">
             <div className="flex gap-8 whitespace-nowrap">
               {products.concat(products).map((product, i) => (
-                <span key={i} className="text-gray-400 text-sm font-medium flex gap-1 items-center">
-                  <Sparkle size={14} strokeWidth={1.75} fill="currentColor" /> {product.title}
+                <span
+                  key={i}
+                  className="text-gray-400 text-sm font-medium flex gap-1 items-center"
+                >
+                  <Sparkle size={14} strokeWidth={1.75} fill="currentColor" />{" "}
+                  {product.title}
                 </span>
               ))}
             </div>
@@ -165,13 +162,8 @@ function Home() {
             ))}
           </div>
 
-          <div className="text-center mt-10 flex justify-center">
-            <Link
-              to="/products"
-              className="btn bg-orange-500 hover:bg-orange-600 w-1/5 justify-center text-white px-10 py-3 rounded-xl flex items-center gap-2 font-semibold text-sm transition-colors"
-            >
-              See All Products <ArrowRight size={16} strokeWidth={2} />
-            </Link>
+          <div>
+            <SeeAllProductsBtn />
           </div>
         </section>
       )}

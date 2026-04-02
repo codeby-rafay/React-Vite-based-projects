@@ -12,7 +12,6 @@ import Contact from "./pages/Contact";
 
 const BASE_URL = "https://dummyjson.com";
 
-// (get all products)
 export const getAllProducts = async (limit = 30) => {
   const response = await axios.get(
     `${BASE_URL}/products?limit=${limit}`,

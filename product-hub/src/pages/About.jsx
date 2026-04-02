@@ -7,7 +7,7 @@ function About() {
     },
     {
       title: "Smart Search",
-      desc: "Quickly find products using search functionality.",
+      desc: "Quickly find products by searching the product in search bar.",
       color: "bg-green-100 text-green-700",
     },
     {
