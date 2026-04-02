@@ -129,12 +129,6 @@ npm run lint
 
 This project is part of a learning portfolio and is open for educational purposes.
 
-## Purpose
-
-Created as a React learning project demonstrating component composition, API integration, and modern UI design patterns.
-
 ## Author
 
-Rafay Ali Saleem
-
-**Happy Coding**
+Created as a React learning project demonstrating component composition, API integration, and modern UI design patterns.
