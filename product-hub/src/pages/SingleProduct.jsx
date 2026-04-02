@@ -194,7 +194,7 @@ function SingleProduct() {
             </div>
           </div>
 
-          {/* Add to cart button (UI only) */}
+          {/* Add to cart button */}
           <div className="flex gap-3 mt-6">
             <AddtoCartBtn />
             <SaveBtn />
@@ -210,6 +210,7 @@ function SingleProduct() {
       {/* Reviews Section */}
       <CustomerReview product={product} />
 
+      {/* Back to products link */}
       <div className="mt-10">
         <BacktoProductsBtn />
       </div>
