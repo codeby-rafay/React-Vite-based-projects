@@ -3,10 +3,10 @@ import { getAllProducts } from "../App";
 import ProductCard from "../components/ProductCard";
 import { Loading, ErrorMessage } from "../components/LoadingError";
 import { Sparkle } from "lucide-react";
-import BrowseAllProductBtn from "../components/HomePageButons/BrowseAllProductBtn";
-import ShopbyCategoryBtn from "../components/HomePageButons/ShopbyCategoryBtn";
-import SeeAllProductsBtn from "../components/HomePageButons/SeeAllProductsBtn";
-import ViewAllLink from "../components/HomePageButons/ViewAllLink";
+import BrowseAllProductBtn from "../components/HomePageComponents/BrowseAllProductBtn";
+import ShopbyCategoryBtn from "../components/HomePageComponents/ShopbyCategoryBtn";
+import SeeAllProductsBtn from "../components/HomePageComponents/SeeAllProductsBtn";
+import ViewAllLink from "../components/HomePageComponents/ViewAllLink";
 
 function Home() {
   const [products, setProducts] = useState([]);
