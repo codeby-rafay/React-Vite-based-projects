@@ -19,17 +19,8 @@ const App = () => {
     document.querySelector("html").classList.add(themeMode);
   }, [themeMode]);
 
-  const contextValue = useMemo(
-    () => ({
-      themeMode,
-      darkTheme,
-      lightTheme,
-    }),
-    [themeMode],
-  );
-
   return (
-    <ThemeProvider value={contextValue}>
+    <ThemeProvider value={{ themeMode, darkTheme, lightTheme }}>
       <div className="h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 flex flex-col items-center justify-center p-4 overflow-hidden">
         <div className="w-full max-w-sm">
           <div className="flex justify-between items-center gap-4 mb-8">
