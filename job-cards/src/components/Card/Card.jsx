@@ -1,4 +1,3 @@
-import React from "react";
 import { Bookmark } from "lucide-react";
 import styles from "./Card.module.css";
 
