@@ -103,6 +103,7 @@ function Products() {
             totalPages={totalPages}
             searchQuery={searchQuery}
             setCurrentPage={setCurrentPage}
+            loading={loading}
           />
         </>
       )}
