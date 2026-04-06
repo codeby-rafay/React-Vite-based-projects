@@ -34,7 +34,7 @@ export const getAllCategories = async () => {
   return response.data;
 };
 
-// (just names/basic info)
+// (just names)
 export const getCategoryList = async () => {
   const response = await axios.get(`${BASE_URL}/products/category-list`);
   return response.data;
