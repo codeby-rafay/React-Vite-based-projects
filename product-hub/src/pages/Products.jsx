@@ -15,7 +15,7 @@ function Products() {
   const LIMIT = 12;
 
   // Fetch all products OR search results
-  const fetchProducts = async (query = "", skip = 0) => {
+    const fetchProducts = async (query = "", skip = 0) => {
     try {
       setLoading(true);
       setError(null);
@@ -78,7 +78,7 @@ function Products() {
         {searchQuery && (
           <button
             onClick={() => handleSearch("")}
-            className="text-sm text-gray-500 hover:text-orange-500 underline cursor-pointer"
+            className="text-sm text-gray-500 hover:text-orange-500 cursor-pointer"
           >
             Clear search
           </button>

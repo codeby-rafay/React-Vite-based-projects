@@ -12,9 +12,9 @@ import Contact from "./pages/Contact";
 
 const BASE_URL = "https://dummyjson.com";
 
-export const getAllProducts = async (limit = 30) => {
+export const getAllProducts = async (limit = 30, skip = 0) => {
   const response = await axios.get(
-    `${BASE_URL}/products?limit=${limit}`,
+    `${BASE_URL}/products?limit=${limit}&skip=${skip}`
   );
   return response.data;
 };
