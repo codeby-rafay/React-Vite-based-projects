@@ -8,10 +8,13 @@ A modern, responsive e-commerce product listing application built with React and
 - **Product Search**: Search for products in real-time
 - **Category Filtering**: Filter products by categories
 - **Product Details**: View detailed information for individual products
+- **Shopping Cart**: Add products to cart, adjust quantities, and remove items
+- **Save Items**: Bookmark favorite products for later viewing
+- **Persistent Storage**: Cart and saved items are stored in localStorage
 - **Responsive Design**: Mobile-friendly interface using Tailwind CSS
 - **Fast Performance**: Built with Vite for optimal development and production performance
 - **Modern UI**: Clean and intuitive user interface with icons from Lucide React
-- **Navigation**: Easy navigation between pages (Home, Products, Categories, About, Contact)
+- **Navigation**: Easy navigation between pages (Home, Products, Categories, About, Contact, Saved)
 
 ## Tech Stack
 
@@ -21,7 +24,48 @@ A modern, responsive e-commerce product listing application built with React and
 - **HTTP Client**: Axios 1.13.6
 - **Routing**: React Router DOM 7.13.2
 - **Icons**: Lucide React 1.3.0
+- **State Management**: React Context API
+- **Local Storage**: Browser localStorage for persistent data
 - **Code Quality**: ESLint with React plugins
+
+## State Management
+
+The application uses **React Context API** for global state management through the `ShopContext`:
+
+```javascript
+// Available context values
+{
+  cartItems,       // Array of items in cart
+  addToCart,       // Add product to cart
+  increaseQty,     // Increase product quantity
+  decreaseQty,     // Decrease product quantity
+  removeFromCart,  // Remove item from cart
+  cartCount,       // Total quantity of items in cart
+  isInCart,        // Check if product is in cart
+  getQtyInCart,    // Get quantity of specific product in cart
+  savedItems,      // Array of saved/favorited items
+  toggleSave,      // Save/unsave a product
+  isSaved          // Check if product is saved
+}
+```
+
+Both cart and saved items are persisted to localStorage, enabling data retention across sessions.
+
+## Features Usage
+
+### Shopping Cart
+- Click the floating shopping cart button (bottom-left) to open the cart drawer
+- View all items in your cart with quantities and prices
+- Use +/- buttons to adjust item quantities
+- Click the X button to remove items from cart
+- The cart badge shows total number of items
+- Cart total is calculated automatically
+
+### Saved Items
+- Click the heart icon on any product card to save it
+- Saved items appear in the navbar (shows count)
+- View all saved items on the dedicated Saved page
+- Saved items persist across sessions
 
 ## Project Structure
 
@@ -30,13 +74,19 @@ src/
 ├── components/
 │   ├── Navbar.jsx                 # Navigation bar component
 │   ├── Footer.jsx                 # Footer component
+│   ├── CartDisplay.jsx            # Shopping cart drawer component
 │   ├── ProductCard.jsx            # Reusable product card component
 │   ├── SearchBar.jsx              # Search functionality
 │   ├── LoadingError.jsx           # Loading and error states
+│   ├── NavbarComponents/          # Navbar sub-components
+│   ├── CartDisplayComponents/     # Cart-related components (CheckoutBtn, CartItems, etc.)
+│   ├── CartPanelComponents/       # Cart panel UI components
 │   ├── HomePageComponents/        # Home page specific components
 │   ├── ProductsPageComponents/    # Products page specific components
 │   ├── CategoriesCardComponents/  # Category card components
 │   └── SingleProductPageComponents/ # Single product detail components
+├── context/
+│   └── ShopContext.jsx            # Global state management for cart and saved items
 ├── pages/
 │   ├── Home.jsx                   # Home page
 │   ├── Products.jsx               # All products page
@@ -44,7 +94,10 @@ src/
 │   ├── Categories.jsx             # Categories listing page
 │   ├── CategoryProducts.jsx       # Products by category
 │   ├── About.jsx                  # About page
-│   └── Contact.jsx                # Contact page
+│   ├── Contact.jsx                # Contact page
+│   └── Saved.jsx                  # Saved items page
+├── api/
+│   └── API integration modules
 ├── App.jsx                        # Main app component with routing
 ├── main.jsx                       # Application entry point
 ├── App.css                        # App styles
@@ -116,7 +169,8 @@ npm run lint
 - `/products` - All products listing
 - `/products/:id` - Single product details
 - `/categories` - Product categories
-- `/categories/:category` - Products filtered by category
+- `/category/:slug` - Products filtered by category
+- `/saved` - Saved/favorited items page
 - `/about` - About page
 - `/contact` - Contact page
 
@@ -131,6 +185,20 @@ Users can explore products organized by categories, making it easier to find wha
 ### Product Details
 Each product page displays comprehensive information including price, description, images, ratings, and specifications.
 
+### Shopping Cart
+A persistent shopping cart stored in localStorage allows users to:
+- Add/remove products
+- Adjust quantities
+- View cart total automatically calculated
+- Checkout button for future payment integration
+
+### Saved Items (Wishlist)
+Users can save their favorite products to view later:
+- Save/unsave products with one click
+- Dedicated saved items page
+- Persistent storage across sessions
+- Badge showing number of saved items
+
 ### Responsive Layout
 The application adapts perfectly to different screen sizes, from mobile phones to desktop computers.
 
@@ -140,11 +208,14 @@ This application works on all modern browsers that support ES6+.
 
 ## Future Enhancements
 
-- Shopping cart functionality
 - User authentication and accounts
-- Product filters and sorting options
-- Product reviews and ratings
-- Wishlist feature
+- Product filters and advanced sorting options
+- Product reviews and ratings display
+- Checkout and payment integration
+- Order history and tracking
+- Product recommendations based on browsing history
+- Dark mode support
+- Multi-language support
 - Payment gateway integration
 
 ## License
