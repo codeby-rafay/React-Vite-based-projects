@@ -158,7 +158,7 @@ function CartItem({ item, onRemove, onIncrease, onDecrease }) {
           {/* Price per item */}
           <p className="text-xs text-gray-400 mt-0.5">${item.price} each</p>
 
-          {/* Stock remaining info */}
+          {/* Stock remaining */}
           <p className="text-xs text-gray-400 mt-0.5">
             {stockLeft} left in stock
           </p>
@@ -173,7 +173,7 @@ function CartItem({ item, onRemove, onIncrease, onDecrease }) {
         </button>
       </div>
 
-      {/* Bottom row: + - buttons and subtotal */}
+      {/* + - buttons and subtotal */}
       <div className="flex items-center justify-between mt-3">
         {/* Quantity controls */}
         <div className="flex items-center gap-2 bg-white rounded-lg border border-gray-200 px-2 py-1">
@@ -190,7 +190,7 @@ function CartItem({ item, onRemove, onIncrease, onDecrease }) {
             {item.quantity}
           </span>
 
-          {/* Plus button — disabled if quantity = original stock */}
+          {/* Plus button -- disabled if quantity = original stock */}
           <button
             onClick={() => onIncrease(item.id)}
             disabled={item.quantity >= item.originalStock}
@@ -204,7 +204,7 @@ function CartItem({ item, onRemove, onIncrease, onDecrease }) {
           </button>
         </div>
 
-        {/* Subtotal for this item */}
+        {/* Subtotal for items */}
         <span className="text-orange-500 font-bold text-sm">
           ${(item.price * item.quantity).toFixed(2)}
         </span>
