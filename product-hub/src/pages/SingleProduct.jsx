@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getSingleProduct } from "../App";
+import { getSingleProduct } from "../api/products";
 import { Loading, ErrorMessage } from "../components/LoadingError";
 import { Star } from "lucide-react";
 import BacktoProductsBtn from "../components/SingleProductPageComponents/BacktoProductsBtn";
 import AddtoCartBtn from "../components/SingleProductPageComponents/AddtoCartBtn";
 import SaveBtn from "../components/SingleProductPageComponents/SaveBtn";
 import CustomerReview from "../components/SingleProductPageComponents/CustomerReview";
+import { useShop } from "../context/ShopContext";
 
 function SingleProduct() {
-  const { id } = useParams(); // get product id from URL
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
 
+  // Get how many of this product are already in the cart
+  const { getQtyInCart } = useShop();
+
   useEffect(() => {
-    // Fetch single product when component loads
     const fetchProduct = async () => {
       try {
         setLoading(true);
@@ -30,9 +33,8 @@ function SingleProduct() {
         setLoading(false);
       }
     };
-
     fetchProduct();
-  }, [id]); // re-run if id changes
+  }, [id]);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -61,6 +63,10 @@ function SingleProduct() {
 
   const allImages = product.images || [product.thumbnail];
 
+  // Stock remaining = original stock minus what's already in cart
+  const qtyInCart = getQtyInCart(product.id);
+  const stockRemaining = product.stock - qtyInCart;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
@@ -81,7 +87,6 @@ function SingleProduct() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Images Section */}
         <div>
-          {/* Main Image */}
           <div className="bg-gray-50 rounded-2xl overflow-hidden h-80 md:h-96 mb-4">
             <img
               src={allImages[selectedImage]}
@@ -89,8 +94,6 @@ function SingleProduct() {
               className="w-full h-full object-cover"
             />
           </div>
-
-          {/* Thumbnail Images */}
           {allImages.length > 1 && (
             <div className="flex gap-2 overflow-x-auto pb-2">
               {allImages.map((img, index) => (
@@ -116,12 +119,10 @@ function SingleProduct() {
 
         {/* Product Details */}
         <div>
-          {/* Category */}
           <span className="bg-orange-100 text-orange-600 text-xs font-semibold px-3 py-1 rounded-full capitalize">
             {product.category}
           </span>
 
-          {/* Title */}
           <h1
             className="mt-3 text-2xl md:text-3xl font-bold text-gray-900"
             style={{ fontFamily: "Playfair Display, serif" }}
@@ -129,7 +130,6 @@ function SingleProduct() {
             {product.title}
           </h1>
 
-          {/* Brand */}
           {product.brand && (
             <p className="text-gray-400 text-sm mt-1">
               by{" "}
@@ -137,7 +137,6 @@ function SingleProduct() {
             </p>
           )}
 
-          {/* Rating */}
           <div className="flex items-center gap-2 mt-3">
             <div className="flex">{renderStars(product.rating)}</div>
             <span className="text-gray-600 text-sm font-medium">
@@ -145,7 +144,6 @@ function SingleProduct() {
             </span>
           </div>
 
-          {/* Price */}
           <div className="flex items-center gap-3 mt-4">
             <span className="text-4xl font-bold text-orange-500">
               ${product.price}
@@ -157,23 +155,31 @@ function SingleProduct() {
             )}
           </div>
 
-          {/* Description */}
           <p className="text-gray-600 text-sm leading-relaxed mt-4">
             {product.description}
           </p>
 
-          {/* Info Tags */}
           <div className="grid grid-cols-2 gap-3 mt-6">
+            {/* Stock box — shows reduced stock when item is in cart */}
             <div className="bg-gray-50 rounded-xl p-3">
               <div className="text-xs text-gray-400">Stock</div>
               <div
-                className={`font-semibold text-sm mt-1 ${product.stock > 0 ? "text-green-600" : "text-red-500"}`}
+                className={`font-semibold text-sm mt-1 ${
+                  stockRemaining > 0 ? "text-green-600" : "text-red-500"
+                }`}
               >
-                {product.stock > 0
-                  ? `${product.stock} available`
+                {stockRemaining > 0
+                  ? `${stockRemaining} available`
                   : "Out of stock"}
               </div>
+              {/* Show a small note if some are in cart */}
+              {qtyInCart > 0 && (
+                <div className="text-xs text-orange-400 mt-0.5">
+                  {qtyInCart} in your cart
+                </div>
+              )}
             </div>
+
             <div className="bg-gray-50 rounded-xl p-3">
               <div className="text-xs text-gray-400">Warranty</div>
               <div className="font-semibold text-sm mt-1 text-gray-700">
@@ -194,23 +200,20 @@ function SingleProduct() {
             </div>
           </div>
 
-          {/* Add to cart button */}
+          {/* Add to cart & Save buttons */}
           <div className="flex gap-3 mt-6">
-            <AddtoCartBtn />
-            <SaveBtn />
+            <AddtoCartBtn product={product} />
+            <SaveBtn product={product} />
           </div>
 
-          {/* SKU */}
           {product.sku && (
             <p className="text-gray-400 text-xs mt-4">SKU: {product.sku}</p>
           )}
         </div>
       </div>
 
-      {/* Reviews Section */}
       <CustomerReview product={product} />
 
-      {/* Back to products link */}
       <div className="mt-10">
         <BacktoProductsBtn />
       </div>

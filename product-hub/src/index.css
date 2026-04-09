@@ -1,5 +1,67 @@
 @import "tailwindcss";
 
+@layer components {
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  .animate-slideInRight {
+    animation: slideInRight 0.3s ease-out;
+  }
+
+  .animate-slideOutRight {
+    animation: slideOutRight 0.3s ease-in;
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .animate-fadeOut {
+    animation: fadeOut 0.3s ease-in-out;
+  }
+}
+
 body {
   font-family: 'DM Sans', sans-serif;
   background-color: #fafaf8;

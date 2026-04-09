@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useShop } from "../context/ShopContext";
+import { Heart } from "lucide-react";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const { savedItems } = useShop();
+
+  const hasSavedItems = savedItems.length > 0;
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -12,6 +17,11 @@ function Navbar() {
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];
+
+  // Only add Saved link if there are saved items
+  if (hasSavedItems) {
+    navLinks.push({ name: "Saved", path: "/saved" });
+  }
 
   const isActive = (path) => location.pathname === path;
 
@@ -47,10 +57,21 @@ function Navbar() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                   isActive(link.path)
                     ? "bg-orange-500 text-white"
-                    : "text-gray-600 hover:bg-orange-50 hover:text-orange-600"
+                    : link.name === "Saved"
+                      ? "text-red-500 hover:bg-red-50 hover:text-red-600"
+                      : "text-gray-600 hover:bg-orange-50 hover:text-orange-600"
                 }`}
               >
-                {link.name}
+                {link.name === "Saved" ? (
+                  <span className="flex items-center gap-1">
+                    <Heart size={16} fill="currentColor" /> {link.name}
+                    <span className="bg-red-100 text-red-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {savedItems.length}
+                    </span>
+                  </span>
+                ) : (
+                  link.name
+                )}
               </Link>
             ))}
           </div>
@@ -103,10 +124,19 @@ function Navbar() {
                 className={`block px-4 py-2 rounded-lg text-sm font-medium mb-1 transition-colors ${
                   isActive(link.path)
                     ? "bg-orange-500 text-white"
-                    : "text-gray-600 hover:bg-orange-50 hover:text-orange-600"
+                    : link.name === "Saved"
+                      ? "text-red-500 hover:bg-red-50"
+                      : "text-gray-600 hover:bg-orange-50 hover:text-orange-600"
                 }`}
               >
-                {link.name}
+                {link.name === "Saved" ? (
+                  <span className="flex items-center gap-1">
+                    <Heart size={16} fill="currentColor" /> Saved (
+                    {savedItems.length})
+                  </span>
+                ) : (
+                  link.name
+                )}
               </Link>
             ))}
           </div>

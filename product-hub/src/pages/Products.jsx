@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllProducts, searchProducts } from "../App";
+import { getAllProducts, searchProducts } from "../api/products";
 import ProductCard from "../components/ProductCard";
 import SearchBar from "../components/SearchBar";
 import { Loading, ErrorMessage, NoResults } from "../components/LoadingError";
@@ -15,7 +15,7 @@ function Products() {
   const LIMIT = 12;
 
   // Fetch all products OR search results
-    const fetchProducts = async (query = "", skip = 0) => {
+  const fetchProducts = async (query = "", skip = 0) => {
     try {
       setLoading(true);
       setError(null);

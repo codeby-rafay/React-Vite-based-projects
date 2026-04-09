@@ -1,32 +1,36 @@
-import { useState } from 'react';
+import { useShop } from "../../context/ShopContext";
 
-const SaveBtn = () => {
-  const [isSaved, setIsSaved] = useState(false);
+const SaveBtn = ({ product }) => {
+  const { toggleSave, isSaved } = useShop();
 
-  const ClickSave = () => {
-    setIsSaved(!isSaved);
+  const saved = isSaved(product?.id);
+
+  const handleClick = () => {
+    if (product) {
+      toggleSave(product);
+    }
   };
 
   return (
     <div>
       <button
-        onClick={ClickSave}
+        onClick={handleClick}
         className={`py-3 px-4 flex items-center gap-2 cursor-pointer rounded-xl transition-colors ${
-          isSaved
-            ? 'bg-red-100 hover:bg-red-200 text-red-600'
-            : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+          saved
+            ? "bg-red-100 hover:bg-red-200 text-red-600"
+            : "bg-gray-100 hover:bg-gray-200 text-gray-700"
         }`}
       >
         <img
           className="size-4"
           src={
-            isSaved
-              ? 'https://www.svgrepo.com/show/535436/heart.svg'
-              : 'https://www.svgrepo.com/show/447850/wishlist.svg'
+            saved
+              ? "https://www.svgrepo.com/show/535436/heart.svg"
+              : "https://www.svgrepo.com/show/447850/wishlist.svg"
           }
           alt="Wishlist"
         />
-        {isSaved ? 'Saved' : 'Save'}
+        {saved ? "Saved" : "Save"}
       </button>
     </div>
   );

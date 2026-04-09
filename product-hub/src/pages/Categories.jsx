@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCategoryList } from "../App";
+import { getCategoryList } from "../api/products";
 import { Loading, ErrorMessage } from "../components/LoadingError";
 import {
   ShoppingCart,

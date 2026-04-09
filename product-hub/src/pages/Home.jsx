@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllProducts } from "../App";
+import { getAllProducts } from "../api/products";
 import ProductCard from "../components/ProductCard";
 import { Loading, ErrorMessage } from "../components/LoadingError";
 import { Sparkle } from "lucide-react";
@@ -66,7 +66,7 @@ function Home() {
               <div className="text-orange-100 text-xs">Products</div>
             </div>
             <div>
-              <div className="text-xl font-bold">30+</div>
+              <div className="text-xl font-bold">20+</div>
               <div className="text-orange-100 text-xs">Categories</div>
             </div>
             <div>
