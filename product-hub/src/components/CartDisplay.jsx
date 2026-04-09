@@ -167,7 +167,7 @@ function CartItem({ item, onRemove, onIncrease, onDecrease }) {
         {/* Remove button */}
         <button
           onClick={() => onRemove(item.id)}
-          className="text-gray-300 hover:text-red-400 transition-colors shrink-0"
+          className="text-red-500 hover:bg-red-200 px-1 py-1 rounded-md transition-colors shrink-0"
         >
           <Trash2 size={15} />
         </button>
