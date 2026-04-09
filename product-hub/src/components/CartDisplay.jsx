@@ -140,7 +140,7 @@ function CartItem({ item, onRemove, onIncrease, onDecrease }) {
   const stockLeft = item.originalStock - item.quantity;
 
   return (
-    <div className="bg-gray-50 rounded-xl p-3">
+    <div className="bg-gray-50 rounded-xl p-3 hover:border-orange-600 transition-colors border border-transparent">
       <div className="flex items-start gap-3">
         {/* Product image */}
         <img
