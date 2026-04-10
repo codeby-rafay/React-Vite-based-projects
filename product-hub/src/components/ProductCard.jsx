@@ -1,19 +1,21 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
   // star rating
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (
-      <span key={i} className={i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'}>
+      <span
+        key={i}
+        className={i < Math.floor(rating) ? "text-yellow-400" : "text-gray-300"}
+      >
         ★
       </span>
-    ))
-  }
+    ));
+  };
 
   return (
     <Link to={`/products/${product.id}`}>
       <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
-
         {/* Product Image */}
         <div className="relative overflow-hidden bg-gray-50 h-52">
           <img
@@ -52,22 +54,30 @@ function ProductCard({ product }) {
           {/* Price & Stock */}
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-xl font-bold text-orange-500">${product.price}</span>
+              <span className="text-xl font-bold text-orange-500">
+                ${product.price}
+              </span>
             </div>
-            <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-              product.stock > 10
-                ? 'bg-green-100 text-green-700'
+            <span
+              className={`text-xs px-2 py-1 rounded-full font-medium ${
+                product.stock > 10
+                  ? "bg-green-100 text-green-700"
+                  : product.stock > 0
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-red-100 text-red-700"
+              }`}
+            >
+              {product.stock > 10
+                ? "In Stock"
                 : product.stock > 0
-                ? 'bg-yellow-100 text-yellow-700'
-                : 'bg-red-100 text-red-700'
-            }`}>
-              {product.stock > 10 ? 'In Stock' : product.stock > 0 ? `${product.stock} left` : 'Out of Stock'}
+                  ? `${product.stock} left`
+                  : "Out of Stock"}
             </span>
           </div>
         </div>
       </div>
     </Link>
-  )
+  );
 }
 
-export default ProductCard
+export default ProductCard;

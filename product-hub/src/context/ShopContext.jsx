@@ -5,40 +5,40 @@ const ShopContext = createContext();
 export const useShop = () => useContext(ShopContext);
 
 export function ShopProvider({ children }) {
-  // Load cart from localStorage
+  // Load cart data from localStorage if exists, otherwise start with empty array
   const [cartItems, setCartItems] = useState(() => {
     const saved = localStorage.getItem("cart");
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Load saved items from localStorage
+  // Load saved items from localStorage if exists, otherwise start with empty array
   const [savedItems, setSavedItems] = useState(() => {
     const saved = localStorage.getItem("savedItems");
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Save cart to localStorage whenever it changes
+  // Save cart data to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // Save saved items to localStorage whenever they change
+  // Save saved items to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("savedItems", JSON.stringify(savedItems));
   }, [savedItems]);
 
   // Add product to cart (quantity starts at 1)
-  // We also store the original stock so we can calculate what's left
+  // We also store the original stock so we can calculate what is left
   const addToCart = (product) => {
     setCartItems((prev) => {
       const exists = prev.find((item) => item.id === product.id);
-      if (exists) return prev; // already in cart, don't add again
+      if (exists) return prev; // if the product is already in cart, then don't add again
       return [
         ...prev,
         {
           ...product,
           quantity: 1,
-          originalStock: product.stock, // save original stock once
+          originalStock: product.stock, // save original stock once added to cart
         },
       ];
     });
@@ -89,7 +89,7 @@ export function ShopProvider({ children }) {
     return item ? item.quantity : 0;
   };
 
-  // Toggle save/unsave
+  // save/unsave products
   const toggleSave = (product) => {
     setSavedItems((prev) => {
       const exists = prev.find((item) => item.id === product.id);
