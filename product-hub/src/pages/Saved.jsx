@@ -7,7 +7,7 @@ function Saved() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Heading of saved page */}
+      {/* Heading */}
       <h1
         className="text-3xl font-bold text-gray-900 mb-2"
         style={{ fontFamily: "Playfair Display, serif" }}
@@ -18,7 +18,7 @@ function Saved() {
         {savedItems.length} item{savedItems.length !== 1 ? "s" : ""} saved
       </p>
 
-      {/* If page is empty */}
+      {/* If page is empty the this code works */}
       {savedItems.length === 0 && (
         <div className="flex flex-col items-center justify-center py-24 gap-4">
           <Heart size={56} className="text-gray-200" />
