@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useShop } from "../context/ShopContext";
 
 function ProductCard({ product }) {
   // star rating
@@ -12,6 +13,11 @@ function ProductCard({ product }) {
       </span>
     ));
   };
+
+  const { getQtyInCart } = useShop();
+
+  const qtyInCart = getQtyInCart(product.id);
+  const stockRemaining = product.stock - qtyInCart;
 
   return (
     <Link to={`/products/${product.id}`}>
@@ -60,17 +66,17 @@ function ProductCard({ product }) {
             </div>
             <span
               className={`text-xs px-2 py-1 rounded-full font-medium ${
-                product.stock > 10
+                stockRemaining > 10
                   ? "bg-green-100 text-green-700"
-                  : product.stock > 0
+                  : stockRemaining > 0
                     ? "bg-yellow-100 text-yellow-700"
                     : "bg-red-100 text-red-700"
               }`}
             >
-              {product.stock > 10
+              {stockRemaining > 10
                 ? "In Stock"
-                : product.stock > 0
-                  ? `${product.stock} left`
+                : stockRemaining > 0
+                  ? `${stockRemaining} left`
                   : "Out of Stock"}
             </span>
           </div>
