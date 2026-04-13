@@ -62,7 +62,7 @@ export function ShopProvider({ children }) {
       const item = prev.find((i) => i.id === productId);
       if (!item) return prev;
       if (item.quantity === 1) {
-        // Remove item completely when quantity hits 0
+        // Remove item completely when quantity become 0
         return prev.filter((i) => i.id !== productId);
       }
       return prev.map((i) =>
