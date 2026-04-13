@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
+import { Star } from "lucide-react";
 
 function ProductCard({ product }) {
   // star rating
@@ -9,13 +10,15 @@ function ProductCard({ product }) {
         key={i}
         className={i < Math.floor(rating) ? "text-yellow-400" : "text-gray-300"}
       >
-        ★
+        <Star strokeWidth={3} fill="currentColor" size={14} />
       </span>
     ));
   };
 
+  // Get how many of this product are already in the cart
   const { getQtyInCart } = useShop();
 
+  // Stock remaining = original stock minus what's already in cart
   const qtyInCart = getQtyInCart(product.id);
   const stockRemaining = product.stock - qtyInCart;
 
