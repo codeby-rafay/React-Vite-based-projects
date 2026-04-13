@@ -37,7 +37,7 @@ function CartDisplay() {
         className="fixed bottom-6 left-6 z-50 bg-orange-500 hover:bg-orange-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition-colors cursor-pointer"
       >
         <ShoppingCart size={24} />
-        {/* Red badge with item count */}
+        {/* Notification badge if items are in cart */}
         {cartCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
             {cartCount}
@@ -68,7 +68,7 @@ function CartDisplay() {
             {/* Cart Items List */}
             <div className="flex-1 overflow-y-auto p-4">
               {cartItems.length === 0 ? (
-                /* Empty state message */
+                /* Empty page with message */
                 <div className="flex flex-col items-center justify-center h-full text-center gap-3">
                   <ShoppingCart size={48} className="text-gray-200" />
                   <p className="text-gray-400 font-medium">No items in cart</p>

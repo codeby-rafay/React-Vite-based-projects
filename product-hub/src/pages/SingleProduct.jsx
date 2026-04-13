@@ -69,7 +69,6 @@ function SingleProduct() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
         <Link to="/" className="hover:text-orange-500">
           Home
@@ -79,7 +78,9 @@ function SingleProduct() {
           Products
         </Link>
         <span>/</span>
-        <span className="text-gray-700 capitalize">{product.category}</span>
+        <Link to="/categories" className="hover:text-orange-500">
+          {product.category}
+        </Link>
         <span>/</span>
         <span className="text-gray-700 line-clamp-1">{product.title}</span>
       </div>
@@ -172,7 +173,7 @@ function SingleProduct() {
                   ? `${stockRemaining} available`
                   : "Out of stock"}
               </div>
-              {/* Show a small note if some are in cart */}
+              {/* small note if item is in cart */}
               {qtyInCart > 0 && (
                 <div className="text-xs text-orange-400 mt-0.5">
                   {qtyInCart} in your cart
