@@ -9,16 +9,14 @@ import {
 
 const ResultGrid = () => {
   const dispatch = useDispatch();
-  const { query, activeTab, results } = useSelector(
-    (store) => store.search,
-  );
+  const { query, activeTab, results, error, loading } = useSelector((store) => store.search);
 
   useEffect(
     function () {
+      if (!query) return;
       const getData = async () => {
-        if (!query) return;
-        dispatch(setLoading());
         try {
+          dispatch(setLoading());
           let data = [];
           if (activeTab == "photos") {
             let response = await fetchPhotos(query);
@@ -50,14 +48,16 @@ const ResultGrid = () => {
     [query, activeTab],
   );
 
-  return <div>{results.map((item, idx) => {
-    return (
-        <div key={idx}>
-          {item.title}
-        </div>
-    )
-  })}
-  </div>;
+  if (error) return <h1>Error</h1>;
+  if (loading) return <h1>Loading...</h1>;
+
+  return (
+    <div>
+      {results.map((item, idx) => {
+        return <div key={idx}>{item.title}</div>;
+      })}
+    </div>
+  );
 };
 
 export default ResultGrid;
