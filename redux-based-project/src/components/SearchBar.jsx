@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiX } from "react-icons/fi";
 import { setQuery } from "../redux/features/searchSlice";
 import { useDispatch } from "react-redux";
 
@@ -26,14 +26,29 @@ const SearchBar = () => {
           </h2>
 
           <div className="flex gap-2">
-            <input
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              type="text"
-              required
-              placeholder="Enter your search..."
-              className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 text-gray-700"
-            />
+            <div className="flex-1 relative">
+              <input
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                type="text"
+                required
+                placeholder="Enter your search..."
+                className="w-full px-4 py-3 pr-10 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 text-gray-700"
+              />
+              {text && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setText("");
+                    dispatch(setQuery(""));
+                  }}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                  title="Clear search"
+                >
+                  <FiX size={20} />
+                </button>
+              )}
+            </div>
 
             <button
               type="submit"
