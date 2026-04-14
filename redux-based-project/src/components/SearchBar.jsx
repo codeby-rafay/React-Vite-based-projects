@@ -24,7 +24,6 @@ const SearchBar = () => {
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             Search Photos and Videos
           </h2>
-
           <div className="flex gap-2">
             <div className="flex-1 relative">
               <input
