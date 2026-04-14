@@ -48,8 +48,10 @@ const ResultGrid = () => {
     [query, activeTab],
   );
 
-  if (error) return <h1>Error</h1>;
-  if (loading) return <h1>Loading...</h1>;
+  if (error) return <h1 className="text-center text-red-500 text-2xl py-10">Error loading results!</h1>;
+  if (loading) return <h1 className="text-center text-blue-300 text-2xl py-10">Loading...</h1>;
+  if (!query) return <h1 className="text-center text-gray-500 text-2xl py-10">Start searching to see results</h1>;
+  if (results.length === 0) return <h1 className="text-center text-gray-500 text-2xl py-10">No Data Found!</h1>;
 
   return (
     <div>
