@@ -15,8 +15,8 @@ const Tabs = () => {
               key={idx}
               onClick={() => dispatch(setActiveTab(elem))}
               className={`
-                px-8 py-3 font-semibold text-lg rounded-lg transition duration-300 uppercase cursor-pointer
-                transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800
+                px-8 py-3 font-semibold text-lg rounded-lg transition-all duration-300 uppercase cursor-pointer
+                transform hover:scale-105 focus:outline-none focus:ring-offset-gray-800
                 ${
                   activeTab === elem
                     ? "bg-linear-to-r from-blue-500 text-white shadow-lg shadow-blue-500/50 scale-105"
