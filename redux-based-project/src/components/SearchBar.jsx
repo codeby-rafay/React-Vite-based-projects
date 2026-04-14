@@ -13,7 +13,7 @@ const SearchBar = () => {
     setText("");
   };
   return (
-    <div className="flex justify-center items-center p-4 w-full">
+    <div className="flex justify-center p-4 w-full">
       <form
         onSubmit={(e) => {
           handleSubmit(e);
