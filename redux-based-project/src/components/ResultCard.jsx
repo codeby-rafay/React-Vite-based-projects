@@ -34,7 +34,7 @@ const ResultCard = ({ item }) => {
           />
         ) : null}
 
-        {/* Gradient overlay */}
+        {/* Gradient overlay on cards */}
         <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent opacity-40 group-hover:opacity-60 transition-opacity duration-300"></div>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/80 to-transparent text-white">
