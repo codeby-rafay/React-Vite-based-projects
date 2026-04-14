@@ -10,7 +10,7 @@ const SearchBar = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(setQuery(text));
-    setText("");
+    // setText("");
   };
   return (
     <div className="flex justify-center p-4 w-full">
