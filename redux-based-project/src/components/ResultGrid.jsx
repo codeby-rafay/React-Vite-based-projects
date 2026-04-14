@@ -6,10 +6,13 @@ import {
   setError,
   setResults,
 } from "../redux/features/searchSlice";
+import ResultCard from "./ResultCard";
 
 const ResultGrid = () => {
   const dispatch = useDispatch();
-  const { query, activeTab, results, error, loading } = useSelector((store) => store.search);
+  const { query, activeTab, results, error, loading } = useSelector(
+    (store) => store.search,
+  );
 
   useEffect(
     function () {
@@ -26,6 +29,7 @@ const ResultGrid = () => {
               title: item.alt_description || "photo",
               thumbnail: item.urls.small,
               src: item.urls.full,
+              url: item.links.html,
             }));
           }
           if (activeTab == "videos") {
@@ -36,6 +40,7 @@ const ResultGrid = () => {
               title: item.user.name || "video",
               thumbnail: item.image,
               src: item.video_files[0].link,
+              url: item.url,
             }));
           }
           dispatch(setResults(data));
@@ -48,15 +53,37 @@ const ResultGrid = () => {
     [query, activeTab],
   );
 
-  if (error) return <h1 className="text-center text-red-500 text-2xl py-10">Error loading results!</h1>;
-  if (loading) return <h1 className="text-center text-blue-300 text-2xl py-10">Loading...</h1>;
-  if (!query) return <h1 className="text-center text-gray-500 text-2xl py-10">Start searching to see results</h1>;
-  if (results.length === 0) return <h1 className="text-center text-gray-500 text-2xl py-10">No Data Found!</h1>;
+  if (error)
+    return (
+      <h1 className="text-center text-red-500 text-2xl py-10">
+        Error loading results!
+      </h1>
+    );
+  if (loading)
+    return (
+      <h1 className="text-center text-blue-300 text-2xl py-10">Loading...</h1>
+    );
+  if (!query)
+    return (
+      <h1 className="text-center text-gray-500 text-2xl py-10">
+        Start searching to see results
+      </h1>
+    );
+  if (results.length === 0)
+    return (
+      <h1 className="text-center text-gray-500 text-2xl py-10">
+        No Data Found!
+      </h1>
+    );
 
   return (
-    <div>
+    <div className="flex flex-wrap gap-5 overflow-auto p-8 justify-center">
       {results.map((item, idx) => {
-        return <div key={idx}>{item.title}</div>;
+        return (
+          <div key={idx}>
+              <ResultCard item={item} />
+          </div>
+        );
       })}
     </div>
   );
