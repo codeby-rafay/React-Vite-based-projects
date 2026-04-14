@@ -1,3 +1,4 @@
+import ResultGrid from "./components/ResultGrid";
 import SearchBar from "./components/SearchBar";
 import Tabs from "./components/Tabs";
 
@@ -6,6 +7,7 @@ const App = () => {
     <div className="bg-linear-to-br from-gray-900 to-gray-800 text-white min-h-screen w-full flex flex-col justify-center items-center p-4">
       <SearchBar />
       <Tabs />
+      <ResultGrid />
     </div>
   );
 };
