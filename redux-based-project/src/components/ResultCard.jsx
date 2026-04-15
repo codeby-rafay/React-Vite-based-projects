@@ -1,10 +1,11 @@
+import { useDispatch } from "react-redux";
+import { addCollection } from "../redux/features/collectionSlice";
+
 const ResultCard = ({ item }) => {
   const handleBookmark = (e, item) => {
     e.preventDefault();
-    const oldData = JSON.parse(localStorage.getItem("collection")) || [];
-    const newData = [...oldData, item];
-    localStorage.setItem("collection", JSON.stringify(newData));
-    console.log(newData);
+    const dispatch = useDispatch();
+    dispatch(addCollection(item));
   };
 
   return (
