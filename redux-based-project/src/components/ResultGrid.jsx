@@ -77,7 +77,7 @@ const ResultGrid = () => {
     );
 
   return (
-    <div className="flex flex-wrap gap-5 overflow-auto p-8 justify-center">
+    <div className="flex flex-wrap gap-5 p-8 justify-center">
       {results.map((item, idx) => {
         return (
           <div key={idx}>

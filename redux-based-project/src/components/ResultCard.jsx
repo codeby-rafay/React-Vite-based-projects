@@ -10,7 +10,7 @@ const ResultCard = ({ item }) => {
   };
 
   return (
-    <div className="group relative h-72 w-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+    <div className="group relative h-70 w-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
       <a
         href={item.url}
         target="_blank"
@@ -20,14 +20,14 @@ const ResultCard = ({ item }) => {
         {item.type === "photo" ? (
           <img
             src={item.src}
-            className="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
+            className="h-70 w-64 object-cover object-center group-hover:scale-110 transition-transform duration-500"
             alt={item.title}
           />
         ) : null}
         {item.type === "video" ? (
           <video
             src={item.src}
-            className="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
+            className="h-70 w-64 object-cover object-center group-hover:scale-110 transition-transform duration-500"
             autoPlay
             loop
             muted
@@ -44,7 +44,7 @@ const ResultCard = ({ item }) => {
             </h1>
             <button
               onClick={handleBookmark}
-              className={`shrink-0 p-2 rounded-full transition-all duration-300 cursor-pointer ${
+              className={`p-2 rounded-full transition-all duration-300 cursor-pointer ${
                 isBookmarked
                   ? "bg-blue-300 text-black"
                   : "bg-white/20 hover:bg-white/40 text-white"
