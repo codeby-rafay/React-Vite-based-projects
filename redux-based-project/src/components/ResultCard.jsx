@@ -1,5 +1,6 @@
 const ResultCard = ({ item }) => {
-  const handleBookmark = (item) => {
+  const handleBookmark = (e, item) => {
+    e.preventDefault();
     const oldData = JSON.parse(localStorage.getItem("collection")) || [];
     const newData = [...oldData, item];
     localStorage.setItem("collection", JSON.stringify(newData));
@@ -34,7 +35,10 @@ const ResultCard = ({ item }) => {
             <h1 className="text-sm font-bold capitalize line-clamp-2 flex-1">
               {item.title}
             </h1>
-            <button onClick={() => handleBookmark(item)} className="px-2 py-1 rounded transition-all duration-300 cursor-pointer bg-white/20 hover:bg-white/40 text-white font-bold">
+            <button
+              onClick={(e) => handleBookmark(e, item)}
+              className="px-2 py-1 rounded transition-all duration-300 cursor-pointer bg-white/20 hover:bg-white/40 text-white font-bold"
+            >
               Save
             </button>
           </div>
