@@ -4,7 +4,7 @@ import Tabs from "./components/Tabs";
 
 const App = () => {
   return (
-    <div className="bg-linear-to-br from-gray-900 to-gray-800 text-white min-h-screen w-full flex flex-col justify-center items-center p-4">
+    <div className="bg-linear-to-br from-gray-900 to-gray-800 text-white min-h-screen w-full flex flex-col items-center p-4">
       <SearchBar />
       <Tabs />
       <ResultGrid />
