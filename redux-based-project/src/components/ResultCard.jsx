@@ -4,10 +4,9 @@ import { addCollection } from "../redux/features/collectionSlice";
 const ResultCard = ({ item }) => {
   const handleBookmark = (e, item) => {
     e.preventDefault();
-    const dispatch = useDispatch();
     dispatch(addCollection(item));
   };
-
+  const dispatch = useDispatch();
   return (
     <div className="group relative h-70 w-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
       <a href={item.url} target="_blank" className="h-full w-full block">
