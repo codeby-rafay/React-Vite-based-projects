@@ -4,19 +4,18 @@ import { useState } from "react";
 const ResultCard = ({ item }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  const handleBookmark = (e) => {
-    e.preventDefault();
+  const handleBookmark = (item) => {
+    item.preventDefault();
     setIsBookmarked(!isBookmarked);
+
+    const oldData = JSON.parse(localStorage.getItem("collection")) || [];
+    const newData = [...oldData, item];
+    localStorage.setItem("collection", JSON.stringify(newData));
   };
 
   return (
     <div className="group relative h-70 w-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-      <a
-        href={item.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="h-full w-full block"
-      >
+      <a href={item.url} target="_blank" className="h-full w-full block">
         {item.type === "photo" ? (
           <img
             src={item.src}
