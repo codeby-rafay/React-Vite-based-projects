@@ -15,6 +15,7 @@ const CollectionPage = () => {
   };
   return (
     <div className="bg-linear-to-br from-gray-900 to-gray-800 text-white min-h-screen w-full">
+      <h2 className="text-2xl px-9 py-3 font-bold text-white">Your Collection</h2>
       <div className="flex flex-wrap gap-15 p-8">
         {collection.map((item, idx) => {
           return (
