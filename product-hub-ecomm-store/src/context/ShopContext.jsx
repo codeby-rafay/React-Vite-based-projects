@@ -146,6 +146,32 @@ export function ShopProvider({ children }) {
     });
   };
 
+  const fillallfieldsToast = () => {
+    toast.error("Please fill in all fields", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      transition: Slide,
+    });
+  };
+
+  const entervalidemailToast = () => {
+    toast.error("Please enter a valid email", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      transition: Slide,
+    });
+  };
+
   return (
     <ShopContext.Provider
       value={{
@@ -163,6 +189,8 @@ export function ShopProvider({ children }) {
         addtocartToast,
         saveToast,
         unsaveToast,
+        fillallfieldsToast,
+        entervalidemailToast,
       }}
     >
       {children}

@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 
-const MobileMenuLinks = ({ navLinks, isActive, savedItems, menuOpen, setMenuOpen }) => {
+const MobileMenuLinks = ({
+  navLinks,
+  isActive,
+  savedItems,
+  menuOpen,
+  setMenuOpen,
+}) => {
   return (
     <div>
       {menuOpen && (
@@ -29,6 +35,32 @@ const MobileMenuLinks = ({ navLinks, isActive, savedItems, menuOpen, setMenuOpen
               )}
             </Link>
           ))}
+
+          {/* Auth Links for Mobile */}
+          <div className="border-t border-gray-100 pt-2 mt-2">
+            <Link
+              to="/login"
+              onClick={() => setMenuOpen(false)}
+              className={`block px-4 py-2 rounded-lg text-sm font-medium mb-1 transition-colors ${
+                isActive("/login")
+                  ? "bg-orange-500 text-white"
+                  : "bg-orange-500 text-white hover:bg-orange-600"
+              }`}
+            >
+              Sign In
+            </Link>
+            {/* <Link
+              to="/signup"
+              onClick={() => setMenuOpen(false)}
+              className={`block px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                isActive("/signup")
+                  ? "bg-orange-500 text-white"
+                  : "bg-orange-500 text-white hover:bg-orange-600"
+              }`}
+            >
+              Sign Up
+            </Link> */}
+          </div>
         </div>
       )}
     </div>

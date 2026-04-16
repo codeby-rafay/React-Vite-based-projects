@@ -10,6 +10,8 @@ import CategoryProducts from "./pages/Categoryproducts";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Saved from "./pages/Saved";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import { ToastContainer } from "react-toastify";
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/saved" element={<Saved />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </main>
       <Footer />

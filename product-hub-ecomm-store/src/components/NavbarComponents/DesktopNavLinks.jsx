@@ -28,6 +28,30 @@ const DesktopNavLinks = ({ navLinks, isActive, savedItems }) => {
           )}
         </Link>
       ))}
+
+      {/* Auth Buttons */}
+      <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
+        <Link
+          to="/login"
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+            isActive("/login")
+              ? "bg-orange-500 text-white hover:bg-orange-600"
+              : "bg-orange-400 text-white hover:bg-orange-600"
+          }`}
+        >
+          Sign In
+        </Link>
+        {/* <Link
+          to="/signup"
+          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+            isActive("/signup")
+              ? "bg-orange-500 text-white"
+              : "bg-orange-500 text-white hover:bg-orange-600"
+          }`}
+        >
+          Sign Up
+        </Link> */}
+      </div>
     </div>
   );
 };
