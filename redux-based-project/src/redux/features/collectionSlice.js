@@ -52,6 +52,19 @@ const collectionSlice = createSlice({
         transition: Slide,
       });
     },
+     clearallToast: () => {
+      toast.success("All items removed from Collection!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+    },
   },
 });
 
@@ -61,5 +74,6 @@ export const {
   clearCollection,
   addedToast,
   removedToast,
+  clearallToast,
 } = collectionSlice.actions;
 export default collectionSlice.reducer;

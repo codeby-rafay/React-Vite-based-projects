@@ -12,6 +12,7 @@ const CollectionCard = ({ item }) => {
     dispatch(removeCollection(item.id));
     dispatch(removedToast());
   };
+
   return (
     <div className="group relative h-70 w-64 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
       <a href={item.url} target="_blank" className="h-full w-full block">
