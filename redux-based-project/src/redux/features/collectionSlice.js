@@ -26,8 +26,21 @@ const collectionSlice = createSlice({
       state.items = [];
       localStorage.removeItem("collection");
     },
-    addedToast: () => {
+    addedToast() {
       toast.success("Added to Collection!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+      });
+    },
+    removedToast: () => {
+      toast.success("Removed from Collection!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -42,6 +55,11 @@ const collectionSlice = createSlice({
   },
 });
 
-export const { addCollection, removeCollection, clearCollection, addedToast } =
-  collectionSlice.actions;
+export const {
+  addCollection,
+  removeCollection,
+  clearCollection,
+  addedToast,
+  removedToast,
+} = collectionSlice.actions;
 export default collectionSlice.reducer;
