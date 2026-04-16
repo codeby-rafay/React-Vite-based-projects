@@ -3,7 +3,7 @@ import { useShop } from "../context/ShopContext";
 import { Heart } from "lucide-react";
 
 function Saved() {
-  const { savedItems, toggleSave } = useShop();
+  const { savedItems, toggleSave, unsaveToast } = useShop();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -69,10 +69,12 @@ function Saved() {
 
                 {/* Remove button */}
                 <button
-                  onClick={() => toggleSave(product)}
+                  onClick={() => {
+                    toggleSave(product);
+                    unsaveToast();
+                  }}
                   className="mt-3 w-full flex items-center justify-center gap-2 bg-red-50 hover:bg-red-100 text-red-500 py-2 rounded-xl cursor-pointer text-sm font-semibold transition-colors"
                 >
-                  <Heart size={16} fill="currentColor" />
                   Remove
                 </button>
               </div>

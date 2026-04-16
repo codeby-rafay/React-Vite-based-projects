@@ -1,13 +1,16 @@
 import { useShop } from "../../context/ShopContext";
 
 const SaveBtn = ({ product }) => {
-  const { toggleSave, isSaved } = useShop();
+  const { toggleSave, isSaved, saveToast, unsaveToast } = useShop();
 
   const saved = isSaved(product?.id);
 
   const handleClick = () => {
     if (product) {
       toggleSave(product);
+      {
+        !saved ? saveToast() : unsaveToast();
+      }
     }
   };
 

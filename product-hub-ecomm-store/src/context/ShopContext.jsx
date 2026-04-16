@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { toast, Slide } from "react-toastify";
 
 const ShopContext = createContext();
 
@@ -101,6 +102,50 @@ export function ShopProvider({ children }) {
   const isSaved = (productId) =>
     savedItems.some((item) => item.id === productId);
 
+  // Toaster for add to cart
+  const addtocartToast = () => {
+    toast.success("Product Added to Cart!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Slide,
+    });
+  };
+
+  // Toaster for save/unsave product
+  const saveToast = () => {
+    toast.success("Product Saved!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Slide,
+    });
+  };
+
+  const unsaveToast = () => {
+    toast.success("Product Removed!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Slide,
+    });
+  };
+
   return (
     <ShopContext.Provider
       value={{
@@ -115,6 +160,9 @@ export function ShopProvider({ children }) {
         savedItems,
         toggleSave,
         isSaved,
+        addtocartToast,
+        saveToast,
+        unsaveToast,
       }}
     >
       {children}

@@ -2,13 +2,14 @@ import { ShoppingCart, Check } from "lucide-react";
 import { useShop } from "../../context/ShopContext";
 
 const AddtoCartBtn = ({ product }) => {
-  const { addToCart, isInCart } = useShop();
+  const { addToCart, isInCart, addtocartToast } = useShop();
 
   const alreadyInCart = isInCart(product?.id);
 
   const handleClick = () => {
     if (product && !alreadyInCart) {
       addToCart(product);
+      addtocartToast();
     }
   };
 
@@ -25,7 +26,7 @@ const AddtoCartBtn = ({ product }) => {
       >
         {alreadyInCart ? (
           <>
-            Added <Check size={20} />
+            Added to Cart <Check size={20} strokeWidth={3.75} />
           </>
         ) : (
           <>

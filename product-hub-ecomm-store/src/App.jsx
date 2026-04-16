@@ -10,6 +10,7 @@ import CategoryProducts from "./pages/Categoryproducts";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Saved from "./pages/Saved";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       </main>
       <Footer />
       <CartDisplay />
+      <ToastContainer />
     </div>
   );
 }
