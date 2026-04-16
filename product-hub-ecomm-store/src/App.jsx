@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import Saved from "./pages/Saved";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import NotFound from "./pages/NotFound";
 import { ToastContainer } from "react-toastify";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/saved" element={<Saved />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
