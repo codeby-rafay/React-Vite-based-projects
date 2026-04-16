@@ -21,7 +21,7 @@ import Cards from "../components/CategoriesCardComponents/Cards";
 
 const categoryIcons = {
   "beauty": <WandSparkles size={38} strokeWidth={1.75} />,
-  "fragrances": ( <img className="size-10" src="https://www.svgrepo.com/show/322156/delicate-perfume.svg" alt="Fragrances" /> ),
+  "fragrances": ( <img className="size-10" src="https://www.svgrepo.com/show/180246/perfume-fashion.svg" alt="Fragrances" /> ),
   "furniture": <Armchair size={38} strokeWidth={1.75} />,
   "groceries": <ShoppingCart size={38} strokeWidth={1.75} />,
   "home-decoration": <House size={38} strokeWidth={1.75} />,
@@ -40,9 +40,9 @@ const categoryIcons = {
   "tops": ( <img className="size-10" src="https://www.svgrepo.com/show/482584/dress-4.svg" alt="Tops" /> ),
   "vehicle": ( <img className="size-10" src="https://www.svgrepo.com/show/490616/car-hatchback.svg" alt="Vehicle" /> ),
   "womens-bags": <Handbag size={38} strokeWidth={1.75} />,
-  "womens-dresses": ( <img className="size-10" src="https://www.svgrepo.com/show/290769/dress.svg" alt="Womens Dresses" /> ),
+  "womens-dresses": ( <img className="size-10" src="https://www.svgrepo.com/show/108239/women-dress.svg" alt="Womens Dresses" /> ),
   "womens-jewellery": <Gem size={38} strokeWidth={1.75} />,
-  "womens-shoes": ( <img className="size-10" src="https://www.svgrepo.com/show/288714/high-heel-shoe.svg" alt="Womens Shoes" /> ),
+  "womens-shoes": ( <img className="size-10" src="https://www.svgrepo.com/show/482644/glass-shoe.svg" alt="Womens Shoes" /> ) ,
   "womens-watches": <Watch size={38} strokeWidth={1.75} />,
 };
 
