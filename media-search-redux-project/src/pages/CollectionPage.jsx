@@ -15,7 +15,7 @@ const CollectionPage = () => {
   };
   return (
     <div className="bg-linear-to-br from-gray-900 to-gray-800 text-white min-h-screen w-full">
-      <div className="flex flex-wrap gap-5 p-8">
+      <div className="flex flex-wrap gap-15 p-8">
         {collection.map((item, idx) => {
           return (
             <div key={idx}>
