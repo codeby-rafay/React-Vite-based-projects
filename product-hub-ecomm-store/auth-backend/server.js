@@ -1,41 +1,32 @@
 const express = require("express");
-const bcrypt = require("bcryptjs"); // Used to securely hash passwords
-const jwt = require("jsonwebtoken"); // Used to create login tokens
-const cors = require("cors"); // Allows our React frontend to talk to this server
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const cors = require("cors");
 
 const app = express();
 
-// MIDDLEWARE (things that run before every request)
-
-// Allow requests from our React frontend (http://localhost:5173)
+// MIDDLEWARE
 app.use(
   cors({
     origin: "http://localhost:5173",
   }),
 );
 
-// Allow the server to read JSON data sent in requests
 app.use(express.json());
 
-const users = []; // This array stores all registered users and resets everytime the server restarts.
+const users = [];
 
 const JWT_SECRET = "my_super_secret_key_123";
 
 // ROUTE 1: SIGNUP
-// POST /api/signup
-// When user fills signup form and clicks "Create Account",
-// the frontend sends their data here.
 
 app.post("/api/signup", async (req, res) => {
-  // 1. Get the data the user sent
-  const { fullName, email, password } = req.body;
+  const { fullName, email, password } = req.body; //data sent from fronend
 
-  // 2. Check if all fields are provided
   if (!fullName || !email || !password) {
-    return res.status(400).json({ message: "Please fill in all fields" });
+    return res.status(400).json({ message: "Please fill in all fields" }); //sent data back to frontend
   }
 
-  // 3. Check if this email is already registered
   const existingUser = users.find((user) => user.email === email);
   if (existingUser) {
     return res
@@ -43,41 +34,30 @@ app.post("/api/signup", async (req, res) => {
       .json({ message: "This email is already registered. Please login." });
   }
 
-  // 4. Hash the password before saving (never store plain passwords)
-  // bcrypt turns "mypassword123" into something like "$2a$10$..."
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // 5. Create the new user object and save to our "database"
   const newUser = {
     id: Date.now(),
     fullName,
     email,
-    password: hashedPassword, // Save hashed password, not original
+    password: hashedPassword,
   };
   users.push(newUser);
 
-  // 6. Send success response
   res
     .status(201)
     .json({ message: "Account created successfully! Please login." });
 });
 
 // ROUTE 2: LOGIN
-// POST /api/login
-// ........................
-// When user fills login form and clicks "Sign In",
-// the frontend sends their email & password here.
 
 app.post("/api/login", async (req, res) => {
-  // 1. Get email and password from the request
   const { email, password } = req.body;
 
-  // 2. Check if both fields are provided
   if (!email || !password) {
     return res.status(400).json({ message: "Please fill in all fields" });
   }
 
-  // 3. Find the user by email in our "database"
   const user = users.find((u) => u.email === email);
   if (!user) {
     return res.status(400).json({
@@ -85,7 +65,6 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
-  // 4. Compare the password they typed with the saved hashed password
   const isPasswordCorrect = await bcrypt.compare(password, user.password);
   if (!isPasswordCorrect) {
     return res
@@ -93,15 +72,13 @@ app.post("/api/login", async (req, res) => {
       .json({ message: "Incorrect password. Please try again." });
   }
 
-  // 5. Create a JWT token - this is like a "pass" that proves the user is logged in
-  // The token contains the user's id, name, and email, and is signed with our secret key.
+// login token creation
   const token = jwt.sign(
     { id: user.id, fullName: user.fullName, email: user.email },
     JWT_SECRET,
-    { expiresIn: "7d" },   // It expires in 7 days
+    { expiresIn: "7d" }, // It expires in 7 days
   );
 
-  // 6. Send back the token and user info
   res.json({
     message: "Login successful!",
     token,
