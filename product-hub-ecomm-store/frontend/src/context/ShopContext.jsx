@@ -5,6 +5,7 @@ const ShopContext = createContext();
 
 export const useShop = () => useContext(ShopContext);
 
+//...
 export function ShopProvider({ children }) {
   // AUTH STATE - stores the currently logged-in user
   // When page loads, check if user was already logged in before
@@ -13,7 +14,7 @@ export function ShopProvider({ children }) {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  // Helper function to get user-specific localStorage key
+  // Each user gets separate data....user-specific localStorage key
   const getCartKey = (userId) => `cart_${userId}`;
   const getSavedItemsKey = (userId) => `savedItems_${userId}`;
 
@@ -22,11 +23,11 @@ export function ShopProvider({ children }) {
     localStorage.setItem("currentUser", JSON.stringify(userData));
     localStorage.setItem("authToken", token);
     setCurrentUser(userData);
-    
+
     // Load this user's cart and saved items from their specific storage keys
     const userCart = localStorage.getItem(getCartKey(userData.id));
     const userSavedItems = localStorage.getItem(getSavedItemsKey(userData.id));
-    
+
     setCartItems(userCart ? JSON.parse(userCart) : []);
     setSavedItems(userSavedItems ? JSON.parse(userSavedItems) : []);
   };
@@ -61,15 +62,21 @@ export function ShopProvider({ children }) {
 
   useEffect(() => {
     if (currentUser) {
-      localStorage.setItem(getCartKey(currentUser.id), JSON.stringify(cartItems));
+      localStorage.setItem(
+        getCartKey(currentUser.id),
+        JSON.stringify(cartItems),
+      );
     }
   }, [cartItems, currentUser]);
 
   useEffect(() => {
     if (currentUser) {
-      localStorage.setItem(getSavedItemsKey(currentUser.id), JSON.stringify(savedItems));
+      localStorage.setItem(
+        getSavedItemsKey(currentUser.id),
+        JSON.stringify(savedItems),
+      );
     }
-  }, [savedItems, currentUser]);
+  }, [savedItems, currentUser]); //.....
 
   const addToCart = (product) => {
     setCartItems((prev) => {
@@ -109,8 +116,10 @@ export function ShopProvider({ children }) {
   };
 
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
   const isInCart = (productId) =>
     cartItems.some((item) => item.id === productId);
+
   const getQtyInCart = (productId) => {
     const item = cartItems.find((i) => i.id === productId);
     return item ? item.quantity : 0;
