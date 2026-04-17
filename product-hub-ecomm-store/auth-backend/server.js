@@ -17,15 +17,7 @@ app.use(
 // Allow the server to read JSON data sent in requests
 app.use(express.json());
 
-// FAKE DATABASE (In-memory storage)
-// ........................................
-// In a real app, you'd use a database like MongoDB or PostgreSQL.
-// For now, we just store users in this array.
-// NOTE: This resets every time you restart the server.
-
-const users = []; // This array stores all registered users
-
-// In a real app, store this in an .env file.
+const users = []; // This array stores all registered users and resets everytime the server restarts.
 
 const JWT_SECRET = "my_super_secret_key_123";
 
@@ -51,13 +43,13 @@ app.post("/api/signup", async (req, res) => {
       .json({ message: "This email is already registered. Please login." });
   }
 
-  // 4. Hash the password before saving (never store plain passwords!)
+  // 4. Hash the password before saving (never store plain passwords)
   // bcrypt turns "mypassword123" into something like "$2a$10$..."
   const hashedPassword = await bcrypt.hash(password, 10);
 
   // 5. Create the new user object and save to our "database"
   const newUser = {
-    id: Date.now(), // Simple unique ID using current timestamp
+    id: Date.now(),
     fullName,
     email,
     password: hashedPassword, // Save hashed password, not original
@@ -102,12 +94,11 @@ app.post("/api/login", async (req, res) => {
   }
 
   // 5. Create a JWT token - this is like a "pass" that proves the user is logged in
-  // The token contains the user's id, name, and email
-  // It expires in 7 days
+  // The token contains the user's id, name, and email, and is signed with our secret key.
   const token = jwt.sign(
     { id: user.id, fullName: user.fullName, email: user.email },
     JWT_SECRET,
-    { expiresIn: "7d" },
+    { expiresIn: "7d" },   // It expires in 7 days
   );
 
   // 6. Send back the token and user info
@@ -122,7 +113,6 @@ app.post("/api/login", async (req, res) => {
   });
 });
 
-// START THE SERVER
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Auth server is running at http://localhost:${PORT}`);
