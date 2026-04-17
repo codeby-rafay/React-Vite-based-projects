@@ -1,27 +1,79 @@
 import { Link } from "react-router-dom";
-import notFoundImage from "../assets/404.jpg";
+import { Home, ShoppingBag, HelpCircle } from "lucide-react";
 
 function NotFound() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-white flex items-center justify-center">
-      {/* Background Image */}
-      <img
-        src={notFoundImage}
-        alt="404 Not Found"
-        className="absolute inset-0 w-full h-full object-contain"
-      />
+    <div className="min-h-screen bg-linear-to-br from-orange-50 via-white to-amber-50 flex items-center justify-center px-4 py-12">
+      <div className="text-center max-w-2xl">
+        {/* 404 Large Text with Animation */}
+        <div className="mb-8">
+          <div className="text-9xl font-bold bg-linear-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent mb-4 animate-bounce">
+            404
+          </div>
+        </div>
 
-      {/* Overlay for better button visibility */}
-      <div className="absolute inset-0 bg-black/20"></div>
-
-      {/* Content */}
-      <div className="text-center">
-        <Link
-          to="/"
-          className="inline-block absolute top-10 left-5 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-8 rounded-xl transition-colors duration-200"
+        {/* Headline */}
+        <h1
+          className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+          style={{ fontFamily: "Playfair Display, serif" }}
         >
-          Go Back Home
-        </Link>
+          Page Not Found
+        </h1>
+
+        {/* Description */}
+        <p className="text-xl text-gray-600 mb-8">
+          Oops! We couldn't find the page you're looking for. It might have been
+          moved or deleted.
+        </p>
+
+        {/* Decorative Elements */}
+        <div className="mb-12 flex justify-center gap-8 text-gray-300">
+          <div className="text-6xl">📦</div>
+          <div className="text-6xl animate-pulse">❓</div>
+          <div className="text-6xl">🛍️</div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 hover:shadow-lg hover:-translate-y-1"
+          >
+            <Home size={20} />
+            Go to Home
+          </Link>
+
+          <Link
+            to="/products"
+            className="inline-flex items-center justify-center gap-2 border-2 border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold py-4 px-8 rounded-xl transition-all duration-200"
+          >
+            <ShoppingBag size={20} />
+            Continue Shopping
+          </Link>
+        </div>
+
+        {/* Additional Help Text */}
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <HelpCircle size={20} className="text-orange-500" />
+            <p className="text-gray-700 font-semibold">Need Help?</p>
+          </div>
+          <p className="text-gray-600 text-sm mb-4">
+            If you believe this is a mistake, please reach out to our support
+            team
+          </p>
+          <Link
+            to="/contact"
+            className="text-orange-500 hover:text-orange-600 font-semibold text-sm"
+          >
+            Contact Us →
+          </Link>
+        </div>
+
+        {/* Footer Text */}
+        <p className="text-gray-400 text-sm mt-8">
+          Error Code: 404 | Page Not Found
+        </p>
       </div>
     </div>
   );
