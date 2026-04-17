@@ -5,14 +5,12 @@ function NotFound() {
   return (
     <div className="min-h-screen bg-linear-to-br from-orange-50 via-white to-amber-50 flex items-center justify-center px-4 py-12">
       <div className="text-center max-w-2xl">
-        {/* 404 Large Text with Animation */}
         <div className="mb-8">
           <div className="text-9xl font-bold bg-linear-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent mb-4 animate-bounce">
             404
           </div>
         </div>
 
-        {/* Headline */}
         <h1
           className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
           style={{ fontFamily: "Playfair Display, serif" }}
@@ -20,20 +18,17 @@ function NotFound() {
           Page Not Found
         </h1>
 
-        {/* Description */}
         <p className="text-xl text-gray-600 mb-8">
           Oops! We couldn't find the page you're looking for. It might have been
           moved or deleted.
         </p>
 
-        {/* Decorative Elements */}
         <div className="mb-12 flex justify-center gap-8 text-gray-300">
           <div className="text-6xl">📦</div>
           <div className="text-6xl animate-pulse">❓</div>
           <div className="text-6xl">🛍️</div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
           <Link
             to="/"
@@ -52,7 +47,6 @@ function NotFound() {
           </Link>
         </div>
 
-        {/* Additional Help Text */}
         <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-center gap-2 mb-3">
             <HelpCircle size={20} className="text-orange-500" />
