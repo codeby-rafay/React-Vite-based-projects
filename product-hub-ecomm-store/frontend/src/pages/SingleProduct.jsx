@@ -20,6 +20,9 @@ function SingleProduct() {
   const { getQtyInCart } = useShop();
 
   useEffect(() => {
+    // Scroll to top when product page loads
+    window.scrollTo(0, 0);
+    
     const fetchProduct = async () => {
       try {
         setLoading(true);
