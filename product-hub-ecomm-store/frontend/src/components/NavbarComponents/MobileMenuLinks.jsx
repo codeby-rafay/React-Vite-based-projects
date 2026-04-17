@@ -1,0 +1,107 @@
+import { Link, useNavigate } from "react-router-dom";
+import { Heart, LogOut } from "lucide-react";
+import { useShop } from "../../context/ShopContext";
+import { toast, Slide } from "react-toastify";
+
+const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
+  const { currentUser, logout, savedItems } = useShop();
+  const navigate = useNavigate();
+
+  const hasSaved = savedItems.length > 0;
+
+  const handleLogout = () => {
+    logout();
+    setMenuOpen(false);
+    toast.success("You have been signed out.", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      transition: Slide,
+    });
+    navigate("/login");
+  };
+
+  return (
+    <div>
+      {menuOpen && (
+        <div className="md:hidden pb-4 border-t border-gray-100 pt-2">
+          {/* Regular nav links (filter out "Saved" - it goes below) */}
+          {navLinks
+            .filter((link) => link.name !== "Saved")
+            .map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                onClick={() => setMenuOpen(false)}
+                className={`block px-4 py-2 rounded-lg text-sm font-medium mb-1 transition-colors ${
+                  isActive(link.path)
+                    ? "bg-orange-500 text-white"
+                    : "text-gray-600 hover:bg-orange-50 hover:text-orange-600"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+
+          {/* Auth section for mobile */}
+          <div className="border-t border-gray-100 pt-2 mt-2">
+            {currentUser ? (
+              // ---- LOGGED IN: Show user info + saved + signout ----
+              <>
+                {/* User info */}
+                <div className="px-4 py-2 mb-1">
+                  <p className="text-sm font-semibold text-gray-800">
+                    {currentUser.fullName}
+                  </p>
+                  <p className="text-xs text-gray-500">{currentUser.email}</p>
+                </div>
+
+                {/* Saved Items link */}
+                <Link
+                  to="/saved"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium mb-1 text-red-500 hover:bg-red-50 transition-colors"
+                >
+                  <Heart size={16} fill="currentColor" />
+                  Saved Items
+                  {hasSaved && (
+                    <span className="ml-auto bg-red-100 text-red-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {savedItems.length}
+                    </span>
+                  )}
+                </Link>
+
+                {/* Sign Out button */}
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 w-full px-4 py-2 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
+                >
+                  <LogOut size={16} />
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              // ---- NOT LOGGED IN: Show Sign In link ----
+              <Link
+                to="/login"
+                onClick={() => setMenuOpen(false)}
+                className={`block px-4 py-2 rounded-lg text-sm font-medium mb-1 transition-colors ${
+                  isActive("/login")
+                    ? "bg-orange-500 text-white"
+                    : "bg-orange-500 text-white hover:bg-orange-600"
+                }`}
+              >
+                Sign In
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MobileMenuLinks;
