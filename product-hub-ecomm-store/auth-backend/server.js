@@ -29,10 +29,8 @@ const users = []; // This array stores all registered users
 
 const JWT_SECRET = "my_super_secret_key_123";
 
-// =====================================================
 // ROUTE 1: SIGNUP
 // POST /api/signup
-// =====================================================
 // When user fills signup form and clicks "Create Account",
 // the frontend sends their data here.
 
