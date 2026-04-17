@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const app = express();
 
-// MIDDLEWARE
+// middleware
 app.use(
   cors({
     origin: "http://localhost:5173",
