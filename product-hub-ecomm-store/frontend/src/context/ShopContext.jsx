@@ -11,14 +11,24 @@ export function ShopProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(() => {
     const savedUser = localStorage.getItem("currentUser");
     return savedUser ? JSON.parse(savedUser) : null;
-    // null = not logged in, object = logged in
   });
+
+  // Helper function to get user-specific localStorage key
+  const getCartKey = (userId) => `cart_${userId}`;
+  const getSavedItemsKey = (userId) => `savedItems_${userId}`;
 
   // Called after successful login API call
   const login = (userData, token) => {
     localStorage.setItem("currentUser", JSON.stringify(userData));
     localStorage.setItem("authToken", token);
     setCurrentUser(userData);
+    
+    // Load this user's cart and saved items from their specific storage keys
+    const userCart = localStorage.getItem(getCartKey(userData.id));
+    const userSavedItems = localStorage.getItem(getSavedItemsKey(userData.id));
+    
+    setCartItems(userCart ? JSON.parse(userCart) : []);
+    setSavedItems(userSavedItems ? JSON.parse(userSavedItems) : []);
   };
 
   // Called when user clicks "Sign Out"
@@ -26,27 +36,40 @@ export function ShopProvider({ children }) {
     localStorage.removeItem("currentUser");
     localStorage.removeItem("authToken");
     setCurrentUser(null);
+    // Keep cart and saved items in localStorage (they're user-specific), just clear the state
+    setCartItems([]);
+    setSavedItems([]);
   };
 
   // CART STATE
   const [cartItems, setCartItems] = useState(() => {
-    const saved = localStorage.getItem("cart");
+    const savedUser = localStorage.getItem("currentUser");
+    if (!savedUser) return [];
+    const user = JSON.parse(savedUser);
+    const saved = localStorage.getItem(getCartKey(user.id));
     return saved ? JSON.parse(saved) : [];
   });
 
   // SAVED ITEMS STATE
   const [savedItems, setSavedItems] = useState(() => {
-    const saved = localStorage.getItem("savedItems");
+    const savedUser = localStorage.getItem("currentUser");
+    if (!savedUser) return [];
+    const user = JSON.parse(savedUser);
+    const saved = localStorage.getItem(getSavedItemsKey(user.id));
     return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
+    if (currentUser) {
+      localStorage.setItem(getCartKey(currentUser.id), JSON.stringify(cartItems));
+    }
+  }, [cartItems, currentUser]);
 
   useEffect(() => {
-    localStorage.setItem("savedItems", JSON.stringify(savedItems));
-  }, [savedItems]);
+    if (currentUser) {
+      localStorage.setItem(getSavedItemsKey(currentUser.id), JSON.stringify(savedItems));
+    }
+  }, [savedItems, currentUser]);
 
   const addToCart = (product) => {
     setCartItems((prev) => {
