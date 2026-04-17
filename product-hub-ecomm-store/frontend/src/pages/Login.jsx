@@ -74,7 +74,7 @@ function Login() {
       // Go to home page
       setTimeout(() => {
         navigate("/");
-      }, 1000);
+      }, 100);
     } catch (error) {
       // Show the error message from the server
       toast.error(error.message || "Login failed. Please try again", {
