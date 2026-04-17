@@ -5,26 +5,23 @@ const ShopContext = createContext();
 
 export const useShop = () => useContext(ShopContext);
 
-//...
 export function ShopProvider({ children }) {
-  // AUTH STATE - stores the currently logged-in user
-  // When page loads, check if user was already logged in before
+  // when page loads, check if user was already logged in before
   const [currentUser, setCurrentUser] = useState(() => {
     const savedUser = localStorage.getItem("currentUser");
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  // Each user gets separate data....user-specific localStorage key
+  // each user gets separate data....user-specific localStorage key
   const getCartKey = (userId) => `cart_${userId}`;
   const getSavedItemsKey = (userId) => `savedItems_${userId}`;
 
-  // Called after successful login API call
+  // this function runs after user successfully login
   const login = (userData, token) => {
     localStorage.setItem("currentUser", JSON.stringify(userData));
     localStorage.setItem("authToken", token);
     setCurrentUser(userData);
 
-    // Load this user's cart and saved items from their specific storage keys
     const userCart = localStorage.getItem(getCartKey(userData.id));
     const userSavedItems = localStorage.getItem(getSavedItemsKey(userData.id));
 
@@ -32,17 +29,16 @@ export function ShopProvider({ children }) {
     setSavedItems(userSavedItems ? JSON.parse(userSavedItems) : []);
   };
 
-  // Called when user clicks "Sign Out"
+  // called when user Sign out 
   const logout = () => {
     localStorage.removeItem("currentUser");
     localStorage.removeItem("authToken");
     setCurrentUser(null);
-    // Keep cart and saved items in localStorage (they're user-specific), just clear the state
     setCartItems([]);
     setSavedItems([]);
   };
 
-  // CART STATE
+  // cart state
   const [cartItems, setCartItems] = useState(() => {
     const savedUser = localStorage.getItem("currentUser");
     if (!savedUser) return [];
@@ -51,7 +47,7 @@ export function ShopProvider({ children }) {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // SAVED ITEMS STATE
+  // saved items state
   const [savedItems, setSavedItems] = useState(() => {
     const savedUser = localStorage.getItem("currentUser");
     if (!savedUser) return [];
@@ -76,7 +72,7 @@ export function ShopProvider({ children }) {
         JSON.stringify(savedItems),
       );
     }
-  }, [savedItems, currentUser]); //.....
+  }, [savedItems, currentUser]);
 
   const addToCart = (product) => {
     setCartItems((prev) => {
