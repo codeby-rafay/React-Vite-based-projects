@@ -9,27 +9,26 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { fillallfieldsToast, entervalidemailToast } = useShop();
+  const { FillAllFieldsToast, EnterValidEmailToast } = useShop();
 
-  //   ...........................
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation
     if (!formData.email || !formData.password) {
-      fillallfieldsToast();
+      FillAllFieldsToast();
       return;
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      entervalidemailToast();
+      EnterValidEmailToast();
       return;
     }
 

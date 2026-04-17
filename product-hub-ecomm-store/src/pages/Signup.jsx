@@ -16,7 +16,7 @@ function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { fillallfieldsToast, entervalidemailToast } = useShop();
+  const { FillAllFieldsToast, EnterValidEmailToast } = useShop();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -36,7 +36,7 @@ function Signup() {
       !formData.password ||
       !formData.confirmPassword
     ) {
-      fillallfieldsToast();
+      FillAllFieldsToast();
       return;
     }
 
@@ -73,7 +73,7 @@ function Signup() {
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      entervalidemailToast();
+      EnterValidEmailToast();
       return;
     }
 

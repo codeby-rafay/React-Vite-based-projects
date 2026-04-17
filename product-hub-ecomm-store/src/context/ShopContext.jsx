@@ -146,7 +146,7 @@ export function ShopProvider({ children }) {
     });
   };
 
-  const fillallfieldsToast = () => {
+  const FillAllFieldsToast = () => {
     toast.error("Please fill in all fields", {
       position: "top-right",
       autoClose: 5000,
@@ -159,7 +159,7 @@ export function ShopProvider({ children }) {
     });
   };
 
-  const entervalidemailToast = () => {
+  const EnterValidEmailToast = () => {
     toast.error("Please enter a valid email", {
       position: "top-right",
       autoClose: 5000,
@@ -189,8 +189,8 @@ export function ShopProvider({ children }) {
         addtocartToast,
         saveToast,
         unsaveToast,
-        fillallfieldsToast,
-        entervalidemailToast,
+        FillAllFieldsToast,
+        EnterValidEmailToast,
       }}
     >
       {children}
