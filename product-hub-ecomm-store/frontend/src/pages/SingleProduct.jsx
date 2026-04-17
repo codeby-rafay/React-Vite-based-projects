@@ -163,7 +163,7 @@ function SingleProduct() {
             {product.description}
           </p>
 
-          <div className="grid grid-cols-2 gap-3 mt-6">
+          <div className="grid grid-cols-2 gap-3 mt-3">
             {/* Stock box — shows reduced stock when item is in cart */}
             <div className="bg-gray-50 rounded-xl p-3">
               <div className="text-xs text-gray-400">Stock</div>
