@@ -6,13 +6,13 @@ const ShopContext = createContext();
 export const useShop = () => useContext(ShopContext);
 
 export function ShopProvider({ children }) {
-  // when page loads, check if user was already logged in before
+  // if user is already logged in or not
   const [currentUser, setCurrentUser] = useState(() => {
     const savedUser = localStorage.getItem("currentUser");
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  // each user gets separate data....user-specific localStorage key
+  // each user gets separate data
   const getCartKey = (userId) => `cart_${userId}`;
   const getSavedItemsKey = (userId) => `savedItems_${userId}`;
 
@@ -29,7 +29,7 @@ export function ShopProvider({ children }) {
     setSavedItems(userSavedItems ? JSON.parse(userSavedItems) : []);
   };
 
-  // called when user Sign out 
+  // called when user Sign out
   const logout = () => {
     localStorage.removeItem("currentUser");
     localStorage.removeItem("authToken");
