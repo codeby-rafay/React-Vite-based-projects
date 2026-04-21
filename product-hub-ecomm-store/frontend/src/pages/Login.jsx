@@ -10,7 +10,6 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Get the login function from our context
   const { login, FillAllFieldsToast, EnterValidEmailToast } = useShop();
 
   const handleChange = (e) => {
@@ -21,7 +20,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!formData.email || !formData.password) {
       FillAllFieldsToast();
       return;
@@ -36,7 +34,6 @@ function Login() {
     try {
       setLoading(true);
 
-      // send login request back to backend server
       const response = await fetch("http://localhost:5000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -46,15 +43,13 @@ function Login() {
         }),
       });
 
-      // Parse the response as JSON
       const data = await response.json();
 
-      // If login failed, show error message
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
       }
 
-      // LOGIN SUCCESSFUL!
+      // login successful
       // Save user info using our login function from context
       // This saves the user to localStorage so they stay logged in
       login(data.user, data.token);
@@ -76,7 +71,6 @@ function Login() {
         navigate("/");
       }, 100);
     } catch (error) {
-      // Show the error message from the server
       toast.error(error.message || "Login failed. Please try again", {
         position: "top-right",
         autoClose: 5000,
@@ -107,10 +101,10 @@ function Login() {
           </p>
         </div>
 
-        {/* Form Card */}
+        {/* Form */}
         <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email Field */}
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address
@@ -131,7 +125,7 @@ function Login() {
               </div>
             </div>
 
-            {/* Password Field */}
+            {/* Password */}
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-sm font-medium text-gray-700">

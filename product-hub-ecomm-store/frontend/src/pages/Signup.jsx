@@ -29,7 +29,6 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation checks
     if (
       !formData.fullName ||
       !formData.email ||
@@ -101,12 +100,11 @@ function Signup() {
     try {
       setLoading(true);
 
-      // SEND SIGNUP REQUEST TO OUR BACKEND SERVER
       const response = await fetch("http://localhost:5000/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fullName: formData.fullName,
+          fullName: formData.fullName.trim(),
           email: formData.email,
           password: formData.password,
         }),
@@ -114,12 +112,11 @@ function Signup() {
 
       const data = await response.json();
 
-      // If signup failed, show error
       if (!response.ok) {
         throw new Error(data.message || "Signup failed");
       }
 
-      // SIGNUP SUCCESSFUL!
+      // signup successful
       toast.success("Account created successfully! Please login.", {
         position: "top-right",
         autoClose: 3000,
@@ -173,7 +170,7 @@ function Signup() {
           </p>
         </div>
 
-        {/* Form Card */}
+        {/* Form */}
         <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Full Name */}

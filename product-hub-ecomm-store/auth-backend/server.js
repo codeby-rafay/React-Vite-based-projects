@@ -18,7 +18,7 @@ const users = [];
 
 const JWT_SECRET = "my_super_secret_key_123";
 
-// ROUTE 1: SIGNUP
+// route 1: SIGNUP
 
 app.post("/api/signup", async (req, res) => {
   const { fullName, email, password } = req.body; //data sent from fronend
@@ -49,7 +49,7 @@ app.post("/api/signup", async (req, res) => {
     .json({ message: "Account created successfully! Please login." });
 });
 
-// ROUTE 2: LOGIN
+// route 2: LOGIN
 
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
