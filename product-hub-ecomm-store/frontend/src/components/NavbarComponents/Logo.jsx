@@ -8,7 +8,7 @@ const Logo = () => {
           <span className="text-white font-bold text-sm">
             <img
               className="size-10 rounded-lg"
-              src="https://media.licdn.com/dms/image/v2/D4E0BAQFq1CCkGzPR-w/company-logo_200_200/company-logo_200_200/0/1713840703024/product_hub_nyc_logo?e=2147483647&v=beta&t=hSAdtTSPN5ol9maUrYCrYLWfgfEvkPmHz90sKbUlKoI"
+              src="/src/assets/product_hub_logo.jpg"
               alt="Logo"
             />
           </span>
