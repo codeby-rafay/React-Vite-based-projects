@@ -4,67 +4,57 @@ import { Users, LogIn, UserPlus, Trash2, Eye } from "lucide-react";
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");
 
-  // Mock data for login records
   const loginData = [
     {
       id: 1,
-      email: "john@example.com",
+      email: "rafay@example.com",
       timestamp: "2026-04-23 10:30 AM",
-      status: "Success",
-      ipAddress: "192.168.1.1",
     },
     {
       id: 2,
-      email: "jane@example.com",
+      email: "abdullah@example.com",
       timestamp: "2026-04-23 11:45 AM",
-      status: "Success",
-      ipAddress: "192.168.1.2",
     },
     {
       id: 3,
-      email: "invalid@example.com",
+      email: "hammad@example.com",
       timestamp: "2026-04-23 12:00 PM",
-      status: "Failed",
-      ipAddress: "192.168.1.3",
     },
     {
       id: 4,
-      email: "rafay@example.com",
+      email: "ahmad@example.com",
       timestamp: "2026-04-23 02:15 PM",
-      status: "Success",
-      ipAddress: "192.168.1.4",
     },
   ];
 
-  // Mock data for signup records
   const signupData = [
     {
       id: 1,
-      fullName: "John Doe",
-      email: "john@example.com",
-      timestamp: "2026-04-20 08:30 AM",
-      status: "Active",
+      fullName: "Rafay Ali",
+      email: "rafay@example.com",
+      password: "password123",
+      createdAt: "2026-04-20 08:30 AM",
     },
     {
       id: 2,
-      fullName: "Jane Smith",
-      email: "jane@example.com",
-      timestamp: "2026-04-21 09:15 AM",
-      status: "Active",
+      fullName: "Muhammad Abdullah",
+      email: "abdullah@example.com",
+      password: "password123",
+      createdAt: "2026-04-21 09:15 AM",
     },
     {
       id: 3,
-      fullName: "Rafay Khan",
-      email: "rafay@example.com",
-      timestamp: "2026-04-22 03:45 PM",
-      status: "Active",
+      fullName: "Hammad Khan",
+      email: "hammad@example.com",
+      password: "password123",
+      createdAt: "2026-04-22 03:45 PM",
     },
     {
       id: 4,
       fullName: "Ahmed Ali",
-      email: "ahmed@example.com",
-      timestamp: "2026-04-23 11:20 AM",
-      status: "Pending",
+      email: "ahmad@example.com",
+      password: "password123",
+      createdAt: "2026-04-23 11:20 AM",
     },
   ];
 
