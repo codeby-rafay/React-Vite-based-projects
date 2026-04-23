@@ -4,6 +4,11 @@ const signupSchema = new mongoose.Schema({
   fullName: String,
   email: String,
   password: String,
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+  },
   createdAt: {
     type: Date,
     default: Date.now,

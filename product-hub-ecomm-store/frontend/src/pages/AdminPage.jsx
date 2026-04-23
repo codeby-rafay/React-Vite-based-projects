@@ -1,8 +1,17 @@
 import { useState } from "react";
-import { Users, LogIn, UserPlus, Trash2, Eye } from "lucide-react";
+import { Users, LogIn, UserPlus, Trash2, Eye, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useShop } from "../context/ShopContext";
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");
+  const { logout, currentUser } = useShop();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   const loginData = [
     {
@@ -63,21 +72,30 @@ function AdminPage() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="bg-orange-500 p-3 rounded-lg">
-              <Users className="text-white" size={32} />
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="bg-orange-500 p-3 rounded-lg">
+                <Users className="text-white" size={32} />
+              </div>
+              <div>
+                <h1
+                  className="text-4xl font-bold text-gray-900"
+                  style={{ fontFamily: "Playfair Display, serif" }}
+                >
+                  Admin Dashboard
+                </h1>
+                <p className="text-gray-500 mt-1">
+                  Manage login and signup records
+                </p>
+              </div>
             </div>
-            <div>
-              <h1
-                className="text-4xl font-bold text-gray-900"
-                style={{ fontFamily: "Playfair Display, serif" }}
-              >
-                Admin Dashboard
-              </h1>
-              <p className="text-gray-500 mt-1">
-                Manage login and signup records
-              </p>
-            </div>
+            <button
+              onClick={handleLogout}
+              className="flex items-center cursor-pointer gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors active:scale-95 shadow-md hover:shadow-lg"
+            >
+              <LogOut size={20} />
+              Logout
+            </button>
           </div>
         </div>
 
@@ -121,7 +139,7 @@ function AdminPage() {
           <div className="flex border-b border-gray-200">
             <button
               onClick={() => setActiveTab("login")}
-              className={`flex-1 py-4 px-6 font-semibold flex items-center justify-center gap-2 transition-all ${
+              className={`flex-1 py-4 px-6 cursor-pointer font-semibold flex items-center justify-center gap-2 transition-all ${
                 activeTab === "login"
                   ? "text-orange-600 bg-orange-50 border-b-2 border-orange-500"
                   : "text-gray-600 hover:text-gray-900"
@@ -132,7 +150,7 @@ function AdminPage() {
             </button>
             <button
               onClick={() => setActiveTab("signup")}
-              className={`flex-1 py-4 px-6 font-semibold flex items-center justify-center gap-2 transition-all ${
+              className={`flex-1 py-4 px-6 cursor-pointer font-semibold flex items-center justify-center gap-2 transition-all ${
                 activeTab === "signup"
                   ? "text-orange-600 bg-orange-50 border-b-2 border-orange-500"
                   : "text-gray-600 hover:text-gray-900"
@@ -155,12 +173,6 @@ function AdminPage() {
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                       Timestamp
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                      Status
-                    </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                      IP Address
-                    </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
                       Actions
                     </th>
@@ -179,20 +191,6 @@ function AdminPage() {
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-600">
                         {record.timestamp}
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                            record.status === "Success"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
-                          }`}
-                        >
-                          {record.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
-                        {record.ipAddress}
                       </td>
                       <td className="px-6 py-4 text-sm">
                         <div className="flex items-center justify-center gap-2">
@@ -226,9 +224,6 @@ function AdminPage() {
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                       Signup Date
                     </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                      Status
-                    </th>
                     <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
                       Actions
                     </th>
@@ -250,17 +245,6 @@ function AdminPage() {
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-600">
                         {record.timestamp}
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                            record.status === "Active"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-yellow-100 text-yellow-700"
-                          }`}
-                        >
-                          {record.status}
-                        </span>
                       </td>
                       <td className="px-6 py-4 text-sm">
                         <div className="flex items-center justify-center gap-2">

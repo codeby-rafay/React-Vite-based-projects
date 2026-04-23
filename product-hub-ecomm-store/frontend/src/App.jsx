@@ -48,7 +48,7 @@ function App() {
         </Routes>
       </main>
       {!isAdminRoute && <Footer />}
-      <CartDisplay />
+      {!isAdminRoute && <CartDisplay />}
       <ToastContainer />
     </div>
   );

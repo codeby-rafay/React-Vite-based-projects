@@ -93,16 +93,7 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
-  // Save login data only on first login
-  const existingLoginRecord = await loginModel.findOne({ email: user.email });
-  if (!existingLoginRecord) {
-    await loginModel.create({
-      email: user.email,
-      fullName: user.fullName,
-    });
-  }
-
-  // (get api)
+  // (get api) - Get all login records
   app.get("/api/login", async (req, res) => {
     try {
       const logins = await loginModel.find().sort({ timestamp: -1 });
@@ -115,9 +106,23 @@ app.post("/api/login", async (req, res) => {
     }
   });
 
+  // Save login data only on first login
+  const existingLoginRecord = await loginModel.findOne({ email: user.email });
+  if (!existingLoginRecord) {
+    await loginModel.create({
+      email: user.email,
+      fullName: user.fullName,
+    });
+  }
+
   // login token creation
   const token = jwt.sign(
-    { id: user._id, fullName: user.fullName, email: user.email },
+    {
+      id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      role: user.role,
+    },
     JWT_SECRET,
     { expiresIn: "7d" },
   );
@@ -129,6 +134,7 @@ app.post("/api/login", async (req, res) => {
       id: user._id,
       fullName: user.fullName,
       email: user.email,
+      role: user.role,
     },
   });
 });

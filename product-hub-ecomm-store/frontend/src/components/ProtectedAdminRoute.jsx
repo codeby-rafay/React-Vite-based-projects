@@ -1,13 +1,13 @@
 import { Navigate } from "react-router-dom";
+import { useShop } from "../context/ShopContext";
 
 const ProtectedAdminRoute = ({ children }) => {
-  // Check if user is admin from localStorage
-  const isAdmin = localStorage.getItem("isAdmin") === "true";
-  const token = localStorage.getItem("token");
+  const { currentUser } = useShop();
+  const token = localStorage.getItem("authToken");
 
-  // If user is not authenticated or not an admin, redirect to home
-  if (!isAdmin || !token) {
-    return <Navigate to="/" replace />;
+  // If user is not authenticated or not an admin, redirect to login
+  if (!token || !currentUser || currentUser.role !== "admin") {
+    return <Navigate to="/login" replace />;
   }
 
   // If user is admin, render the admin page

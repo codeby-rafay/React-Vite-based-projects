@@ -66,9 +66,13 @@ function Login() {
 
       setFormData({ email: "", password: "" });
 
-      // Go to home page
+      // If admin, navigate to admin dashboard; otherwise go to home......
       setTimeout(() => {
-        navigate("/");
+        if (data.user.role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
       }, 100);
     } catch (error) {
       toast.error(error.message || "Login failed. Please try again", {
