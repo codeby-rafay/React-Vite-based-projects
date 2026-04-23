@@ -54,7 +54,7 @@ app.post("/api/signup", async (req, res) => {
   }
 });
 
-// (get api) - Get all signup records
+// (get api)
 app.get("/api/signup", async (req, res) => {
   try {
     const signups = await signupModel
@@ -79,7 +79,6 @@ app.post("/api/login", async (req, res) => {
     return res.status(400).json({ message: "Please fill in all fields" });
   }
 
-  // Check in signup collection, not login
   const user = await signupModel.findOne({ email });
   if (!user) {
     return res.status(400).json({
@@ -94,7 +93,7 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
-  // Save login data only on first login (check if login record exists)
+  // Save login data only on first login
   const existingLoginRecord = await loginModel.findOne({ email: user.email });
   if (!existingLoginRecord) {
     await loginModel.create({
@@ -102,6 +101,19 @@ app.post("/api/login", async (req, res) => {
       fullName: user.fullName,
     });
   }
+
+  // (get api)
+  app.get("/api/login", async (req, res) => {
+    try {
+      const logins = await loginModel.find().sort({ timestamp: -1 });
+      res.status(200).json({
+        message: "Login Data fetched successfully",
+        logins,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching login data" });
+    }
+  });
 
   // login token creation
   const token = jwt.sign(
@@ -119,19 +131,6 @@ app.post("/api/login", async (req, res) => {
       email: user.email,
     },
   });
-});
-
-// (get api) - Get all login records
-app.get("/api/login", async (req, res) => {
-  try {
-    const logins = await loginModel.find().sort({ timestamp: -1 });
-    res.status(200).json({
-      message: "Login Data fetched successfully",
-      logins,
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching login data" });
-  }
 });
 
 module.exports = app;
