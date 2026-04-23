@@ -129,7 +129,7 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
             </div>
           </div>
         ) : (
-          // ---- USER IS NOT LOGGED IN: Show Sign In button ----
+          // USER IS NOT LOGGED IN: Show Sign In button
           <Link
             to="/login"
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
