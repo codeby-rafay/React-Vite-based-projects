@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CartDisplay from "./components/CartDisplay";
@@ -12,13 +12,18 @@ import Contact from "./pages/Contact";
 import Saved from "./pages/Saved";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import AdminPage from "./pages/AdminPage";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import NotFound from "./pages/NotFound";
 import { ToastContainer } from "react-toastify";
 
 function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
   return (
     <div className="min-h-screen flex flex-col bg-[#fafaf8]">
-      <Navbar />
+      {!isAdminRoute && <Navbar />}
       <main className="grow">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -31,10 +36,18 @@ function App() {
           <Route path="/saved" element={<Saved />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedAdminRoute>
+                <AdminPage />
+              </ProtectedAdminRoute>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <Footer />
+      {!isAdminRoute && <Footer />}
       <CartDisplay />
       <ToastContainer />
     </div>
