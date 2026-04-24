@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { Users, LogIn, UserPlus, Trash2, Eye, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
@@ -16,7 +17,6 @@ function AdminPage() {
 
   const API_BASE_URL = "http://localhost:5000";
 
-  // Format date to readable format
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString("en-US", {
@@ -29,17 +29,14 @@ function AdminPage() {
     });
   };
 
-  // Fetch login data from API
+  // get login data from API
   useEffect(() => {
     const fetchLoginData = async () => {
       try {
         setLoadingLogin(true);
         setErrorLogin(null);
-        const response = await fetch(`${API_BASE_URL}/api/login`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch login data");
-        }
-        const data = await response.json();
+        const response = await axios.get(`${API_BASE_URL}/api/login`);
+        const data = response.data;
         const formattedData = data.logins.map((record) => ({
           ...record,
           timestamp: formatDate(record.timestamp),
@@ -56,17 +53,14 @@ function AdminPage() {
     fetchLoginData();
   }, []);
 
-  // Fetch signup data from API
+  // get signup data from API
   useEffect(() => {
     const fetchSignupData = async () => {
       try {
         setLoadingSignup(true);
         setErrorSignup(null);
-        const response = await fetch(`${API_BASE_URL}/api/signup`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch signup data");
-        }
-        const data = await response.json();
+        const response = await axios.get(`${API_BASE_URL}/api/signup`);
+        const data = response.data;
         const formattedData = data.signups.map((record) => ({
           ...record,
           createdAt: formatDate(record.createdAt),
