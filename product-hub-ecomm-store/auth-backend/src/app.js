@@ -72,7 +72,7 @@ app.get("/api/signup", async (req, res) => {
 
 // (delete api)
 app.delete("/api/signup/:id", async (req, res) => {
-  constid = req.params.id;
+  const id = req.params.id;
   try {
     const deletedUser = await signupModel.findOneAndDelete({ _id: id });
     if (!deletedUser) {
@@ -107,33 +107,6 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
-  // (get api) - Get all login records
-  app.get("/api/login", async (req, res) => {
-    try {
-      const logins = await loginModel.find().sort({ timestamp: -1 });
-      res.status(200).json({
-        message: "Login Data fetched successfully",
-        logins,
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Error fetching login data" });
-    }
-  });
-
-  // (delete api)
-  app.delete("/api/login/:id", async (req, res) => {
-    const id = req.params.id;
-    try {
-      const deletedLogin = await loginModel.findOneAndDelete({ _id: id });
-      if (!deletedLogin) {
-        return res.status(404).json({ message: "Login record not found" });
-      }
-      res.status(200).json({ message: "Login record deleted successfully" });
-    } catch (error) {
-      res.status(500).json({ message: "Error deleting login record" });
-    }
-  });
-
   // Save login data on every login
   await loginModel.create({
     email: user.email,
@@ -162,6 +135,33 @@ app.post("/api/login", async (req, res) => {
       role: user.role,
     },
   });
+});
+
+// (get api)
+app.get("/api/login", async (req, res) => {
+  try {
+    const logins = await loginModel.find().sort({ timestamp: -1 });
+    res.status(200).json({
+      message: "Login Data fetched successfully",
+      logins,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching login data" });
+  }
+});
+
+// (delete api)
+app.delete("/api/login/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const deletedLogin = await loginModel.findOneAndDelete({ _id: id });
+    if (!deletedLogin) {
+      return res.status(404).json({ message: "Login record not found" });
+    }
+    res.status(200).json({ message: "Login record deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting login record" });
+  }
 });
 
 module.exports = app;
