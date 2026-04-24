@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Users, LogIn, UserPlus, Trash2, Eye, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
@@ -7,65 +7,86 @@ function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");
   const { logout, currentUser } = useShop();
   const navigate = useNavigate();
+  const [loginData, setLoginData] = useState([]);
+  const [signupData, setSignupData] = useState([]);
+  const [loadingLogin, setLoadingLogin] = useState(false);
+  const [loadingSignup, setLoadingSignup] = useState(false);
+  const [errorLogin, setErrorLogin] = useState(null);
+  const [errorSignup, setErrorSignup] = useState(null);
+
+  const API_BASE_URL = "http://localhost:5000";
+
+  // Format date to readable format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  };
+
+  // Fetch login data from API
+  useEffect(() => {
+    const fetchLoginData = async () => {
+      try {
+        setLoadingLogin(true);
+        setErrorLogin(null);
+        const response = await fetch(`${API_BASE_URL}/api/login`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch login data");
+        }
+        const data = await response.json();
+        const formattedData = data.logins.map((record) => ({
+          ...record,
+          timestamp: formatDate(record.timestamp),
+        }));
+        setLoginData(formattedData);
+      } catch (error) {
+        console.error("Error fetching login data:", error);
+        setErrorLogin(error.message);
+      } finally {
+        setLoadingLogin(false);
+      }
+    };
+
+    fetchLoginData();
+  }, []);
+
+  // Fetch signup data from API
+  useEffect(() => {
+    const fetchSignupData = async () => {
+      try {
+        setLoadingSignup(true);
+        setErrorSignup(null);
+        const response = await fetch(`${API_BASE_URL}/api/signup`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch signup data");
+        }
+        const data = await response.json();
+        const formattedData = data.signups.map((record) => ({
+          ...record,
+          createdAt: formatDate(record.createdAt),
+        }));
+        setSignupData(formattedData);
+      } catch (error) {
+        console.error("Error fetching signup data:", error);
+        setErrorSignup(error.message);
+      } finally {
+        setLoadingSignup(false);
+      }
+    };
+
+    fetchSignupData();
+  }, []);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
-
-  const loginData = [
-    {
-      id: 1,
-      email: "rafay@example.com",
-      timestamp: "2026-04-23 10:30 AM",
-    },
-    {
-      id: 2,
-      email: "abdullah@example.com",
-      timestamp: "2026-04-23 11:45 AM",
-    },
-    {
-      id: 3,
-      email: "hammad@example.com",
-      timestamp: "2026-04-23 12:00 PM",
-    },
-    {
-      id: 4,
-      email: "ahmad@example.com",
-      timestamp: "2026-04-23 02:15 PM",
-    },
-  ];
-
-  const signupData = [
-    {
-      id: 1,
-      fullName: "Rafay Ali",
-      email: "rafay@example.com",
-      password: "password123",
-      createdAt: "2026-04-20 08:30 AM",
-    },
-    {
-      id: 2,
-      fullName: "Muhammad Abdullah",
-      email: "abdullah@example.com",
-      password: "password123",
-      createdAt: "2026-04-21 09:15 AM",
-    },
-    {
-      id: 3,
-      fullName: "Hammad Khan",
-      email: "hammad@example.com",
-      password: "password123",
-      createdAt: "2026-04-22 03:45 PM",
-    },
-    {
-      id: 4,
-      fullName: "Ahmed Ali",
-      email: "ahmad@example.com",
-      password: "password123",
-      createdAt: "2026-04-23 11:20 AM",
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 py-12 px-4">
@@ -108,7 +129,7 @@ function AdminPage() {
                   Total Logins
                 </p>
                 <p className="text-3xl font-bold text-gray-900 mt-2">
-                  {loginData.length}
+                  {loadingLogin ? "..." : loginData.length}
                 </p>
               </div>
               <div className="bg-blue-100 p-4 rounded-lg">
@@ -124,7 +145,7 @@ function AdminPage() {
                   Total Signups
                 </p>
                 <p className="text-3xl font-bold text-gray-900 mt-2">
-                  {signupData.length}
+                  {loadingSignup ? "..." : signupData.length}
                 </p>
               </div>
               <div className="bg-green-100 p-4 rounded-lg">
@@ -164,112 +185,133 @@ function AdminPage() {
           {/* Login Records Table */}
           {activeTab === "login" && (
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                      Email
-                    </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                      Timestamp
-                    </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {loginData.map((record, index) => (
-                    <tr
-                      key={record.id}
-                      className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                      }`}
-                    >
-                      <td className="px-6 py-4 text-sm text-gray-900">
-                        {record.email}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
-                        {record.timestamp}
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <div className="flex items-center justify-center gap-2">
-                          <button className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
-                            <Eye size={18} className="text-blue-600" />
-                          </button>
-                          <button className="p-2 hover:bg-red-100 rounded-lg transition-colors">
-                            <Trash2 size={18} className="text-red-600" />
-                          </button>
-                        </div>
-                      </td>
+              {loadingLogin ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-500">Loading login records...</p>
+                </div>
+              ) : errorLogin ? (
+                <div className="text-center py-12">
+                  <p className="text-red-500">Error: {errorLogin}</p>
+                </div>
+              ) : loginData.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-500">No login records found</p>
+                </div>
+              ) : (
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                        Email
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                        Timestamp
+                      </th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
+                        Actions
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {loginData.map((record, index) => (
+                      <tr
+                        key={record._id}
+                        className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
+                          index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                        }`}
+                      >
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          {record.email}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          {record.timestamp}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <div className="flex items-center justify-center gap-2">
+                            <button className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
+                              <Eye size={18} className="text-blue-600" />
+                            </button>
+                            <button className="p-2 hover:bg-red-100 rounded-lg transition-colors">
+                              <Trash2 size={18} className="text-red-600" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           )}
 
           {/* Signup Records Table */}
           {activeTab === "signup" && (
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                      Full Name
-                    </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                      Email
-                    </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                      Signup Date
-                    </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {signupData.map((record, index) => (
-                    <tr
-                      key={record.id}
-                      className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                      }`}
-                    >
-                      <td className="px-6 py-4 text-sm text-gray-900 font-medium">
-                        {record.fullName}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
-                        {record.email}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
-                        {record.timestamp}
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <div className="flex items-center justify-center gap-2">
-                          <button className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
-                            <Eye size={18} className="text-blue-600" />
-                          </button>
-                          <button className="p-2 hover:bg-red-100 rounded-lg transition-colors">
-                            <Trash2 size={18} className="text-red-600" />
-                          </button>
-                        </div>
-                      </td>
+              {loadingSignup ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-500">Loading signup records...</p>
+                </div>
+              ) : errorSignup ? (
+                <div className="text-center py-12">
+                  <p className="text-red-500">Error: {errorSignup}</p>
+                </div>
+              ) : signupData.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-500">No signup records found</p>
+                </div>
+              ) : (
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                        Full Name
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                        Email
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                        Signup Date
+                      </th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
+                        Actions
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {signupData.map((record, index) => (
+                      <tr
+                        key={record._id}
+                        className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
+                          index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                        }`}
+                      >
+                        <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                          {record.fullName}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          {record.email}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          {record.createdAt}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          <div className="flex items-center justify-center gap-2">
+                            <button className="p-2 hover:bg-blue-100 rounded-lg transition-colors">
+                              <Eye size={18} className="text-blue-600" />
+                            </button>
+                            <button className="p-2 hover:bg-red-100 rounded-lg transition-colors">
+                              <Trash2 size={18} className="text-red-600" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           )}
         </div>
-
-        {/* Empty State Message */}
-        {(activeTab === "login" ? loginData : signupData).length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No records found</p>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -93,27 +93,11 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
-  // (get api) - Get all login records
-  app.get("/api/login", async (req, res) => {
-    try {
-      const logins = await loginModel.find().sort({ timestamp: -1 });
-      res.status(200).json({
-        message: "Login Data fetched successfully",
-        logins,
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Error fetching login data" });
-    }
+  // Save login data on every login
+  await loginModel.create({
+    email: user.email,
+    fullName: user.fullName,
   });
-
-  // Save login data only on first login
-  const existingLoginRecord = await loginModel.findOne({ email: user.email });
-  if (!existingLoginRecord) {
-    await loginModel.create({
-      email: user.email,
-      fullName: user.fullName,
-    });
-  }
 
   // login token creation
   const token = jwt.sign(
@@ -137,6 +121,19 @@ app.post("/api/login", async (req, res) => {
       role: user.role,
     },
   });
+});
+
+// (get api) - Get all login records
+app.get("/api/login", async (req, res) => {
+  try {
+    const logins = await loginModel.find().sort({ timestamp: -1 });
+    res.status(200).json({
+      message: "Login Data fetched successfully",
+      logins,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching login data" });
+  }
 });
 
 module.exports = app;
