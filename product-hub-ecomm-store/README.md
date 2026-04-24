@@ -5,6 +5,8 @@ A modern, full-stack e-commerce application built with React and Vite frontend, 
 ## Features
 
 - **User Authentication**: Secure login and signup with JWT tokens and password hashing
+- **Role-Based Access Control**: Admin and user roles with protected admin routes
+- **Admin Dashboard**: Comprehensive admin panel for managing users and viewing activity
 - **User-Specific Storage**: Each user's cart and saved items are isolated and persist across sessions
 - **Product Listing**: Display all available products with detailed information
 - **Product Search**: Search for products in real-time
@@ -16,7 +18,7 @@ A modern, full-stack e-commerce application built with React and Vite frontend, 
 - **Responsive Design**: Mobile-friendly interface using Tailwind CSS
 - **Fast Performance**: Built with Vite for optimal development and production performance
 - **Modern UI**: Clean and intuitive user interface with icons from Lucide React
-- **Navigation**: Easy navigation between pages (Home, Products, Categories, About, Contact, Saved, Login, Signup)
+- **Navigation**: Easy navigation between pages (Home, Products, Categories, About, Contact, Saved, Login, Signup, Admin Dashboard)
 
 ## Tech Stack
 
@@ -35,10 +37,12 @@ A modern, full-stack e-commerce application built with React and Vite frontend, 
 **Backend:**
 - **Runtime**: Node.js
 - **Framework**: Express.js
+- **Database**: MongoDB with Mongoose ODM
 - **Authentication**: JWT (JSON Web Tokens)
 - **Password Security**: bcryptjs for password hashing
 - **CORS**: Enabled for frontend communication
-- **Database**: In-memory array (can be upgraded to MongoDB/PostgreSQL)
+- **Role-Based Access**: User roles (admin/user) for authorization
+- **Admin Features**: Login history tracking and user management
 
 ## State Management
 
@@ -48,7 +52,7 @@ The application uses **React Context API** for global state management through t
 // Available context values
 {
   // Authentication
-  currentUser,         // Currently logged-in user object (null if not logged in)
+  currentUser,         // Currently logged-in user object with role (null if not logged in)
   login,               // Function to login user (saves user & token)
   logout,              // Function to logout user
   
@@ -104,6 +108,15 @@ Data is persisted to localStorage automatically whenever cart or saved items cha
 - Saved items persist across sessions for logged-in users
 - Your saved items are only visible to you
 
+### Admin Dashboard
+- **Admin Access**: Only users with admin role can access the admin dashboard
+- **Protected Routes**: Admin dashboard is protected with role-based access control
+- **Login History**: View all user login records with timestamps and email addresses
+- **Signup Management**: Track all user registrations with creation dates and account information
+- **User Management**: View and manage registered users and their information
+- **Admin Navigation**: Dedicated admin interface separate from the main user interface
+- **Secure Access**: JWT tokens verify admin authorization before granting access
+
 ## Project Structure
 
 ```
@@ -117,6 +130,7 @@ product-hub-ecomm-store/
 │       │   ├── ProductCard.jsx            # Reusable product card component
 │       │   ├── SearchBar.jsx              # Search functionality
 │       │   ├── LoadingError.jsx           # Loading and error states
+│       │   ├── ProtectedAdminRoute.jsx    # Admin route protection component
 │       │   ├── NavbarComponents/          # Navbar sub-components
 │       │   ├── CartPanelComponents/       # Cart panel UI components
 │       │   ├── HomePageComponents/        # Home page specific components
@@ -124,7 +138,7 @@ product-hub-ecomm-store/
 │       │   ├── CategoriesCardComponents/  # Category card components
 │       │   └── SingleProductPageComponents/ # Single product detail components
 │       ├── context/
-│       │   └── ShopContext.jsx            # Global state management (auth + cart + saved items)
+│       │   └── ShopContext.jsx            # Global state management (auth + cart + saved items + role)
 │       ├── pages/
 │       │   ├── Home.jsx                   # Home page
 │       │   ├── Products.jsx               # All products page
@@ -133,6 +147,7 @@ product-hub-ecomm-store/
 │       │   ├── CategoryProducts.jsx       # Products by category
 │       │   ├── Login.jsx                  # Login page
 │       │   ├── Signup.jsx                 # Signup page
+│       │   ├── AdminPage.jsx              # Admin dashboard page
 │       │   ├── About.jsx                  # About page
 │       │   ├── Contact.jsx                # Contact page
 │       │   ├── Saved.jsx                  # Saved items page
@@ -145,8 +160,14 @@ product-hub-ecomm-store/
 │       └── index.css                      # Global styles
 │
 └── auth-backend/                   # Express.js authentication server
-    ├── server.js                   # Main server file with signup/login routes
-    └── package.json                # Backend dependencies
+    ├── server.js                   # Main server file
+    ├── package.json                # Backend dependencies
+    ├── src/
+    │   ├── app.js                  # Express app with signup/login routes
+    │   ├── db/                     # Database configuration
+    │   └── models/
+    │       ├── signup.model.js     # User schema with role field
+    │       └── login.model.js      # Login history schema
 ```
 
 ## API Integration
@@ -243,10 +264,13 @@ npm run lint
 - `/saved` - Saved/favorited items page (user-specific)
 - `/about` - About page
 - `/contact` - Contact page
+- `/admin/dashboard` - Admin dashboard (admin-only, protected route)
 
 **Backend API Endpoints:**
 - `POST /api/signup` - Register new user
 - `POST /api/login` - Login user and receive JWT token
+- `GET /api/signup` - Fetch all signup records (admin)
+- `GET /api/login` - Fetch all login records (admin)
 
 ## Features in Detail
 
@@ -257,6 +281,17 @@ The application includes a complete authentication system with:
 - **Password Security**: Passwords are hashed using bcryptjs before storage
 - **Session Management**: Tokens stored in localStorage for persistent sessions
 - **User Isolation**: Each user's data is completely isolated from others
+- **Role-Based Access**: Admin and user roles for authorization
+
+### Admin Dashboard
+The admin dashboard is a powerful management tool with:
+- **Admin-Only Access**: Protected route that only users with admin role can access
+- **Role-Based Authentication**: JWT tokens verify admin authorization
+- **Login History**: View all user login records with timestamps and email addresses
+- **Signup Management**: Track all user registrations with full details and creation dates
+- **User Management**: View comprehensive information about all registered users
+- **Data Overview**: Get insights into user activity and account creation patterns
+- **Secure Interface**: Separate admin interface isolated from regular user features
 
 ### Product Search
 The search bar allows users to find products quickly by typing keywords. Results are displayed in real-time.
@@ -302,8 +337,10 @@ This application works on all modern browsers that support ES6+.
 - **User authentication and accounts** (Implemented)
 - **User-specific cart and saved items** (Implemented)
 - **Product auto-scroll on page load** (Implemented)
-- Product filters and advanced sorting options
-- Product reviews submission feature
+- **Admin dashboard with role-based access** (Implemented)
+- **Login and signup history tracking** (Implemented)
+- Advanced product filters and sorting options
+- Product reviews and ratings submission
 - Checkout and payment integration (Stripe/PayPal)
 - Order history and tracking
 - Product recommendations based on browsing history
@@ -311,10 +348,12 @@ This application works on all modern browsers that support ES6+.
 - Multi-language support
 - Email verification during signup
 - Password reset functionality
-- User profile management
+- User profile management and editing
 - Wishlist sharing with other users
 - Product comparison feature
-- Admin dashboard for product management
+- Enhanced admin dashboard with analytics and reports
+- Inventory management for products
+- Discount and coupon management system
 
 ## License
 
