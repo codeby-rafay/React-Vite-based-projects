@@ -196,6 +196,18 @@ export function ShopProvider({ children }) {
     });
   };
 
+  const DeleteRecordToast = () => {
+    toast.error("Record deleted successfully", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      transition: Slide,
+    });
+  };
+
   return (
     <ShopContext.Provider
       value={{
@@ -218,6 +230,7 @@ export function ShopProvider({ children }) {
         unsaveToast,
         FillAllFieldsToast,
         EnterValidEmailToast,
+        DeleteRecordToast,
       }}
     >
       {children}

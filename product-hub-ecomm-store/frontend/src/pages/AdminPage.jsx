@@ -6,7 +6,7 @@ import { useShop } from "../context/ShopContext";
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");
-  const { logout, currentUser } = useShop();
+  const { logout, currentUser, DeleteRecordToast } = useShop();
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState([]);
   const [signupData, setSignupData] = useState([]);
@@ -92,6 +92,7 @@ function AdminPage() {
       } catch (error) {
         console.error("Error deleting login record:", error);
       }
+      DeleteRecordToast();
     }
   };
 
@@ -110,6 +111,7 @@ function AdminPage() {
       } catch (error) {
         console.error("Error deleting signup record:", error);
       }
+      DeleteRecordToast();
     }
   };
 
