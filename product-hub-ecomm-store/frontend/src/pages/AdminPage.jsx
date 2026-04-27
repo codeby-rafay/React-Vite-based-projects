@@ -29,7 +29,7 @@ function AdminPage() {
     });
   };
 
-  // get login data from API
+  // get login data
   useEffect(() => {
     const fetchLoginData = async () => {
       try {
@@ -53,7 +53,7 @@ function AdminPage() {
     fetchLoginData();
   }, []);
 
-  // get signup data from API
+  // get signup data
   useEffect(() => {
     const fetchSignupData = async () => {
       try {
