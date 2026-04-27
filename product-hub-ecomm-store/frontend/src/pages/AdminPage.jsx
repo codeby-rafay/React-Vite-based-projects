@@ -78,34 +78,38 @@ function AdminPage() {
   }, []);
 
   const handleloginDelete = async (id) => {
-    try {
-      await axios.delete(`${API_BASE_URL}/api/login/${id}`);
-      // Refresh the login data after deletion
-      const response = await axios.get(`${API_BASE_URL}/api/login`);
-      const data = response.data;
-      const formattedData = data.logins.map((record) => ({
-        ...record,
-        timestamp: formatDate(record.timestamp),
-      }));
-      setLoginData(formattedData);
-    } catch (error) {
-      console.error("Error deleting login record:", error);
+    if (window.confirm("Are you sure you want to delete this Record?")) {
+      try {
+        await axios.delete(`${API_BASE_URL}/api/login/${id}`);
+        // Refresh the login data after deletion
+        const response = await axios.get(`${API_BASE_URL}/api/login`);
+        const data = response.data;
+        const formattedData = data.logins.map((record) => ({
+          ...record,
+          timestamp: formatDate(record.timestamp),
+        }));
+        setLoginData(formattedData);
+      } catch (error) {
+        console.error("Error deleting login record:", error);
+      }
     }
   };
 
   const handleSignupDelete = async (id) => {
-    try {
-      await axios.delete(`${API_BASE_URL}/api/signup/${id}`);
-      // Refresh the signup data after deletion
-      const response = await axios.get(`${API_BASE_URL}/api/signup`);
-      const data = response.data;
-      const formattedData = data.signups.map((record) => ({
-        ...record,
-        createdAt: formatDate(record.createdAt),
-      }));
-      setSignupData(formattedData);
-    } catch (error) {
-      console.error("Error deleting signup record:", error);
+    if (window.confirm("Are you sure you want to delete this Record?")) {
+      try {
+        await axios.delete(`${API_BASE_URL}/api/signup/${id}`);
+        // Refresh the signup data after deletion
+        const response = await axios.get(`${API_BASE_URL}/api/signup`);
+        const data = response.data;
+        const formattedData = data.signups.map((record) => ({
+          ...record,
+          createdAt: formatDate(record.createdAt),
+        }));
+        setSignupData(formattedData);
+      } catch (error) {
+        console.error("Error deleting signup record:", error);
+      }
     }
   };
 
@@ -254,8 +258,11 @@ function AdminPage() {
                         </td>
                         <td className="px-6 py-4 text-sm">
                           <div className="flex items-center justify-center gap-2">
-                            <button onClick={() => handleloginDelete(record._id)} className="p-2 hover:bg-red-100 rounded-lg transition-colors">
-                              <Trash2 size={18} className="text-red-600" />
+                            <button
+                              onClick={() => handleloginDelete(record._id)}
+                              className="p-2 hover:bg-red-100 rounded-lg transition-colors"
+                            >
+                              <Trash2 size={18} className="text-red-600 cursor-pointer" />
                             </button>
                           </div>
                         </td>
@@ -319,8 +326,11 @@ function AdminPage() {
                         </td>
                         <td className="px-6 py-4 text-sm">
                           <div className="flex items-center justify-center gap-2">
-                            <button onClick={() => handleSignupDelete(record._id)} className="p-2 hover:bg-red-100 rounded-lg transition-colors">
-                              <Trash2 size={18} className="text-red-600" />
+                            <button
+                              onClick={() => handleSignupDelete(record._id)}
+                              className="p-2 hover:bg-red-100 rounded-lg transition-colors"
+                            >
+                              <Trash2 size={18} className="text-red-600 cursor-pointer" />
                             </button>
                           </div>
                         </td>
