@@ -16,7 +16,7 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
       clearTimeout(timeoutRef.current);
     }
 
-    if (query.trim().length < 2) {
+    if (query.trim().length < 1) {
       setSuggestions([]);
       setShowSuggestions(false);
       return;
@@ -27,8 +27,8 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
     timeoutRef.current = setTimeout(async () => {
       try {
         const data = await searchProducts(query);
-        // Get first 5 suggestions
-        setSuggestions(data.products?.slice(0, 5) || []);
+        // Get first 10 suggestions
+        setSuggestions(data.products?.slice(0, 10) || []);
         setShowSuggestions(true);
       } catch (error) {
         console.error("Error fetching suggestions:", error);
@@ -36,7 +36,7 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
       } finally {
         setLoading(false);
       }
-    }, 300); // 300ms debounce
+    }, 30); // 30ms debounce
   }, [query]);
 
   // Close dropdown when clicking outside
@@ -96,7 +96,7 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => query.trim().length >= 2 && setShowSuggestions(true)}
+          onFocus={() => query.trim().length >= 1 && setShowSuggestions(true)}
           placeholder={placeholder}
           className="w-full pl-9 pr-9 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent bg-white"
         />
@@ -106,7 +106,7 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
           <button
             type="button"
             onClick={handleClear}
-            className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
+            className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
           >
             <svg
               className="w-4 h-4"
@@ -125,7 +125,7 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
         )}
 
         {/* Suggestions Dropdown */}
-        {showSuggestions && query.trim().length >= 2 && (
+        {showSuggestions && query.trim().length >= 1 && (
           <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-80 overflow-y-auto">
             {loading ? (
               <div className="p-3 text-center text-gray-500 text-sm">

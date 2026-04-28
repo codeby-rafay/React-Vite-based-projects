@@ -11,22 +11,20 @@ function Products() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [totalProducts, setTotalProducts] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0); // skip value
+  const [currentPage, setCurrentPage] = useState(0);
   const LIMIT = 12;
 
-  // Fetch all products OR search results
-  const fetchProducts = async (query = "", skip = 0) => {
+  // Fetch products
+  const fetchProducts = async (query = "", page = 0) => {
     try {
       setLoading(true);
       setError(null);
 
       let data;
       if (query) {
-        // Use search API
         data = await searchProducts(query);
       } else {
-        // Use get all products API
-        data = await getAllProducts(LIMIT, skip);
+        data = await getAllProducts(LIMIT, page * LIMIT);
       }
 
       setProducts(data.products);
@@ -38,16 +36,15 @@ function Products() {
     }
   };
 
-  // Load products on first render
+  // Load products on page change
   useEffect(() => {
-    fetchProducts("", currentPage * LIMIT);
-  }, [currentPage]);
+    fetchProducts(searchQuery, currentPage);
+  }, [currentPage, searchQuery]);
 
   // Handle search
   const handleSearch = (query) => {
     setSearchQuery(query);
     setCurrentPage(0);
-    fetchProducts(query, 0);
   };
 
   const totalPages = Math.ceil(totalProducts / LIMIT);
@@ -75,14 +72,6 @@ function Products() {
           onSearch={handleSearch}
           placeholder="Search products by name..."
         />
-        {searchQuery && (
-          <button
-            onClick={() => handleSearch("")}
-            className="text-sm text-gray-500 hover:text-orange-500 cursor-pointer"
-          >
-            Clear search
-          </button>
-        )}
       </div>
 
       {/* Content */}
