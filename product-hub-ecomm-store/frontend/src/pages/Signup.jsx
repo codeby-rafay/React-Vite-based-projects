@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { toast, Slide } from "react-toastify";
+import axios from "axios";
 import { useShop } from "../context/ShopContext";
 
 function Signup() {
@@ -117,21 +118,13 @@ function Signup() {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:5000/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: formData.fullName.trim(),
-          email: formData.email,
-          password: formData.password,
-        }),
+      const response = await axios.post("http://localhost:5000/api/signup", {
+        fullName: formData.fullName.trim(),
+        email: formData.email,
+        password: formData.password,
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Signup failed");
-      }
+      const data = response.data;
 
       // signup successful
       toast.success("Account created successfully! Please login.", {
@@ -157,7 +150,9 @@ function Signup() {
         navigate("/login");
       }, 1000);
     } catch (error) {
-      toast.error(error.message || "Signup failed. Please try again.", {
+      toast.error(
+        error.response?.data?.message || error.message || "Signup failed. Please try again.",
+        {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -175,18 +170,12 @@ function Signup() {
     try {
       const token = response.credential;
 
-      // send token to backend
-      const res = await fetch("http://localhost:5000/api/google-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
+      // send token to backend using axios
+      const res = await axios.post("http://localhost:5000/api/google-login", {
+        token,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Google login failed");
-      }
+      const data = res.data;
 
       // Save user info using our login function from context
       login(data.user, data.token);
@@ -199,7 +188,9 @@ function Signup() {
         navigate("/");
       }, 100);
     } catch (error) {
-      toast.error(error.message || "Google login failed", {
+      toast.error(
+        error.response?.data?.message || error.message || "Google login failed",
+        {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { toast, Slide } from "react-toastify";
+import axios from "axios";
 import { useShop } from "../context/ShopContext";
 
 function Login() {
@@ -52,20 +53,12 @@ function Login() {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:5000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
+      const response = await axios.post("http://localhost:5000/api/login", {
+        email: formData.email,
+        password: formData.password,
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
+      const data = response.data;
 
       // login successful
       // Save user info using our login function from context
@@ -76,7 +69,6 @@ function Login() {
 
       setFormData({ email: "", password: "" });
 
-      // If admin, navigate to admin dashboard; otherwise go to home......
       setTimeout(() => {
         window.scrollTo(0, 0);
         if (data.user.role === "admin") {
@@ -86,15 +78,18 @@ function Login() {
         }
       }, 100);
     } catch (error) {
-      toast.error(error.message || "Login failed. Please try again", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      toast.error(
+        error.response?.data?.message || error.message || "Login failed. Please try again",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        }
+      );
     } finally {
       setLoading(false);
     }
@@ -104,18 +99,12 @@ function Login() {
     try {
       const token = response.credential;
 
-      // send token to backend
-      const res = await fetch("http://localhost:5000/api/google-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
+      // send token to backend using axios
+      const res = await axios.post("http://localhost:5000/api/google-login", {
+        token,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Google login failed");
-      }
+      const data = res.data;
 
       // Save user info using our login function from context
       login(data.user, data.token);
@@ -128,15 +117,18 @@ function Login() {
         navigate("/");
       }, 100);
     } catch (error) {
-      toast.error(error.message || "Google login failed", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      toast.error(
+        error.response?.data?.message || error.message || "Google login failed",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        }
+      );
     }
   };
 
@@ -252,7 +244,7 @@ function Login() {
           <div className="space-y-3">
             <div
               id="googleBtn"
-              className="w-full flex justify-center rounded-4xl"
+              className="w-full flex justify-center"
             ></div>
           </div>
         </div>
