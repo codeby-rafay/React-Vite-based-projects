@@ -10,7 +10,8 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { login, FillAllFieldsToast, EnterValidEmailToast } = useShop();
+  const { login, FillAllFieldsToast, EnterValidEmailToast, Welcometoast } =
+    useShop();
 
   // Initialize Google Sign-In
   useEffect(() => {
@@ -71,15 +72,7 @@ function Login() {
       // This saves the user to localStorage so they stay logged in
       login(data.user, data.token);
 
-      toast.success(`Welcome, ${data.user.fullName}!`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      Welcometoast(data.user);
 
       setFormData({ email: "", password: "" });
 
@@ -127,15 +120,7 @@ function Login() {
       // Save user info using our login function from context
       login(data.user, data.token);
 
-      toast.success(`Welcome, ${data.user.fullName}!`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      Welcometoast(data.user);
 
       // Navigate to home
       setTimeout(() => {
@@ -265,7 +250,10 @@ function Login() {
 
           {/* Google Button */}
           <div className="space-y-3">
-            <div id="googleBtn" className="w-full flex justify-center rounded-4xl"></div>
+            <div
+              id="googleBtn"
+              className="w-full flex justify-center rounded-4xl"
+            ></div>
           </div>
         </div>
 

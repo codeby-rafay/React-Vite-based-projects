@@ -208,6 +208,18 @@ export function ShopProvider({ children }) {
     });
   };
 
+  const Welcometoast = (user) => {
+    toast.success(`Welcome, ${user.fullName}!`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      transition: Slide,
+    });
+  };
+
   return (
     <ShopContext.Provider
       value={{
@@ -231,6 +243,7 @@ export function ShopProvider({ children }) {
         FillAllFieldsToast,
         EnterValidEmailToast,
         DeleteRecordToast,
+        Welcometoast,
       }}
     >
       {children}

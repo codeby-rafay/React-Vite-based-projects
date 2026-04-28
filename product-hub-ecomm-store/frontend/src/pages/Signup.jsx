@@ -16,7 +16,7 @@ function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { FillAllFieldsToast, EnterValidEmailToast, login } = useShop();
+  const { FillAllFieldsToast, EnterValidEmailToast, Welcometoast, login } = useShop();
 
   // Initialize Google Sign-In
   useEffect(() => {
@@ -191,15 +191,7 @@ function Signup() {
       // Save user info using our login function from context
       login(data.user, data.token);
 
-      toast.success(`Welcome, ${data.user.fullName}!`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      Welcometoast(data.user);
 
       // Navigate to home
       setTimeout(() => {
