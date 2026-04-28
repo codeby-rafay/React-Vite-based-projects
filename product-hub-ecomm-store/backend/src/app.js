@@ -18,7 +18,7 @@ app.use(
 
 app.use(express.json());
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID );
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = "my_super_secret_key_123";
 
 // Google OAuth route (post api)
@@ -34,9 +34,11 @@ app.post("/api/google-login", async (req, res) => {
 
     const payload = ticket.getPayload();
 
-    const { sub, name, email, picture } = payload;
+    const { sub, name, email } = payload;
 
-    let user = await signupModel.findOne({ email });
+    let user = await signupModel.findOne({
+      $or: [{ email }, { googleId: sub }],
+    });
 
     if (!user) {
       user = await signupModel.create({
@@ -51,7 +53,7 @@ app.post("/api/google-login", async (req, res) => {
         user = await signupModel.findOneAndUpdate(
           { email },
           { googleId: sub },
-          { new: true }
+          { new: true },
         );
       }
     }
@@ -67,7 +69,7 @@ app.post("/api/google-login", async (req, res) => {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
-        role: user.role,
+        role: user.role || "user",
       },
       JWT_SECRET,
       { expiresIn: "7d" },
@@ -80,7 +82,7 @@ app.post("/api/google-login", async (req, res) => {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
-        role: user.role,
+        role: user.role || "user",
       },
     });
   } catch (error) {
@@ -173,7 +175,8 @@ app.post("/api/login", async (req, res) => {
   // Check if user only has Google login (no password set)
   if (!user.password) {
     return res.status(400).json({
-      message: "This account was created with Google Sign-In. Please use Google to login.",
+      message:
+        "This account was created with Google Sign-In. Please use Google to login.",
     });
   }
 
