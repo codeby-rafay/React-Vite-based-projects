@@ -2,8 +2,10 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+const OAuth2Client = require("google-auth-library").OAuth2Client;
 const signupModel = require("./models/signup.model");
 const loginModel = require("./models/login.model");
+const googleModel = require("./models/google.models");
 
 const app = express();
 
@@ -17,7 +19,62 @@ app.use(
 
 app.use(express.json());
 
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID );
 const JWT_SECRET = "my_super_secret_key_123";
+
+// Google OAuth route (post api)
+app.post("/api/google-login", async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    // verify token from Google
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: client._clientId,
+    });
+
+    const payload = ticket.getPayload();
+
+    const { sub, name, email, picture } = payload;
+
+    // check MongoDB
+    let user = await googleModel.findOne({ email });
+
+    if (!user) {
+      user = await googleModel.create({
+        fullName: name,
+        email,
+        googleId: sub,
+      });
+    }
+
+    // Create JWT token
+    const jwtToken = jwt.sign(
+      {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        role: "user",
+      },
+      JWT_SECRET,
+      { expiresIn: "7d" },
+    );
+
+    res.json({
+      message: "Google login successful!",
+      token: jwtToken,
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        role: "user",
+      },
+    });
+  } catch (error) {
+    console.error("Google login error:", error);
+    res.status(500).json({ message: "Error logging in with Google" });
+  }
+});
 
 // route 1: SIGNUP
 // (post api)

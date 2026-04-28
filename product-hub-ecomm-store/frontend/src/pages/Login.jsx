@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { toast, Slide } from "react-toastify";
@@ -11,6 +11,23 @@ function Login() {
   const navigate = useNavigate();
 
   const { login, FillAllFieldsToast, EnterValidEmailToast } = useShop();
+
+  // Initialize Google Sign-In
+  useEffect(() => {
+    /* global google */
+    if (window.google) {
+      google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        callback: handleGoogleResponse,
+      });
+
+      google.accounts.id.renderButton(document.getElementById("googleBtn"), {
+        theme: "outline",
+        size: "large",
+        width: "100%",
+      });
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,6 +85,7 @@ function Login() {
 
       // If admin, navigate to admin dashboard; otherwise go to home......
       setTimeout(() => {
+        window.scrollTo(0, 0);
         if (data.user.role === "admin") {
           navigate("/admin/dashboard");
         } else {
@@ -86,6 +104,54 @@ function Login() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleResponse = async (response) => {
+    try {
+      const token = response.credential;
+
+      // send token to backend
+      const res = await fetch("http://localhost:5000/api/google-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Google login failed");
+      }
+
+      // Save user info using our login function from context
+      login(data.user, data.token);
+
+      toast.success(`Welcome, ${data.user.fullName}!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
+
+      // Navigate to home
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        navigate("/");
+      }, 100);
+    } catch (error) {
+      toast.error(error.message || "Google login failed", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
     }
   };
 
@@ -199,17 +265,7 @@ function Login() {
 
           {/* Google Button */}
           <div className="space-y-3">
-            <button
-              type="button"
-              className="w-full border cursor-pointer border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 text-gray-700 py-2.5 px-4 rounded-xl font-medium text-sm transition-colors flex items-center justify-center gap-2"
-            >
-              <img
-                src="https://www.svgrepo.com/show/475656/google-color.svg"
-                alt="Google"
-                className="w-5 h-5"
-              />
-              Continue with Google
-            </button>
+            <div id="googleBtn" className="w-full flex justify-center"></div>
           </div>
         </div>
 
