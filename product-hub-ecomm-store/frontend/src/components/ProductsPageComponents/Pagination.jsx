@@ -17,7 +17,7 @@ const Pagination = ({ currentPage, totalPages, searchQuery, setCurrentPage, load
 
   return (
     <div>
-      {/* Pagination — only show when NOT searching */}
+      {/* Pagination */}
       {!searchQuery && totalPages > 1 && (
         <div className="flex items-center justify-center gap-2 mt-12">
           <button
