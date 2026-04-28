@@ -71,7 +71,7 @@ function Login() {
       // This saves the user to localStorage so they stay logged in
       login(data.user, data.token);
 
-      toast.success(`Welcome back, ${data.user.fullName}!`, {
+      toast.success(`Welcome, ${data.user.fullName}!`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,

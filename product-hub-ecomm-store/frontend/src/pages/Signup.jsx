@@ -16,7 +16,7 @@ function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { FillAllFieldsToast, EnterValidEmailToast } = useShop();
+  const { FillAllFieldsToast, EnterValidEmailToast, login } = useShop();
 
   // Initialize Google Sign-In
   useEffect(() => {
@@ -30,7 +30,7 @@ function Signup() {
       google.accounts.id.renderButton(document.getElementById("googleBtn"), {
         theme: "outline",
         size: "large",
-        width: "100%",
+        // width: "100%",
       });
     }
   }, []);
