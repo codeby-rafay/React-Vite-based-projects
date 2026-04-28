@@ -20,7 +20,7 @@ function Login() {
     /* global google */
     if (window.google && !googleInitialized.current) {
       googleInitialized.current = true;
-      
+
       google.accounts.id.initialize({
         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         callback: handleGoogleResponse,
@@ -63,6 +63,10 @@ function Login() {
 
       const data = response.data;
 
+      if (!data?.user || !data?.token) {
+        throw new Error("Invalid server response");
+      }
+
       // login successful
       // Save user info using our login function from context
       // This saves the user to localStorage so they stay logged in
@@ -82,7 +86,9 @@ function Login() {
       }, 100);
     } catch (error) {
       toast.error(
-        error.response?.data?.message || error.message || "Login failed. Please try again",
+        error.response?.data?.message ||
+          error.message ||
+          "Login failed. Please try again",
         {
           position: "top-right",
           autoClose: 5000,
@@ -91,7 +97,7 @@ function Login() {
           pauseOnHover: false,
           draggable: true,
           transition: Slide,
-        }
+        },
       );
     } finally {
       setLoading(false);
@@ -108,6 +114,10 @@ function Login() {
       });
 
       const data = res.data;
+
+      if (!data?.user || !data?.token) {
+        throw new Error("Invalid server response");
+      }
 
       // Save user info using our login function from context
       login(data.user, data.token);
@@ -130,7 +140,7 @@ function Login() {
           pauseOnHover: false,
           draggable: true,
           transition: Slide,
-        }
+        },
       );
     }
   };
@@ -245,10 +255,7 @@ function Login() {
 
           {/* Google Button */}
           <div className="space-y-3">
-            <div
-              id="googleBtn"
-              className="w-full flex justify-center"
-            ></div>
+            <div id="googleBtn" className="w-full flex justify-center"></div>
           </div>
         </div>
 

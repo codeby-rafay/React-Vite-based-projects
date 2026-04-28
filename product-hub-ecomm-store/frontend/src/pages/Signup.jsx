@@ -18,14 +18,15 @@ function Signup() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const googleInitialized = useRef(false);
-  const { FillAllFieldsToast, EnterValidEmailToast, Welcometoast, login } = useShop();
+  const { FillAllFieldsToast, EnterValidEmailToast, Welcometoast, login } =
+    useShop();
 
   // Initialize Google Sign-In
   useEffect(() => {
     /* global google */
     if (window.google && !googleInitialized.current) {
       googleInitialized.current = true;
-      
+
       google.accounts.id.initialize({
         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         callback: handleGoogleResponse,
@@ -129,6 +130,10 @@ function Signup() {
 
       const data = response.data;
 
+      if (!data?.user || !data?.token) {
+        throw new Error("Invalid server response");
+      }
+
       // signup successful
       toast.success("Account created successfully! Please login.", {
         position: "top-right",
@@ -154,16 +159,19 @@ function Signup() {
       }, 1000);
     } catch (error) {
       toast.error(
-        error.response?.data?.message || error.message || "Signup failed. Please try again.",
+        error.response?.data?.message ||
+          error.message ||
+          "Signup failed. Please try again.",
         {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        },
+      );
     } finally {
       setLoading(false);
     }
@@ -180,6 +188,10 @@ function Signup() {
 
       const data = res.data;
 
+      if (!data?.user || !data?.token) {
+        throw new Error("Invalid server response");
+      }
+
       // Save user info using our login function from context
       login(data.user, data.token);
 
@@ -194,14 +206,15 @@ function Signup() {
       toast.error(
         error.response?.data?.message || error.message || "Google login failed",
         {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        },
+      );
     }
   };
 
