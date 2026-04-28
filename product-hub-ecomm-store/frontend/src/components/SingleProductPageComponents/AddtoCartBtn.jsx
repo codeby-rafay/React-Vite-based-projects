@@ -1,12 +1,19 @@
 import { ShoppingCart, Check } from "lucide-react";
 import { useShop } from "../../context/ShopContext";
+import { useNavigate } from "react-router-dom";
 
 const AddtoCartBtn = ({ product }) => {
-  const { addToCart, isInCart, addtocartToast } = useShop();
+  const { addToCart, isInCart, addtocartToast, currentUser } = useShop();
+  const navigate = useNavigate();
 
   const alreadyInCart = isInCart(product?.id);
 
   const handleClick = () => {
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+
     if (product && !alreadyInCart) {
       addToCart(product);
       addtocartToast();
