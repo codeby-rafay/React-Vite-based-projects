@@ -265,7 +265,7 @@ function Login() {
 
           {/* Google Button */}
           <div className="space-y-3">
-            <div id="googleBtn" className="w-full flex justify-center"></div>
+            <div id="googleBtn" className="w-full flex justify-center rounded-4xl"></div>
           </div>
         </div>
 
