@@ -31,7 +31,7 @@ function Signup() {
       google.accounts.id.renderButton(document.getElementById("googleBtn"), {
         theme: "outline",
         size: "large",
-        // width: "100%",
+        width: "100%",
       });
     }
   }, []);

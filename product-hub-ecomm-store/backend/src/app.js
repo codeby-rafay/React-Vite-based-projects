@@ -58,10 +58,15 @@ app.post("/api/google-login", async (req, res) => {
       }
     }
 
-    await loginModel.create({
-      email: user.email,
-      fullName: user.fullName,
-    });
+    // Store only last login - remove old record and create new one
+    await loginModel.findOneAndUpdate(
+      { email: user.email },
+      {
+        fullName: user.fullName,
+        timestamp: new Date(),
+      },
+      { upsert: true, new: true },
+    );
 
     // Create JWT token
     const jwtToken = jwt.sign(
@@ -187,11 +192,15 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
-  // Save login data on every login
-  await loginModel.create({
-    email: user.email,
-    fullName: user.fullName,
-  });
+  // Store only last login - remove old record and create new one
+  await loginModel.findOneAndUpdate(
+    { email: user.email },
+    {
+      fullName: user.fullName,
+      timestamp: new Date(),
+    },
+    { upsert: true, new: true },
+  );
 
   // login token creation
   const token = jwt.sign(
