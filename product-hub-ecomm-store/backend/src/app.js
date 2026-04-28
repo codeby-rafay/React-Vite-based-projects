@@ -58,7 +58,7 @@ app.post("/api/google-login", async (req, res) => {
       }
     }
 
-    // Store only last login - remove old record and create new one
+    // Store only last login
     await loginModel.findOneAndUpdate(
       { email: user.email },
       {
@@ -192,7 +192,7 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
-  // Store only last login - remove old record and create new one
+  // Store only last login
   await loginModel.findOneAndUpdate(
     { email: user.email },
     {
