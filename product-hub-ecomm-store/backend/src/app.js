@@ -5,7 +5,6 @@ const cors = require("cors");
 const OAuth2Client = require("google-auth-library").OAuth2Client;
 const signupModel = require("./models/signup.model");
 const loginModel = require("./models/login.model");
-const googleModel = require("./models/google.models");
 
 const app = express();
 
@@ -37,16 +36,30 @@ app.post("/api/google-login", async (req, res) => {
 
     const { sub, name, email, picture } = payload;
 
-    // check MongoDB
-    let user = await googleModel.findOne({ email });
+    let user = await signupModel.findOne({ email });
 
     if (!user) {
-      user = await googleModel.create({
+      user = await signupModel.create({
         fullName: name,
         email,
+        password: null, // No password for Google users
         googleId: sub,
       });
+    } else {
+      // existing user - update their Google ID if not already set
+      if (!user.googleId) {
+        user = await signupModel.findOneAndUpdate(
+          { email },
+          { googleId: sub },
+          { new: true }
+        );
+      }
     }
+
+    await loginModel.create({
+      email: user.email,
+      fullName: user.fullName,
+    });
 
     // Create JWT token
     const jwtToken = jwt.sign(
@@ -54,7 +67,7 @@ app.post("/api/google-login", async (req, res) => {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
-        role: "user",
+        role: user.role,
       },
       JWT_SECRET,
       { expiresIn: "7d" },
@@ -67,7 +80,7 @@ app.post("/api/google-login", async (req, res) => {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
-        role: "user",
+        role: user.role,
       },
     });
   } catch (error) {
@@ -157,32 +170,12 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
-  // (get api)
-  app.get("/api/login", async (req, res) => {
-    try {
-      const logins = await loginModel.find().sort({ timestamp: -1 });
-      res.status(200).json({
-        message: "Login Data fetched successfully",
-        logins,
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Error fetching login data" });
-    }
-  });
-
-  // (delete api)
-  app.delete("/api/login/:id", async (req, res) => {
-    const id = req.params.id;
-    try {
-      const deletedLogin = await loginModel.findOneAndDelete({ _id: id });
-      if (!deletedLogin) {
-        return res.status(404).json({ message: "Login record not found" });
-      }
-      res.status(200).json({ message: "Login record deleted successfully" });
-    } catch (error) {
-      res.status(500).json({ message: "Error deleting login record" });
-    }
-  });
+  // Check if user only has Google login (no password set)
+  if (!user.password) {
+    return res.status(400).json({
+      message: "This account was created with Google Sign-In. Please use Google to login.",
+    });
+  }
 
   const isPasswordCorrect = await bcrypt.compare(password, user.password);
   if (!isPasswordCorrect) {
@@ -219,6 +212,33 @@ app.post("/api/login", async (req, res) => {
       role: user.role,
     },
   });
+});
+
+// (get api)
+app.get("/api/login", async (req, res) => {
+  try {
+    const logins = await loginModel.find().sort({ timestamp: -1 });
+    res.status(200).json({
+      message: "Login Data fetched successfully",
+      logins,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching login data" });
+  }
+});
+
+// (delete api)
+app.delete("/api/login/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const deletedLogin = await loginModel.findOneAndDelete({ _id: id });
+    if (!deletedLogin) {
+      return res.status(404).json({ message: "Login record not found" });
+    }
+    res.status(200).json({ message: "Login record deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting login record" });
+  }
 });
 
 module.exports = app;
