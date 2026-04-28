@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { toast, Slide } from "react-toastify";
@@ -10,6 +10,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const googleInitialized = useRef(false);
 
   const { login, FillAllFieldsToast, EnterValidEmailToast, Welcometoast } =
     useShop();
@@ -17,7 +18,9 @@ function Login() {
   // Initialize Google Sign-In
   useEffect(() => {
     /* global google */
-    if (window.google) {
+    if (window.google && !googleInitialized.current) {
+      googleInitialized.current = true;
+      
       google.accounts.id.initialize({
         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         callback: handleGoogleResponse,
@@ -26,7 +29,7 @@ function Login() {
       google.accounts.id.renderButton(document.getElementById("googleBtn"), {
         theme: "outline",
         size: "large",
-        width: "100%",
+        width: "300",
       });
     }
   }, []);

@@ -53,7 +53,7 @@ app.post("/api/google-login", async (req, res) => {
         user = await signupModel.findOneAndUpdate(
           { email },
           { googleId: sub },
-          { new: true },
+          { returnDocument: "after" },
         );
       }
     }
@@ -65,7 +65,7 @@ app.post("/api/google-login", async (req, res) => {
         fullName: user.fullName,
         timestamp: new Date(),
       },
-      { upsert: true, new: true },
+      { upsert: true, returnDocument: "after" },
     );
 
     // Create JWT token
@@ -199,7 +199,7 @@ app.post("/api/login", async (req, res) => {
       fullName: user.fullName,
       timestamp: new Date(),
     },
-    { upsert: true, new: true },
+    { upsert: true, returnDocument: "after" },
   );
 
   // login token creation
