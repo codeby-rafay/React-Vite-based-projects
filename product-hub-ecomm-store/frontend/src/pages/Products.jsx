@@ -61,7 +61,7 @@ function Products() {
         </h1>
         <p className="text-gray-500 text-sm mt-1">
           {searchQuery
-            ? `Search results for "${searchQuery}" — ${totalProducts} found`
+            ? `Search results for "${searchQuery}" / ${totalProducts} found`
             : `Showing ${products.length} of ${totalProducts} products`}
         </p>
       </div>
