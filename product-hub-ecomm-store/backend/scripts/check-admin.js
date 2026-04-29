@@ -22,7 +22,7 @@ const checkAdmin = async () => {
       console.log(" Admin role is correctly set to 'admin'");
     }
 
-    process.exit(0);de
+    process.exit(0);
   } catch (error) {
     console.error(" Error:", error.message);
     process.exit(1);

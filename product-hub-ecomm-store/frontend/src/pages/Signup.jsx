@@ -23,7 +23,6 @@ function Signup() {
 
   // Initialize Google Sign-In
   useEffect(() => {
-    /* global google */
     if (window.google && !googleInitialized.current) {
       googleInitialized.current = true;
 
@@ -35,7 +34,7 @@ function Signup() {
       google.accounts.id.renderButton(document.getElementById("googleBtn"), {
         theme: "outline",
         size: "large",
-        width: "300",
+        width: "6",
       });
     }
   }, []);

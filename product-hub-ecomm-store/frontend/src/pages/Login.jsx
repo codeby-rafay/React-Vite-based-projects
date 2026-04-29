@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, AlignCenter } from "lucide-react";
 import { toast, Slide } from "react-toastify";
 import axios from "axios";
 import { useShop } from "../context/ShopContext";
@@ -17,7 +17,6 @@ function Login() {
 
   // Initialize Google Sign-In
   useEffect(() => {
-    /* global google */
     if (window.google && !googleInitialized.current) {
       googleInitialized.current = true;
 
@@ -29,7 +28,7 @@ function Login() {
       google.accounts.id.renderButton(document.getElementById("googleBtn"), {
         theme: "outline",
         size: "large",
-        width: "300",
+        width: "6",
       });
     }
   }, []);
@@ -124,7 +123,6 @@ function Login() {
 
       Welcometoast(data.user);
 
-      // Navigate to home
       setTimeout(() => {
         window.scrollTo(0, 0);
         navigate("/");
@@ -255,7 +253,7 @@ function Login() {
 
           {/* Google Button */}
           <div className="space-y-3">
-            <div id="googleBtn" className="w-full flex justify-center"></div>
+            <div id="googleBtn" className="w-full flex items-center justify-center"></div>
           </div>
         </div>
 
