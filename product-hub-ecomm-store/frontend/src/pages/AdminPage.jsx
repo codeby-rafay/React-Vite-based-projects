@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Users, LogIn, UserPlus, Trash2, Eye, LogOut } from "lucide-react";
+import {
+  Users,
+  LogIn,
+  UserPlus,
+  Trash2,
+  Eye,
+  LogOut,
+  ArrowRight,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
 
@@ -144,13 +152,20 @@ function AdminPage() {
                 </p>
               </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center cursor-pointer gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors active:scale-95 shadow-md hover:shadow-lg"
-            >
-              <LogOut size={20} />
-              Logout
-            </button>
+            <div className="flex gap-6">
+              <button
+                onClick={handleLogout}
+                className="flex items-center cursor-pointer gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors active:scale-95 shadow-md hover:shadow-lg"
+              >
+                Logout <LogOut size={20} />
+              </button>
+              <button
+                // onClick={}
+                className="flex items-center cursor-pointer gap-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors active:scale-95 shadow-md hover:shadow-lg"
+              >
+                Review Customers <ArrowRight size={16} strokeWidth={2} />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -346,12 +361,14 @@ function AdminPage() {
             </div>
           )}
 
-           {/* Google Login Records Table */}
+          {/* Google Login Records Table */}
           {activeTab === "google-login" && (
             <div className="overflow-x-auto">
               {loadingGoogleLogin ? (
                 <div className="text-center py-12">
-                  <p className="text-gray-500">Loading Google login records...</p>
+                  <p className="text-gray-500">
+                    Loading Google login records...
+                  </p>
                 </div>
               ) : errorGoogleLogin ? (
                 <div className="text-center py-12">
