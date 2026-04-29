@@ -15,7 +15,6 @@ import { useShop } from "../context/ShopContext";
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");
   const { logout, currentUser, DeleteRecordToast } = useShop();
-  const navigate = useNavigate();
   const [loginData, setLoginData] = useState([]);
   const [signupData, setSignupData] = useState([]);
   const [googleloginData, setGoogleLoginData] = useState([]);
@@ -25,6 +24,7 @@ function AdminPage() {
   const [errorLogin, setErrorLogin] = useState(null);
   const [errorSignup, setErrorSignup] = useState(null);
   const [errorGoogleLogin, setErrorGoogleLogin] = useState(null);
+  const navigate = useNavigate();
 
   const API_BASE_URL = "http://localhost:5000";
 
@@ -160,10 +160,10 @@ function AdminPage() {
                 Logout <LogOut size={20} />
               </button>
               <button
-                // onClick={}
-                className="flex items-center cursor-pointer gap-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors active:scale-95 shadow-md hover:shadow-lg"
+                onClick={() => navigate("/admin/order-reviews")}
+                className="flex items-center cursor-pointer gap-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors active:scale-95 shadow-md hover:shadow-lg"
               >
-                Review Customers <ArrowRight size={16} strokeWidth={2} />
+                Review Orders <ArrowRight size={16} strokeWidth={2} />
               </button>
             </div>
           </div>
@@ -360,81 +360,9 @@ function AdminPage() {
               )}
             </div>
           )}
-
-          {/* Google Login Records Table */}
-          {activeTab === "google-login" && (
-            <div className="overflow-x-auto">
-              {loadingGoogleLogin ? (
-                <div className="text-center py-12">
-                  <p className="text-gray-500">
-                    Loading Google login records...
-                  </p>
-                </div>
-              ) : errorGoogleLogin ? (
-                <div className="text-center py-12">
-                  <p className="text-red-500">Error: {errorGoogleLogin}</p>
-                </div>
-              ) : googleloginData.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-gray-500">No Google login records found</p>
-                </div>
-              ) : (
-                <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Full Name
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Email
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Signup Date
-                      </th>
-                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {googleloginData.map((record, index) => (
-                      <tr
-                        key={record._id}
-                        className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                          index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                        }`}
-                      >
-                        <td className="px-6 py-4 text-sm text-gray-900 font-medium">
-                          {record.fullName}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          {record.email}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          {record.createdAt}
-                        </td>
-                        <td className="px-6 py-4 text-sm">
-                          <div className="flex items-center justify-center gap-2">
-                            <button
-                              onClick={() => handleSignupDelete(record._id)}
-                              className="p-2 hover:bg-red-100 rounded-lg transition-colors cursor-pointer"
-                            >
-                              <Trash2 size={18} className="text-red-600" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          )}
         </div>
       </div>
     </div>
   );
 }
 export default AdminPage;
-
-// 533701482272-1hfsb7ij659b1k4dhjgptvgckugf1s7c.apps.googleusercontent.com

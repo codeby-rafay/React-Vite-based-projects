@@ -5,7 +5,6 @@ const ProtectedAdminRoute = ({ children }) => {
   const { currentUser } = useShop();
   const token = localStorage.getItem("authToken");
 
-  // If user is not authenticated or not an admin, redirect to login
   if (!token || !currentUser || currentUser.role !== "admin") {
     return <Navigate to="/login" replace />;
   }

@@ -13,6 +13,7 @@ import Saved from "./pages/Saved";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import AdminPage from "./pages/AdminPage";
+import ReviewOrders from "./pages/ReviewOrders";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import NotFound from "./pages/NotFound";
 import { ToastContainer } from "react-toastify";
@@ -41,6 +42,14 @@ function App() {
             element={
               <ProtectedAdminRoute>
                 <AdminPage />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/order-reviews"
+            element={
+              <ProtectedAdminRoute>
+                <ReviewOrders />
               </ProtectedAdminRoute>
             }
           />

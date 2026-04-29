@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Loader } from "lucide-react";
+import { toast, Slide } from "react-toastify";
+import axios from "axios";
 import { useShop } from "../context/ShopContext";
 import CheckoutBtn from "./CartPanelComponents/CheckoutBtn";
 import CartItems from "./CartPanelComponents/CartItems";
@@ -9,8 +11,16 @@ import CartPanelFooter from "./CartPanelComponents/CartPanelFooter";
 function CartDisplay() {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const { cartItems, cartCount, removeFromCart, increaseQty, decreaseQty } =
-    useShop();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const {
+    cartItems,
+    cartCount,
+    removeFromCart,
+    increaseQty,
+    decreaseQty,
+    currentUser,
+    setCartItems,
+  } = useShop();
 
   const handleClose = () => {
     setIsClosing(true);
@@ -20,10 +30,106 @@ function CartDisplay() {
     }, 200);
   };
 
-  const handleCheckout = () => {
-    cartItems.length >= 1;
-    window.confirm("Are you sure you want to checkout!") &&
-      alert("Checkout functionality coming soon!");
+  const handleCheckout = async () => {
+    if (!currentUser) {
+      toast.error("Please login to checkout", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
+      return;
+    }
+
+    const confirmCheckout = window.confirm(
+      `Proceed to checkout with ${cartItems.length} item(s)?\n\nTotal: $${totalPrice}`,
+    );
+
+    if (!confirmCheckout) return;
+
+    try {
+      setIsProcessing(true);
+
+      // order data
+      const orderData = {
+        userId: currentUser.id,
+        userEmail: currentUser.email,
+        userName: currentUser.fullName,
+        products: cartItems.map((item) => ({
+          id: item.id,
+          name: item.title || item.name || "Product",
+          price: item.price,
+          quantity: item.quantity,
+          category: item.category || "",
+        })),
+        totalAmount: parseFloat(totalPrice),
+        totalItems: cartItems.length,
+      };
+
+      const response = await axios.post(
+        "http://localhost:5000/api/orders",
+        orderData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (response.data?.order) {
+        toast.success("Order placed successfully! 🎉", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        });
+
+        // Clear cart items
+        setCartItems([]);
+        localStorage.removeItem(`cart_${currentUser.id}`);
+
+        // Close cart drawer
+        setTimeout(() => {
+          handleClose();
+        }, 500);
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Checkout failed. Please try again.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        },
+      );
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   // Calculate total price of all items in cart
@@ -70,7 +176,6 @@ function CartDisplay() {
             {/* Cart Items List */}
             <div className="flex-1 overflow-y-auto p-4">
               {cartItems.length === 0 ? (
-                /* Empty page with message */
                 <div className="flex flex-col items-center justify-center h-full text-center gap-3">
                   <ShoppingCart size={48} className="text-gray-200" />
                   <p className="text-gray-400 font-medium">No items in cart</p>
@@ -93,7 +198,7 @@ function CartDisplay() {
               )}
             </div>
 
-            {/* Footer: total price */}
+            {/* Footer-total price */}
             <CartPanelFooter
               cartCount={cartCount}
               totalPrice={totalPrice}
@@ -104,6 +209,7 @@ function CartDisplay() {
             <CheckoutBtn
               handleCheckout={handleCheckout}
               cartItems={cartItems}
+              isProcessing={isProcessing}
             />
           </div>
         </div>

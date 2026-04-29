@@ -227,6 +227,7 @@ export function ShopProvider({ children }) {
         login,
         logout,
         cartItems,
+        setCartItems,
         addToCart,
         increaseQty,
         decreaseQty,
