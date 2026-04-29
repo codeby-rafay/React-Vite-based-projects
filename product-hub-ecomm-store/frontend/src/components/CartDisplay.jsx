@@ -21,7 +21,9 @@ function CartDisplay() {
   };
 
   const handleCheckout = () => {
-    alert("Checkout functionality coming soon!");
+    cartItems.length >= 1;
+    window.confirm("Are you sure you want to checkout!") &&
+      alert("Checkout functionality coming soon!");
   };
 
   // Calculate total price of all items in cart

@@ -32,7 +32,7 @@ function CartItems({ item, onRemove, onIncrease, onDecrease }) {
         {/* Remove button */}
         <button
           onClick={() => onRemove(item.id)}
-          className="text-red-500 hover:bg-red-200 px-1 py-1 rounded-md transition-colors shrink-0"
+          className="text-red-500 hover:bg-red-200 px-1 py-1 rounded-md transition-colors cursor-pointer shrink-0"
         >
           <Trash2 size={15} />
         </button>
@@ -45,7 +45,7 @@ function CartItems({ item, onRemove, onIncrease, onDecrease }) {
           {/* Minus button */}
           <button
             onClick={() => onDecrease(item.id)}
-            className="text-gray-500 hover:text-orange-500 transition-colors bg-gray-100 rounded-md w-5 h-5 flex items-center justify-center"
+            className="text-gray-500 hover:text-orange-500 transition-colors bg-gray-100 rounded-md cursor-pointer w-5 h-5 flex items-center justify-center"
           >
             <Minus size={14} />
           </button>
@@ -59,7 +59,7 @@ function CartItems({ item, onRemove, onIncrease, onDecrease }) {
           <button
             onClick={() => onIncrease(item.id)}
             disabled={item.quantity >= item.originalStock}
-            className={`transition-colors w-5 h-5 flex items-center justify-center bg-gray-100 rounded-md ${
+            className={`transition-colors w-5 h-5 flex items-center justify-center bg-gray-100 cursor-pointer rounded-md ${
               item.quantity >= item.originalStock
                 ? "text-gray-200 cursor-not-allowed"
                 : "text-gray-500 hover:text-orange-500"
