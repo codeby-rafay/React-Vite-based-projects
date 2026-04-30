@@ -190,8 +190,8 @@ function Login() {
                   Password
                 </label>
                 <Link
-                  to="#"
-                  className="text-xs text-orange-500 hover:text-orange-600 font-medium"
+                  to="/reset-password"
+                  className="text-xs text-orange-500 hover:text-orange-700 font-medium"
                 >
                   Forgot password?
                 </Link>

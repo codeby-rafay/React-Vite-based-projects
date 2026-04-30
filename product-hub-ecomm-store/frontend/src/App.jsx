@@ -16,6 +16,7 @@ import AdminPage from "./pages/AdminPage";
 import ReviewOrders from "./pages/ReviewOrders";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import NotFound from "./pages/NotFound";
+import ResetPassword from "./pages/ResetPassword";
 import { ToastContainer } from "react-toastify";
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
               </ProtectedAdminRoute>
             }
           />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

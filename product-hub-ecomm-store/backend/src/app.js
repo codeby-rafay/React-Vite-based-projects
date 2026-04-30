@@ -2,10 +2,21 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+const dotenv = require("dotenv");
 const OAuth2Client = require("google-auth-library").OAuth2Client;
 const signupModel = require("./models/signup.model");
 const loginModel = require("./models/login.model");
 const orderModel = require("./models/order.model");
+const {
+  generateOTP,
+  sendOTPEmail,
+  storeOTP,
+  verifyOTP,
+  clearOTP,
+} = require("./utils/otp");
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
 
@@ -399,6 +410,118 @@ app.delete("/api/orders/:orderId", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: "Error deleting order" });
+  }
+});
+
+// ===========================
+// PASSWORD RESET - OTP ROUTES
+// ===========================
+
+// Send OTP to email
+app.post("/api/send-otp", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    // Check if user exists
+    const user = await signupModel.findOne({ email });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found with this email" });
+    }
+
+    // Generate OTP
+    const otp = generateOTP();
+
+    // Send OTP to email
+    await sendOTPEmail(email, otp);
+
+    // Store OTP in memory (with expiration)
+    storeOTP(email, otp);
+
+    res.status(200).json({
+      message: "OTP sent successfully to your email",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error sending OTP. Please check your email address.",
+      error: error.message,
+    });
+  }
+});
+
+// Verify OTP
+app.post("/api/verify-otp", async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      return res.status(400).json({ message: "Email and OTP are required" });
+    }
+
+    // Verify OTP
+    const verification = verifyOTP(email, otp);
+
+    if (!verification.valid) {
+      return res.status(400).json({ message: verification.message });
+    }
+
+    res.status(200).json({
+      message: "OTP verified successfully",
+      verified: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error verifying OTP",
+      error: error.message,
+    });
+  }
+});
+
+// Reset Password
+app.post("/api/reset-password", async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({
+        message: "Email, OTP, and new password are required",
+      });
+    }
+
+    // Verify OTP one more time
+    const verification = verifyOTP(email, otp);
+    if (!verification.valid) {
+      return res.status(400).json({ message: verification.message });
+    }
+
+    // Find user and update password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const updatedUser = await signupModel.findOneAndUpdate(
+      { email },
+      { password: hashedPassword },
+      { new: true },
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Clear OTP from store
+    clearOTP(email);
+
+    res.status(200).json({
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error resetting password",
+      error: error.message,
+    });
   }
 });
 
