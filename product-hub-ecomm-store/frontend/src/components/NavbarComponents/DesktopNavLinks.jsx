@@ -8,9 +8,8 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
   const { currentUser, logout, savedItems } = useShop();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  // This ref is used to detect clicks OUTSIDE the dropdown, to close it
-  const dropdownRef = useRef(null);
-  // Close dropdown when user clicks somewhere else on the page
+  const dropdownRef = useRef(null); // This ref is used to detect clicks outside the dropdown, to close it
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -21,7 +20,6 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Called when user clicks "Sign Out" in the dropdown
   const handleLogout = () => {
     logout(); // Clears user from context and localStorage
     setDropdownOpen(false);
@@ -34,15 +32,13 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
       draggable: true,
       transition: Slide,
     });
-    navigate("/login"); // Redirect to login page
+    navigate("/login");
   };
 
-  // Does the user have any saved items? Used to show the red dot
   const hasSaved = savedItems.length > 0;
 
   return (
     <div className="hidden md:flex items-center gap-1 ml-auto">
-      {/* Regular nav links (but filter out "Saved" - it goes in dropdown) */}
       {navLinks
         .filter((link) => link.name !== "Saved")
         .map((link) => (
@@ -59,14 +55,10 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
           </Link>
         ))}
 
-      {/*AUTH SECTION
-          - If logged in: show avatar circle + dropdown
-          - If not logged in: show Sign In button*/}
       <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
         {currentUser ? (
-          // ---- USER IS LOGGED IN: Show avatar ----
           <div className="relative" ref={dropdownRef}>
-            {/* The avatar button - shows first letter of user's name */}
+            {/* shows first letter of user's name */}
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="relative flex items-center gap-1 focus:outline-none"
@@ -76,7 +68,7 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
                 {currentUser.fullName.charAt(0)}
               </div>
 
-              {/* Red dot - only shows if user has saved items */}
+              {/* Red dot */}
               {hasSaved && (
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
               )}
@@ -84,7 +76,7 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
               <ChevronDown size={14} className="text-gray-500 cursor-pointer" />
             </button>
 
-            {/* Dropdown menu - with smooth transition */}
+            {/* Dropdown menu */}
             <div
               className={`absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg z-50 py-2 transition-all duration-300 ease-in-out ${
                 dropdownOpen
@@ -102,7 +94,7 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
                 </p>
               </div>
 
-              {/* Saved link inside dropdown */}
+              {/* Saved link */}
               <Link
                 to="/saved"
                 onClick={() => setDropdownOpen(false)}
@@ -121,7 +113,7 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
               {/* Sign Out button */}
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors"
+                className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-50 cursor-pointer transition-colors"
               >
                 <LogOut size={16} />
                 Sign Out
@@ -129,7 +121,6 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
             </div>
           </div>
         ) : (
-          // USER IS NOT LOGGED IN: Show Sign In button
           <Link
             to="/login"
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${

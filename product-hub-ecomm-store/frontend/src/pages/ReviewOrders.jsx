@@ -13,6 +13,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import axios from "axios";
+import OrderSearchBar from "../components/OrderSearchBar";
 import { toast, Slide } from "react-toastify";
 
 const ReviewOrders = () => {
@@ -20,6 +21,7 @@ const ReviewOrders = () => {
   const [loading, setLoading] = useState(true);
   const [expandedOrderId, setExpandedOrderId] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   const formatDate = (dateString) => {
@@ -133,6 +135,28 @@ const ReviewOrders = () => {
       ? orders
       : orders.filter((order) => order.orderStatus === filterStatus);
 
+  // Filter by search query
+  const searchFilteredOrders = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return filteredOrders;
+    }
+
+    const query = searchQuery.toLowerCase().trim();
+    return filteredOrders.filter((order) => {
+      const orderId = order._id.toLowerCase();
+      const userName = (order.userName || "").toLowerCase();
+      const userEmail = (order.userEmail || "").toLowerCase();
+      const status = order.orderStatus.toLowerCase();
+
+      return (
+        orderId === query ||
+        userName === query ||
+        userEmail === query ||
+        status === query
+      );
+    });
+  }, [filteredOrders, searchQuery]);
+
   const getStatusColor = (status) => {
     const colors = {
       confirmed: "bg-blue-100 text-blue-800",
@@ -154,8 +178,13 @@ const ReviewOrders = () => {
   };
 
   const totalRevenue = useMemo(() => {
-    return orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
-  }, [orders]);
+    return filteredOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+  }, [filteredOrders]);
+
+  // Handle search
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
 
   if (loading) {
     return (
@@ -173,26 +202,33 @@ const ReviewOrders = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 p-4 md:p-8">
-      {/* <div className="mb-1"> */}
-        <button
-          onClick={() => navigate("/admin/dashboard")}
-          className="flex items-center cursor-pointer text-2xl gap-1 text-orange-500 hover:text-orange-600 font-semibold transition-colors hover:underline"
-        >
-          <ArrowLeft size={24} strokeWidth={2} /> Back
-        </button>
-      {/* </div> */}
+      <button
+        onClick={() => navigate("/admin/dashboard")}
+        className="flex items-center cursor-pointer text-2xl gap-1 text-orange-500 hover:text-orange-600 font-semibold transition-colors hover:underline"
+      >
+        <ArrowLeft size={24} strokeWidth={2} /> Back
+      </button>
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 mt-6"
-            style={{ fontFamily: "Playfair Display, serif" }}
-          >
-            Customer Orders
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Manage and track all customer purchases
-          </p>
+        <div className="mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          {/* Header */}
+          <div>
+            <h1
+              className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 mt-6"
+              style={{ fontFamily: "Playfair Display, serif" }}
+            >
+              Customer Orders
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Manage and track all customer purchases
+            </p>
+          </div>
+          {/* Search Bar */}
+          <div className="mt-6 flex items-center gap-4 flex-wrap md:w-auto">
+            <OrderSearchBar
+              onSearch={handleSearch}
+              placeholder="Search orders by ID, name or email..."
+            />
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -275,7 +311,7 @@ const ReviewOrders = () => {
         </div>
 
         {/* Orders List */}
-        {filteredOrders.length === 0 ? (
+        {searchFilteredOrders.length === 0 ? (
           <div className="bg-white rounded-xl p-12 shadow-sm border border-gray-100 text-center">
             <AlertCircle size={48} className="mx-auto text-gray-400 mb-4" />
             <p className="text-gray-600 text-lg font-medium">No orders found</p>
@@ -287,7 +323,7 @@ const ReviewOrders = () => {
           </div>
         ) : (
           <div className="space-y-4">
-            {filteredOrders.map((order) => (
+            {searchFilteredOrders.map((order) => (
               <div
                 key={order._id}
                 className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow"

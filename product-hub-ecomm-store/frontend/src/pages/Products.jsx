@@ -41,7 +41,6 @@ function Products() {
     fetchProducts(searchQuery, currentPage);
   }, [currentPage, searchQuery]);
 
-  // Handle search
   const handleSearch = (query) => {
     setSearchQuery(query);
     setCurrentPage(0);
