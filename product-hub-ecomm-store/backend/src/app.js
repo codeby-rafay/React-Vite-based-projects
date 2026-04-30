@@ -1,8 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
-const dotenv = require("dotenv");
 const OAuth2Client = require("google-auth-library").OAuth2Client;
 const signupModel = require("./models/signup.model");
 const loginModel = require("./models/login.model");
@@ -14,9 +14,6 @@ const {
   verifyOTP,
   clearOTP,
 } = require("./utils/otp");
-
-// Load environment variables
-dotenv.config();
 
 const app = express();
 
@@ -33,7 +30,8 @@ app.use(express.json());
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = "my_super_secret_key_123";
 
-// Google OAuth route (post api)
+// Google OAuth route
+//  (post api)
 app.post("/api/google-login", async (req, res) => {
   try {
     const { token } = req.body;
@@ -80,7 +78,7 @@ app.post("/api/google-login", async (req, res) => {
       { upsert: true, returnDocument: "after" },
     );
 
-    // Create JWT token
+    // JWT token
     const jwtToken = jwt.sign(
       {
         id: user._id,
@@ -112,7 +110,7 @@ app.post("/api/google-login", async (req, res) => {
 // (post api)
 app.post("/api/signup", async (req, res) => {
   try {
-    const { fullName, email, password } = req.body; //data sent from fronend
+    const { fullName, email, password } = req.body; //data sent from fronend to backend
 
     if (!fullName || !email || !password) {
       return res.status(400).json({ message: "Please fill in all fields" }); //sent data back to frontend
@@ -134,9 +132,7 @@ app.post("/api/signup", async (req, res) => {
     };
     await signupModel.create(newUser);
 
-    res
-      .status(201)
-      .json({ message: "Account created successfully! Please login." });
+    res.status(201).json({ message: "Account created successfully!" });
   } catch (error) {
     res.status(500).json({ message: "Error creating account" });
   }
@@ -413,10 +409,7 @@ app.delete("/api/orders/:orderId", async (req, res) => {
   }
 });
 
-// ===========================
-// PASSWORD RESET - OTP ROUTES
-// ===========================
-
+//route 4: PASSWORD RESET - OTP
 // Send OTP to email
 app.post("/api/send-otp", async (req, res) => {
   try {
