@@ -173,19 +173,19 @@ const ReviewOrders = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 p-4 md:p-8">
-      <div className="mb-6">
+      {/* <div className="mb-1"> */}
         <button
           onClick={() => navigate("/admin/dashboard")}
-          className="absolute top-5 left-2 flex items-center cursor-pointer text-2xl gap-2 text-orange-500 hover:text-orange-600 px-6 py-2 font-semibold transition-colors hover:underline"
+          className="flex items-center cursor-pointer text-2xl gap-1 text-orange-500 hover:text-orange-600 font-semibold transition-colors hover:underline"
         >
           <ArrowLeft size={24} strokeWidth={2} /> Back
         </button>
-      </div>
+      {/* </div> */}
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 mt-10"
+            className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 mt-6"
             style={{ fontFamily: "Playfair Display, serif" }}
           >
             Customer Orders
