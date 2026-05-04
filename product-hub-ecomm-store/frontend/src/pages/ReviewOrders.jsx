@@ -11,9 +11,12 @@ import {
   Loader,
   AlertCircle,
   ArrowLeft,
+  Trash2,
+  X,
 } from "lucide-react";
 import axios from "axios";
 import OrderSearchBar from "../components/OrderSearchBar";
+import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { toast, Slide } from "react-toastify";
 
 const ReviewOrders = () => {
@@ -22,6 +25,8 @@ const ReviewOrders = () => {
   const [expandedOrderId, setExpandedOrderId] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState(null);
   const navigate = useNavigate();
 
   const formatDate = (dateString) => {
@@ -98,12 +103,19 @@ const ReviewOrders = () => {
     }
   };
 
-  const handleDeleteOrder = async (orderId) => {
-    if (!window.confirm("Are you sure you want to delete this order?")) return;
+  const handleDeleteClick = (orderId) => {
+    setOrderToDelete(orderId);
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!orderToDelete) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/orders/${orderId}`);
-      setOrders(orders.filter((o) => o._id !== orderId));
+      await axios.delete(`${API_BASE_URL}/orders/${orderToDelete}`);
+      setOrders(orders.filter((o) => o._id !== orderToDelete));
+      setShowDeleteModal(false);
+      setOrderToDelete(null);
       toast.success("Order deleted successfully", {
         position: "top-right",
         autoClose: 3000,
@@ -124,6 +136,11 @@ const ReviewOrders = () => {
         transition: Slide,
       });
     }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false);
+    setOrderToDelete(null);
   };
 
   const toggleOrderExpanded = (orderId) => {
@@ -545,7 +562,8 @@ const ReviewOrders = () => {
 
                   {/* Order Management */}
                   <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between border-t border-gray-200 pt-6">
-                    <div className="flex gap-2">
+                    <div className="flex flex-col gap-2">
+                      <div className="font-bold ml-2">Status</div>
                       <select
                         value={order.orderStatus}
                         onChange={(e) =>
@@ -562,9 +580,10 @@ const ReviewOrders = () => {
                     </div>
 
                     <button
-                      onClick={() => handleDeleteOrder(order._id)}
-                      className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors cursor-pointer"
+                      onClick={() => handleDeleteClick(order._id)}
+                      className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors cursor-pointer flex items-center gap-2"
                     >
+                      <Trash2 size={18} />
                       Delete Order
                     </button>
                   </div>
@@ -574,6 +593,11 @@ const ReviewOrders = () => {
           </div>
         )}
       </div>
+      <DeleteConfirmationModal
+        showDeleteModal={showDeleteModal}
+        handleCancelDelete={handleCancelDelete}
+        handleConfirmDelete={handleConfirmDelete}
+      />
     </div>
   );
 };
