@@ -149,10 +149,10 @@ const ReviewOrders = () => {
       const status = order.orderStatus.toLowerCase();
 
       return (
-        orderId === query ||
-        userName === query ||
-        userEmail === query ||
-        status === query
+        orderId.includes(query) ||
+        userName.includes(query) ||
+        userEmail.includes(query) ||
+        status.includes(query)
       );
     });
   }, [filteredOrders, searchQuery]);
@@ -440,7 +440,21 @@ const ReviewOrders = () => {
                             : "N/A"}
                         </p>
                         <p className="text-gray-600">
-                          <span className="font-medium">Payment:</span>
+                          <span className="font-medium">Payment Method:</span>
+                          <span
+                            className={`ml-2 px-2 py-1 rounded text-xs font-semibold uppercase ${
+                              order.paymentMethod === "card"
+                                ? "bg-blue-100 text-blue-700"
+                                : "bg-purple-100 text-purple-700"
+                            }`}
+                          >
+                            {order.paymentMethod === "card"
+                              ? "Card Payment"
+                              : "Cash on Delivery"}
+                          </span>
+                        </p>
+                        <p className="text-gray-600">
+                          <span className="font-medium">Payment Status:</span>
                           <span
                             className={`ml-2 px-2 py-1 rounded text-xs font-semibold capitalize ${getPaymentStatusColor(
                               order.paymentStatus,

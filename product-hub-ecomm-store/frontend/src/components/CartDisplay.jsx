@@ -7,11 +7,13 @@ import CheckoutBtn from "./CartPanelComponents/CheckoutBtn";
 import CartItems from "./CartPanelComponents/CartItems";
 import CartHeader from "./CartPanelComponents/CartHeader";
 import CartPanelFooter from "./CartPanelComponents/CartPanelFooter";
+import PaymentMethodModal from "./PaymentMethodModal";
 
 function CartDisplay() {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const {
     cartItems,
     cartCount,
@@ -57,16 +59,17 @@ function CartDisplay() {
       return;
     }
 
-    const confirmCheckout = window.confirm(
-      `Proceed to checkout with ${cartItems.length} item(s)?\n\nTotal: $${totalPrice}`,
-    );
+    handleClose();
+    setTimeout(() => {
+      setShowPaymentModal(true);
+    }, 300);
+  };
 
-    if (!confirmCheckout) return;
-
+  const handlePaymentMethodSelect = async (paymentMethod) => {
     try {
       setIsProcessing(true);
+      setShowPaymentModal(false);
 
-      // order data
       const orderData = {
         userId: currentUser.id,
         userEmail: currentUser.email,
@@ -80,6 +83,7 @@ function CartDisplay() {
         })),
         totalAmount: parseFloat(totalPrice),
         totalItems: cartItems.length,
+        paymentMethod: paymentMethod,
       };
 
       const response = await axios.post(
@@ -93,7 +97,12 @@ function CartDisplay() {
       );
 
       if (response.data?.order) {
-        toast.success("Order placed successfully! 🎉", {
+        const successMsg =
+          paymentMethod === "card"
+            ? "Order placed! Payment completed. ✅"
+            : "Order placed! Payment due on delivery. 📦";
+
+        toast.success(successMsg, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -139,6 +148,14 @@ function CartDisplay() {
 
   return (
     <>
+      <PaymentMethodModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        onSelect={handlePaymentMethodSelect}
+        cartItems={cartItems}
+        totalPrice={totalPrice}
+      />
+
       {/* Floating Cart Button */}
       <button
         onClick={() => setIsOpen(true)}

@@ -28,7 +28,7 @@ app.use(
 app.use(express.json());
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-const JWT_SECRET = "my_super_secret_key_123";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Google OAuth route
 //  (post api)
@@ -273,6 +273,7 @@ app.post("/api/orders", async (req, res) => {
       totalItems,
       shippingAddress,
       notes,
+      paymentMethod,
     } = req.body;
 
     if (!userId) {
@@ -301,6 +302,14 @@ app.post("/api/orders", async (req, res) => {
         .json({ message: "Products array cannot be empty" });
     }
 
+    let paymentStatus = "pending";
+
+    if (paymentMethod === "card") {
+      paymentStatus = "completed";
+    } else {
+      paymentStatus = "pending";
+    }
+
     const newOrder = {
       userId,
       userEmail,
@@ -310,8 +319,9 @@ app.post("/api/orders", async (req, res) => {
       totalItems: totalItems || products.length,
       shippingAddress: shippingAddress || "",
       notes: notes || "",
+      paymentMethod: paymentMethod || "cod",
       orderStatus: "pending",
-      paymentStatus: "completed",
+      paymentStatus: paymentStatus,
     };
 
     const order = await orderModel.create(newOrder);
@@ -366,15 +376,22 @@ app.get("/api/orders/:userId", async (req, res) => {
 app.patch("/api/orders/:orderId", async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { orderStatus, paymentStatus, notes } = req.body;
+    const { orderStatus, paymentStatus, notes, shippingAddress } = req.body;
+
+    let updateData = {
+      ...(orderStatus !== undefined && { orderStatus }),
+      ...(paymentStatus !== undefined && { paymentStatus }),
+      ...(notes !== undefined && { notes }),
+      ...(shippingAddress !== undefined && { shippingAddress }),
+    };
+
+    if (orderStatus === "delivered") {
+      updateData.paymentStatus = "completed";
+    }
 
     const updatedOrder = await orderModel.findOneAndUpdate(
       { _id: orderId },
-      {
-        ...(orderStatus && { orderStatus }),
-        ...(paymentStatus && { paymentStatus }),
-        ...(notes && { notes }),
-      },
+      updateData,
       { returnDocument: "after" },
     );
 
