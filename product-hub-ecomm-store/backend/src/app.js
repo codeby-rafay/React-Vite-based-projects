@@ -3,6 +3,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+const cookies = require("cookie-parser");
 const OAuth2Client = require("google-auth-library").OAuth2Client;
 const signupModel = require("./models/signup.model");
 const loginModel = require("./models/login.model");
@@ -26,7 +27,7 @@ app.use(
 );
 
 app.use(express.json());
-
+app.use(cookies());
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = process.env.JWT_SECRET;
 
