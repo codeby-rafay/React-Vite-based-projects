@@ -37,7 +37,7 @@ function Footer() {
               <li>
                 <Link
                   to="/"
-                  className="hover:text-orange-400 transition-colors"
+                  className="hover:text-orange-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   Home
                 </Link>
@@ -45,7 +45,7 @@ function Footer() {
               <li>
                 <Link
                   to="/products"
-                  className="hover:text-orange-400 transition-colors"
+                  className="hover:text-orange-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   All Products
                 </Link>
@@ -53,7 +53,7 @@ function Footer() {
               <li>
                 <Link
                   to="/categories"
-                  className="hover:text-orange-400 transition-colors"
+                  className="hover:text-orange-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   Categories
                 </Link>
@@ -61,7 +61,7 @@ function Footer() {
               <li>
                 <Link
                   to="/about"
-                  className="hover:text-orange-400 transition-colors"
+                  className="hover:text-orange-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   About Us
                 </Link>
@@ -69,7 +69,7 @@ function Footer() {
               <li>
                 <Link
                   to="/contact"
-                  className="hover:text-orange-400 transition-colors"
+                  className="hover:text-orange-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   Contact
                 </Link>
