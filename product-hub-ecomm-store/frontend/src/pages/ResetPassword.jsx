@@ -15,7 +15,7 @@ const ResetPassword = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
-  const API_BASE_URL = "http://localhost:5000/api";
+  const API_BASE_URL = "http://localhost:3000/api";
 
   // Step 1: Send OTP
   const handleSendOTP = async (e) => {
@@ -177,7 +177,7 @@ const ResetPassword = () => {
         {/* Back Button */}
         <button
           onClick={() => navigate("/login")}
-          className="absolute top-25 left-5 mb-6 flex cursor-pointer items-center gap-2 text-orange-500 hover:text-orange-700 text-xl font-bold transition-colors"
+          className="absolute top-10 left-5 mb-6 flex cursor-pointer hover:underline items-center gap-2 text-orange-500 hover:text-orange-700 text-xl font-bold transition-colors"
         >
           <ArrowLeft size={24} />
           Back to Login

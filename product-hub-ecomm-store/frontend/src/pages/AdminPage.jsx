@@ -26,7 +26,7 @@ function AdminPage() {
   const [errorGoogleLogin, setErrorGoogleLogin] = useState(null);
   const navigate = useNavigate();
 
-  const API_BASE_URL = "http://localhost:5000";
+  const API_BASE_URL = "http://localhost:3000";
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

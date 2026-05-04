@@ -199,9 +199,9 @@ This application uses the [DummyJSON API](https://dummyjson.com) for data:
    node server.js
    ```
    
-   The server will start at `http://localhost:5000` with the following endpoints:
-   - `POST http://localhost:5000/api/signup` - Register a new user
-   - `POST http://localhost:5000/api/login` - Login user
+   The server will start at `http://localhost:3000` with the following endpoints:
+   - `POST http://localhost:3000/api/signup` - Register a new user
+   - `POST http://localhost:3000/api/login` - Login user
 
 ### Frontend Setup
 

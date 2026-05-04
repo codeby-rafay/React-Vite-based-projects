@@ -22,10 +22,11 @@ import { ToastContainer } from "react-toastify";
 function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const isResetPasswordRoute = location.pathname === "/reset-password";
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fafaf8]">
-      {!isAdminRoute && <Navbar />}
+      {!isAdminRoute && !isResetPasswordRoute && <Navbar />}
       <main className="grow">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -59,7 +60,7 @@ function App() {
         </Routes>
       </main>
       {!isAdminRoute && <Footer />}
-      {!isAdminRoute && <CartDisplay />}
+      {!isAdminRoute && !isResetPasswordRoute && <CartDisplay />}
       <ToastContainer />
     </div>
   );

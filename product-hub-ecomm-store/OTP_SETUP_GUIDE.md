@@ -44,7 +44,7 @@ EMAIL_PASSWORD=abcd efgh ijkl mnop
 ### 4. Start Backend Server
 ```bash
 npm start
-# Server runs on http://localhost:5000
+Server runs on http://localhost:3000
 ```
 
 ---
@@ -60,7 +60,7 @@ The frontend is already configured to use the backend API endpoints:
 ```bash
 cd frontend
 npm run dev
-# Open http://localhost:5173
+Open http://localhost:5173
 ```
 
 ---
@@ -104,13 +104,13 @@ npm run dev
 
 ## Important Notes
 
-⚠️ **Security Notes:**
+**Security Notes:**
 - OTP is stored in memory (clears when server restarts)
 - For production, store OTP in Redis or Database
 - OTP expires after 10 minutes
 - Only 1 OTP per email at a time
 
-⚠️ **Gmail Setup Issues:**
+**Gmail Setup Issues:**
 - Make sure you're using Gmail (not other email providers)
 - Enable 2-Factor Authentication first
 - Use the 16-character app password (remove spaces)
@@ -198,4 +198,3 @@ For production deployment:
 4. Add email verification logging
 5. Implement OTP retry limits
 6. Consider using SendGrid or AWS SES instead of Gmail
-

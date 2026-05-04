@@ -121,7 +121,7 @@ function Signup() {
     try {
       setLoading(true);
 
-      const response = await axios.post("http://localhost:5000/api/signup", {
+      const response = await axios.post("http://localhost:3000/api/signup", {
         fullName: formData.fullName.trim(),
         email: formData.email,
         password: formData.password,
@@ -181,7 +181,7 @@ function Signup() {
       const token = response.credential;
 
       // send token to backend using axios
-      const res = await axios.post("http://localhost:5000/api/google-login", {
+      const res = await axios.post("http://localhost:3000/api/google-login", {
         token,
       });
 

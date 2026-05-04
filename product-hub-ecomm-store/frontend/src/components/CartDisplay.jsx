@@ -87,7 +87,7 @@ function CartDisplay() {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/orders",
+        "http://localhost:3000/api/orders",
         orderData,
         {
           headers: {

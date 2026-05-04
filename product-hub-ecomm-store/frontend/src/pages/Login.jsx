@@ -55,7 +55,7 @@ function Login() {
     try {
       setLoading(true);
 
-      const response = await axios.post("http://localhost:5000/api/login", {
+      const response = await axios.post("http://localhost:3000/api/login", {
         email: formData.email,
         password: formData.password,
       });
@@ -108,7 +108,7 @@ function Login() {
       const token = response.credential;
 
       // send token to backend using axios
-      const res = await axios.post("http://localhost:5000/api/google-login", {
+      const res = await axios.post("http://localhost:3000/api/google-login", {
         token,
       });
 
