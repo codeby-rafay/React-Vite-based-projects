@@ -6,7 +6,14 @@ const DeleteConfirmationModal = ({
   showDeleteModal,
   handleCancelDelete,
   handleConfirmDelete,
+  title = "Remove Order",
+  description = "You sure you want to remove this order?",
+  buttonLabel = "Delete",
 }) => {
+  const titleParts = title.split(" ");
+  const firstWord = titleParts[0];
+  const restWords = titleParts.slice(1).join(" ");
+
   return (
     <AnimatePresence>
       {showDeleteModal && (
@@ -27,7 +34,7 @@ const DeleteConfirmationModal = ({
             <div className="flex justify-end p-4">
               <button
                 onClick={handleCancelDelete}
-                className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                className="text-gray-400 hover:text-gray-800 hover:bg-gray-100 rounded-full p-2 transition-colors cursor-pointer"
               >
                 <X size={24} />
               </button>
@@ -41,11 +48,11 @@ const DeleteConfirmationModal = ({
 
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  Remove
-                  <span className="font-light"> Order</span>
+                  {firstWord}
+                  <span className="font-light"> {restWords}</span>
                 </h2>
                 <p className="text-gray-600 text-sm font-semibold opacity-60">
-                  You sure you want to remove this order?
+                  {description}
                 </p>
               </div>
 
@@ -60,7 +67,7 @@ const DeleteConfirmationModal = ({
                   onClick={handleConfirmDelete}
                   className="flex-1 px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition-colors cursor-pointer"
                 >
-                  Remove
+                  {buttonLabel}
                 </button>
               </div>
             </div>

@@ -197,7 +197,7 @@ export function ShopProvider({ children }) {
   };
 
   const DeleteRecordToast = () => {
-    toast.error("Record deleted successfully", {
+    toast.success("Record deleted successfully", {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,

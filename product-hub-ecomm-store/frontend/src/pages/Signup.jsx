@@ -127,12 +127,6 @@ function Signup() {
         password: formData.password,
       });
 
-      const data = response.data;
-
-      if (!data?.user || !data?.token) {
-        throw new Error("Invalid server response");
-      }
-
       // signup successful
       toast.success("Account created successfully! Please login.", {
         position: "top-right",
@@ -300,7 +294,7 @@ function Signup() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
+                  className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600 cursor-pointer"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -332,7 +326,7 @@ function Signup() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
+                  className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600 cursor-pointer"
                 >
                   {showConfirmPassword ? (
                     <EyeOff size={20} />

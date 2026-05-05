@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
+import { toast, Slide } from "react-toastify";
+import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");
@@ -24,6 +26,9 @@ function AdminPage() {
   const [errorLogin, setErrorLogin] = useState(null);
   const [errorSignup, setErrorSignup] = useState(null);
   const [errorGoogleLogin, setErrorGoogleLogin] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState(null);
+  const [deleteType, setDeleteType] = useState(null); // 'login' or 'signup'
   const navigate = useNavigate();
 
   const API_BASE_URL = "http://localhost:3000";
@@ -87,10 +92,24 @@ function AdminPage() {
     fetchSignupData();
   }, []);
 
-  const handleloginDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this Record?")) {
-      try {
-        await axios.delete(`${API_BASE_URL}/api/login/${id}`);
+  const handleloginDelete = (id) => {
+    setRecordToDelete(id);
+    setDeleteType("login");
+    setShowDeleteModal(true);
+  };
+
+  const handleSignupDelete = (id) => {
+    setRecordToDelete(id);
+    setDeleteType("signup");
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!recordToDelete || !deleteType) return;
+
+    try {
+      if (deleteType === "login") {
+        await axios.delete(`${API_BASE_URL}/api/login/${recordToDelete}`);
         // Refresh the login data after deletion
         const response = await axios.get(`${API_BASE_URL}/api/login`);
         const data = response.data;
@@ -99,17 +118,8 @@ function AdminPage() {
           timestamp: formatDate(record.timestamp),
         }));
         setLoginData(formattedData);
-      } catch (error) {
-        console.error("Error deleting login record:", error);
-      }
-      DeleteRecordToast();
-    }
-  };
-
-  const handleSignupDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this Record?")) {
-      try {
-        await axios.delete(`${API_BASE_URL}/api/signup/${id}`);
+      } else if (deleteType === "signup") {
+        await axios.delete(`${API_BASE_URL}/api/signup/${recordToDelete}`);
         // Refresh the signup data after deletion
         const response = await axios.get(`${API_BASE_URL}/api/signup`);
         const data = response.data;
@@ -118,11 +128,30 @@ function AdminPage() {
           createdAt: formatDate(record.createdAt),
         }));
         setSignupData(formattedData);
-      } catch (error) {
-        console.error("Error deleting signup record:", error);
       }
       DeleteRecordToast();
+    } catch (error) {
+      console.error("Error deleting record:", error);
+      toast.error(`Failed to delete ${deleteType} record. Please try again.`, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        transition: Slide,
+      });
+    } finally {
+      setShowDeleteModal(false);
+      setRecordToDelete(null);
+      setDeleteType(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false);
+    setRecordToDelete(null);
+    setDeleteType(null);
   };
 
   const handleLogout = () => {
@@ -362,6 +391,23 @@ function AdminPage() {
           )}
         </div>
       </div>
+
+      <DeleteConfirmationModal
+        showDeleteModal={showDeleteModal}
+        handleCancelDelete={handleCancelDelete}
+        handleConfirmDelete={handleConfirmDelete}
+        title={
+          deleteType === "login"
+            ? "Delete Login Record"
+            : "Delete Signup Record"
+        }
+        description={
+          deleteType === "login"
+            ? "Are you sure you want to delete this login record?"
+            : "Are you sure you want to delete this signup record?"
+        }
+        buttonLabel="Delete"
+      />
     </div>
   );
 }
