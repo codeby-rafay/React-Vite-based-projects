@@ -60,7 +60,6 @@ const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
           {/* Auth section for mobile */}
           <div className="border-t border-gray-100 pt-2 mt-2">
             {currentUser ? (
-              // ---- LOGGED IN: Show user info + saved + signout ----
               <>
                 {/* User info */}
                 <div className="px-4 py-2 mb-1">
@@ -95,7 +94,6 @@ const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
                 </button>
               </>
             ) : (
-              // ---- NOT LOGGED IN: Show Sign In link ----
               <Link
                 to="/login"
                 onClick={() => setMenuOpen(false)}
