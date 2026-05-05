@@ -74,6 +74,8 @@ async function googleLogin(req, res) {
       { expiresIn: "7d" },
     );
 
+    res.cookie("authToken", jwtToken);
+
     res.json({
       message: "Google login successful!",
       token: jwtToken,
@@ -114,9 +116,31 @@ async function signup(req, res) {
       email,
       password: hashedPassword,
     };
-    await signupModel.create(newUser);
+    const createdUser = await signupModel.create(newUser);
 
-    res.status(201).json({ message: "Account created successfully!" });
+    const token = jwt.sign(
+      {
+        id: createdUser._id,
+        fullName: createdUser.fullName,
+        email: createdUser.email,
+        role: createdUser.role || "user",
+      },
+      JWT_SECRET,
+      { expiresIn: "7d" },
+    );
+
+    res.cookie("authToken", token);
+
+    res.status(201).json({
+      message: "Account created successfully!",
+      user: {
+        id: createdUser._id,
+        fullName: createdUser.fullName,
+        email: createdUser.email,
+        role: createdUser.role || "user",
+      },
+      token,
+    });
   } catch (error) {
     res.status(500).json({ message: "Error creating account" });
   }
@@ -204,6 +228,8 @@ async function login(req, res) {
     JWT_SECRET,
     { expiresIn: "7d" },
   );
+
+  res.cookie("authToken", token);
 
   res.json({
     message: "Login successful!",
@@ -353,6 +379,12 @@ async function resetPassword(req, res) {
   }
 }
 
+// Logout
+async function logout(req, res) {
+  res.clearCookie("authToken");
+  res.status(200).json({ message: "Logout successfully" });
+}
+
 module.exports = {
   googleLogin,
   signup,
@@ -364,4 +396,5 @@ module.exports = {
   sendOTP,
   verifyOTP,
   resetPassword,
+  logout,
 };

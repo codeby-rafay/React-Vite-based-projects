@@ -50,7 +50,9 @@ function AdminPage() {
       try {
         setLoadingLogin(true);
         setErrorLogin(null);
-        const response = await axios.get(`${API_BASE_URL}/api/login`);
+        const response = await axios.get(`${API_BASE_URL}/api/login`, {
+          withCredentials: true,
+        });
         const data = response.data;
         const formattedData = data.logins.map((record) => ({
           ...record,
@@ -74,7 +76,9 @@ function AdminPage() {
       try {
         setLoadingSignup(true);
         setErrorSignup(null);
-        const response = await axios.get(`${API_BASE_URL}/api/signup`);
+        const response = await axios.get(`${API_BASE_URL}/api/signup`, {
+          withCredentials: true,
+        });
         const data = response.data;
         const formattedData = data.signups.map((record) => ({
           ...record,
@@ -109,9 +113,13 @@ function AdminPage() {
 
     try {
       if (deleteType === "login") {
-        await axios.delete(`${API_BASE_URL}/api/login/${recordToDelete}`);
+        await axios.delete(`${API_BASE_URL}/api/login/${recordToDelete}`, {
+          withCredentials: true,
+        });
         // Refresh the login data after deletion
-        const response = await axios.get(`${API_BASE_URL}/api/login`);
+        const response = await axios.get(`${API_BASE_URL}/api/login`, {
+          withCredentials: true,
+        });
         const data = response.data;
         const formattedData = data.logins.map((record) => ({
           ...record,
@@ -119,9 +127,13 @@ function AdminPage() {
         }));
         setLoginData(formattedData);
       } else if (deleteType === "signup") {
-        await axios.delete(`${API_BASE_URL}/api/signup/${recordToDelete}`);
+        await axios.delete(`${API_BASE_URL}/api/signup/${recordToDelete}`, {
+          withCredentials: true,
+        });
         // Refresh the signup data after deletion
-        const response = await axios.get(`${API_BASE_URL}/api/signup`);
+        const response = await axios.get(`${API_BASE_URL}/api/signup`, {
+          withCredentials: true,
+        });
         const data = response.data;
         const formattedData = data.signups.map((record) => ({
           ...record,

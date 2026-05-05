@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, LogOut } from "lucide-react";
+import axios from "axios";
 import { useShop } from "../../context/ShopContext";
 import { toast, Slide } from "react-toastify";
 
@@ -9,7 +10,17 @@ const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
 
   const hasSaved = savedItems.length > 0;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:3000/api/logout");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "An error occurred during logout."
+      );
+    }
+    
     logout();
     setMenuOpen(false);
     toast.success("You have been signed out.", {

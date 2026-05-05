@@ -6,13 +6,14 @@ const {
   updateOrderStatusAdmin,
   deleteOrderAdmin,
 } = require("../controllers/order.controller");
+const { authAdmin, authUser } = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
-router.post("/orders", createOrder);
-router.get("/orders/admin", getAllOrdersAdmin);
-router.get("/orders/user/:userId", getUserOrders);
-router.patch("/orders/admin/:orderId", updateOrderStatusAdmin);
-router.delete("/orders/admin/:orderId", deleteOrderAdmin);
+router.post("/orders", authUser, createOrder);
+router.get("/orders/admin", authAdmin, getAllOrdersAdmin);
+router.get("/orders/user/:userId", authUser, getUserOrders);
+router.patch("/orders/admin/:orderId", authAdmin, updateOrderStatusAdmin);
+router.delete("/orders/admin/:orderId", authAdmin, deleteOrderAdmin);
 
 module.exports = router;

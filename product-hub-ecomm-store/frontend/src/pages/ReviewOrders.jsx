@@ -49,7 +49,9 @@ const ReviewOrders = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_BASE_URL}/orders/admin`);
+      const response = await axios.get(`${API_BASE_URL}/orders/admin`, {
+        withCredentials: true,
+      });
 
       if (response.data?.orders) {
         setOrders(response.data.orders);
@@ -75,6 +77,9 @@ const ReviewOrders = () => {
         `${API_BASE_URL}/orders/admin/${orderId}`,
         {
           orderStatus: newStatus,
+        },
+        {
+          withCredentials: true,
         },
       );
 
@@ -114,7 +119,9 @@ const ReviewOrders = () => {
     if (!orderToDelete) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/orders/admin/${orderToDelete}`);
+      await axios.delete(`${API_BASE_URL}/orders/admin/${orderToDelete}`, {
+        withCredentials: true,
+      });
       setOrders(orders.filter((o) => o._id !== orderToDelete));
       setShowDeleteModal(false);
       setOrderToDelete(null);

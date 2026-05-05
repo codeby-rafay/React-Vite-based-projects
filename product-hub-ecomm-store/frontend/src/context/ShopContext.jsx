@@ -19,7 +19,6 @@ export function ShopProvider({ children }) {
   // this function runs after user successfully login
   const login = (userData, token) => {
     localStorage.setItem("currentUser", JSON.stringify(userData));
-    localStorage.setItem("authToken", token);
     setCurrentUser(userData);
 
     const userCart = localStorage.getItem(getCartKey(userData.id));
@@ -32,7 +31,6 @@ export function ShopProvider({ children }) {
   // called when user Sign out
   const logout = () => {
     localStorage.removeItem("currentUser");
-    localStorage.removeItem("authToken");
     setCurrentUser(null);
     setCartItems([]);
     setSavedItems([]);

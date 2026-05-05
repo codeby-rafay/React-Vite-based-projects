@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, ChevronDown, LogOut, Bookmark } from "lucide-react";
+import axios from "axios";
 import { useShop } from "../../context/ShopContext";
 import { toast, Slide } from "react-toastify";
 
@@ -20,7 +21,17 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:3000/api/logout");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "An error occurred during logout."
+      );
+    }
+    
     logout(); // Clears user from context and localStorage
     setDropdownOpen(false);
     toast.success("You have been signed out.", {
@@ -38,7 +49,7 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
   const hasSaved = savedItems.length > 0;
 
   return (
-    <div className="hidden md:flex items-center gap-1 ml-auto">
+    <div className="hidden md:flex items-center ml-auto gap-1">
       {navLinks
         .filter((link) => link.name !== "Saved")
         .map((link) => (

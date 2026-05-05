@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { getProductsByCategory } from "../api/products";
 import ProductCard from "../components/ProductCard";
 import { Loading, ErrorMessage } from "../components/LoadingError";
+import { ArrowLeft } from "lucide-react";
 
 function CategoryProducts() {
   const { slug } = useParams(); // get category slug from URL
@@ -84,9 +85,9 @@ function CategoryProducts() {
       <div className="mt-10">
         <Link
           to="/categories"
-          className="inline-flex items-center gap-2 text-orange-500 hover:text-orange-600 font-bold text-lg"
+          className="inline-flex items-center gap-2 text-orange-500 hover:text-orange-700 hover:underline font-bold text-lg"
         >
-          ← Back to Categories
+          <ArrowLeft size={24} strokeWidth={2} /> <span>Back to Categories</span>
         </Link>
       </div>
     </div>
