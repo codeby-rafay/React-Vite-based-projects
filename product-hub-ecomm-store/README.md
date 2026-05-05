@@ -1,10 +1,10 @@
-# Product Hub E-Commerce Store
+# ProductHub E-Commerce Store
 
 A modern, full-stack e-commerce application built with React and Vite frontend, and Node.js/Express backend. Browse, search, explore products across categories, and enjoy a personalized shopping experience with user authentication and user-specific cart and saved items.
 
 ## Features
 
-- **User Authentication**: Secure login and signup with JWT tokens and password hashing
+- **User Authentication**: Secure login with JWT tokens + password hashing (signup creates the account; login issues the JWT)
 - **Role-Based Access Control**: Admin and user roles with protected admin routes
 - **Admin Dashboard**: Comprehensive admin panel for managing users and viewing activity
 - **User-Specific Storage**: Each user's cart and saved items are isolated and persist across sessions
@@ -18,6 +18,10 @@ A modern, full-stack e-commerce application built with React and Vite frontend, 
 - **Responsive Design**: Mobile-friendly interface using Tailwind CSS
 - **Fast Performance**: Built with Vite for optimal development and production performance
 - **Modern UI**: Clean and intuitive user interface with icons from Lucide React
+- **Animated Modals**: Beautiful confirmation dialogs using Framer Motion for delete actions
+- **Toast Notifications**: Real-time feedback with React Toastify for all user actions
+- **Google Authentication**: Quick login and registration with Google OAuth
+- **Password Reset**: Secure OTP-based password recovery via email
 - **Navigation**: Easy navigation between pages (Home, Products, Categories, About, Contact, Saved, Login, Signup, Admin Dashboard)
 
 ## Tech Stack
@@ -88,7 +92,7 @@ Data is persisted to localStorage automatically whenever cart or saved items cha
 ### Authentication
 - **Sign Up**: Create a new account with your full name, email, and password
 - **Login**: Sign in with your email and password to access your personalized account
-- **Secure**: Passwords are hashed using bcryptjs; authentication uses JWT tokens
+- **Secure**: Passwords are hashed using bcryptjs; login (email/password or Google) issues JWT tokens
 - **User Session**: Stay logged in across browser sessions; logout removes your session
 - **User-Specific Data**: Each user's cart and saved items are completely isolated
 
@@ -131,6 +135,7 @@ product-hub-ecomm-store/
 │       │   ├── SearchBar.jsx              # Search functionality
 │       │   ├── LoadingError.jsx           # Loading and error states
 │       │   ├── ProtectedAdminRoute.jsx    # Admin route protection component
+│       │   ├── DeleteConfirmationModal.jsx # Reusable delete confirmation modal with animations
 │       │   ├── NavbarComponents/          # Navbar sub-components
 │       │   ├── CartPanelComponents/       # Cart panel UI components
 │       │   ├── HomePageComponents/        # Home page specific components
@@ -159,7 +164,7 @@ product-hub-ecomm-store/
 │       ├── App.css                        # App styles
 │       └── index.css                      # Global styles
 │
-└── auth-backend/                   # Express.js authentication server
+└── backend/                        # Express.js API + authentication server
     ├── server.js                   # Main server file
     ├── package.json                # Backend dependencies
     ├── src/
@@ -167,7 +172,8 @@ product-hub-ecomm-store/
     │   ├── db/                     # Database configuration
     │   └── models/
     │       ├── signup.model.js     # User schema with role field
-    │       └── login.model.js      # Login history schema
+    │       ├── login.model.js      # Login history schema
+    │       └── order.model.js      # Order schema for e-commerce orders
 ```
 
 ## API Integration
@@ -182,11 +188,42 @@ This application uses the [DummyJSON API](https://dummyjson.com) for data:
 
 ## Installation
 
+### Environment Setup
+
+#### Backend `.env` file (in `backend/` folder):
+
+```env
+# MongoDB Connection
+MONGODB_URI=your_mongodb_connection_string
+
+# JWT Configuration
+JWT_SECRET=your_secret_key_here
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your_google_client_id
+
+# Email Configuration (for OTP password reset)
+EMAIL_USER=your_gmail_address@gmail.com
+EMAIL_PASSWORD=your_gmail_app_password
+```
+
+#### Frontend `.env` file (in `frontend/` folder):
+
+```env
+# Google OAuth
+VITE_GOOGLE_CLIENT_ID=your_google_client_id
+```
+
+**Note**: 
+- For Google OAuth, create credentials at [Google Cloud Console](https://console.cloud.google.com)
+- For email, use Gmail with an [App Password](https://myaccount.google.com/apppasswords) (not your regular password)
+- The `GOOGLE_CLIENT_ID` should be the same in both backend and frontend `.env` files
+
 ### Backend Setup (Authentication Server)
 
-1. Navigate to the auth-backend folder:
+1. Navigate to the backend folder:
    ```bash
-   cd auth-backend
+   cd backend
    ```
 
 2. Install dependencies:
@@ -196,12 +233,20 @@ This application uses the [DummyJSON API](https://dummyjson.com) for data:
 
 3. Start the backend server:
    ```bash
-   node server.js
+   npm run start
+   ```
+
+   Or for development (auto-restart):
+   ```bash
+   npm run dev
    ```
    
    The server will start at `http://localhost:3000` with the following endpoints:
    - `POST http://localhost:3000/api/signup` - Register a new user
    - `POST http://localhost:3000/api/login` - Login user
+   - `POST http://localhost:3000/api/google-login` - Login/register with Google
+   - `GET/POST http://localhost:3000/api/orders` - Manage orders
+   - `PATCH/DELETE http://localhost:3000/api/orders/:orderId` - Update/delete an order
 
 ### Frontend Setup
 
@@ -217,11 +262,20 @@ This application uses the [DummyJSON API](https://dummyjson.com) for data:
 
 ## Development
 
-Start the development server with Hot Module Replacement (HMR):
+For local development, run the backend and frontend in separate terminals.
 
-```bash
-npm run dev
-```
+1. Start backend (Terminal 1):
+   ```bash
+   cd backend
+   npm run dev or node server.js
+   ```
+
+2. Start frontend with Hot Module Replacement (HMR) (Terminal 2):
+
+   ```bash
+   cd frontend
+   npm run dev
+   ```
 
 The application will be available at `http://localhost:5173`
 
@@ -230,6 +284,7 @@ The application will be available at `http://localhost:5173`
 Build the project for production:
 
 ```bash
+cd frontend
 npm run build
 ```
 
@@ -240,6 +295,7 @@ This creates an optimized production build in the `dist/` directory.
 Preview the production build locally:
 
 ```bash
+cd frontend
 npm run preview
 ```
 
@@ -248,6 +304,7 @@ npm run preview
 Run ESLint to check for code quality issues:
 
 ```bash
+cd frontend
 npm run lint
 ```
 
@@ -267,10 +324,27 @@ npm run lint
 - `/admin/dashboard` - Admin dashboard (admin-only, protected route)
 
 **Backend API Endpoints:**
+
+*Authentication:*
 - `POST /api/signup` - Register new user
 - `POST /api/login` - Login user and receive JWT token
+- `POST /api/google-login` - Login/register with Google
+- `POST /api/send-otp` - Send OTP to email for password reset
+- `POST /api/verify-otp` - Verify OTP sent to email
+- `POST /api/reset-password` - Reset password using OTP
+
+*Admin Records:*
 - `GET /api/signup` - Fetch all signup records (admin)
+- `DELETE /api/signup/:id` - Delete signup record (admin)
 - `GET /api/login` - Fetch all login records (admin)
+- `DELETE /api/login/:id` - Delete login record (admin)
+
+*Orders:*
+- `POST /api/orders` - Create new order
+- `GET /api/orders` - Fetch all orders
+- `GET /api/orders/:userId` - Fetch orders for specific user
+- `PATCH /api/orders/:orderId` - Update order status
+- `DELETE /api/orders/:orderId` - Delete order
 
 ## Features in Detail
 
@@ -278,19 +352,29 @@ npm run lint
 The application includes a complete authentication system with:
 - **Signup**: Create new accounts with email and password
 - **Login**: Secure login with JWT token generation
+- **Google Login**: Quick login/registration using Google OAuth
 - **Password Security**: Passwords are hashed using bcryptjs before storage
 - **Session Management**: Tokens stored in localStorage for persistent sessions
 - **User Isolation**: Each user's data is completely isolated from others
 - **Role-Based Access**: Admin and user roles for authorization
 
+### Password Reset
+Users can securely reset forgotten passwords:
+- **Send OTP**: Request password reset link via email
+- **Verify OTP**: Validate OTP received in email
+- **Reset Password**: Set a new password using verified OTP
+- **Email Integration**: Secure OTP delivery via Nodemailer
+
 ### Admin Dashboard
 The admin dashboard is a powerful management tool with:
 - **Admin-Only Access**: Protected route that only users with admin role can access
 - **Role-Based Authentication**: JWT tokens verify admin authorization
-- **Login History**: View all user login records with timestamps and email addresses
-- **Signup Management**: Track all user registrations with full details and creation dates
+- **Login History**: View all user login records with timestamps and email addresses (with delete confirmation modal)
+- **Signup Management**: Track all user registrations with full details and creation dates (with delete confirmation modal)
 - **User Management**: View comprehensive information about all registered users
 - **Data Overview**: Get insights into user activity and account creation patterns
+- **Delete Confirmation**: Beautiful modal dialogs for confirming destructive actions
+- **Success/Error Toasts**: Real-time feedback for all admin operations
 - **Secure Interface**: Separate admin interface isolated from regular user features
 
 ### Product Search
@@ -328,17 +412,21 @@ Users can save their favorite products to view later:
 ### Responsive Layout
 The application adapts perfectly to different screen sizes, from mobile phones to desktop computers.
 
+### Delete Confirmation Modal
+A reusable, animated confirmation dialog component for destructive actions:
+- **Beautiful Animations**: Framer Motion animations for smooth transitions
+- **Customizable Text**: Title, description, and button labels can be configured per use case
+- **Backdrop Blur**: Professional blur effect on background when modal opens
+- **Icon Display**: Trash icon for visual confirmation of delete action
+- **Used in**: Order deletion (ReviewOrders page) and Admin data deletion (login/signup records)
+- **Toast Notifications**: Success or error toasts shown after confirmation
+
 ## Browser Support
 
 This application works on all modern browsers that support ES6+.
 
 ## Future Enhancements
 
-- **User authentication and accounts** (Implemented)
-- **User-specific cart and saved items** (Implemented)
-- **Product auto-scroll on page load** (Implemented)
-- **Admin dashboard with role-based access** (Implemented)
-- **Login and signup history tracking** (Implemented)
 - Advanced product filters and sorting options
 - Product reviews and ratings submission
 - Checkout and payment integration (Stripe/PayPal)
@@ -346,8 +434,6 @@ This application works on all modern browsers that support ES6+.
 - Product recommendations based on browsing history
 - Dark mode support
 - Multi-language support
-- Email verification during signup
-- Password reset functionality
 - User profile management and editing
 - Wishlist sharing with other users
 - Product comparison feature
