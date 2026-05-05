@@ -1,37 +1,67 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, AlignCenter } from "lucide-react";
 import { toast, Slide } from "react-toastify";
 import axios from "axios";
 import { useShop } from "../context/ShopContext";
+import { useGoogleSignIn } from "../hooks/useGoogleSignIn";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const googleInitialized = useRef(false);
 
   const { login, FillAllFieldsToast, EnterValidEmailToast, Welcometoast } =
     useShop();
 
-  // Initialize Google Sign-In
-  useEffect(() => {
-    if (window.google && !googleInitialized.current) {
-      googleInitialized.current = true;
+  const handleGoogleResponse = useCallback(
+    async (response) => {
+      try {
+        const token = response.credential;
 
-      google.accounts.id.initialize({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        callback: handleGoogleResponse,
-      });
+        // send token to backend using axios
+        const res = await axios.post("http://localhost:3000/api/google-login", {
+          token,
+        });
 
-      google.accounts.id.renderButton(document.getElementById("googleBtn"), {
-        theme: "outline",
-        size: "large",
-        width: "6",
-      });
-    }
-  }, []);
+        const data = res.data;
+
+        if (!data?.user || !data?.token) {
+          throw new Error("Invalid server response");
+        }
+
+        // Save user info using our login function from context
+        login(data.user, data.token);
+
+        Welcometoast(data.user);
+
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          navigate("/");
+        }, 100);
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            error.message ||
+            "Google login failed",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            transition: Slide,
+          },
+        );
+      }
+    },
+    [login, navigate, Welcometoast],
+  );
+
+  // Initialize Google Sign-In globally (only once)
+  useGoogleSignIn(handleGoogleResponse, "googleBtn");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,46 +130,6 @@ function Login() {
       );
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleGoogleResponse = async (response) => {
-    try {
-      const token = response.credential;
-
-      // send token to backend using axios
-      const res = await axios.post("http://localhost:3000/api/google-login", {
-        token,
-      });
-
-      const data = res.data;
-
-      if (!data?.user || !data?.token) {
-        throw new Error("Invalid server response");
-      }
-
-      // Save user info using our login function from context
-      login(data.user, data.token);
-
-      Welcometoast(data.user);
-
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        navigate("/");
-      }, 100);
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message || error.message || "Google login failed",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          transition: Slide,
-        },
-      );
     }
   };
 
@@ -253,7 +243,10 @@ function Login() {
 
           {/* Google Button */}
           <div className="space-y-3">
-            <div id="googleBtn" className="w-full flex items-center justify-center"></div>
+            <div
+              id="googleBtn"
+              className="w-full flex items-center justify-center"
+            ></div>
           </div>
         </div>
 
