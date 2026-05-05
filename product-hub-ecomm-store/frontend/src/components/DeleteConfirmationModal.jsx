@@ -2,7 +2,11 @@ import React from "react";
 import { X, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const DeleteConfirmationModal = ({ showDeleteModal, handleCancelDelete, handleConfirmDelete }) => {
+const DeleteConfirmationModal = ({
+  showDeleteModal,
+  handleCancelDelete,
+  handleConfirmDelete,
+}) => {
   return (
     <AnimatePresence>
       {showDeleteModal && (
@@ -20,7 +24,6 @@ const DeleteConfirmationModal = ({ showDeleteModal, handleCancelDelete, handleCo
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            {/* Close Button */}
             <div className="flex justify-end p-4">
               <button
                 onClick={handleCancelDelete}
@@ -32,12 +35,10 @@ const DeleteConfirmationModal = ({ showDeleteModal, handleCancelDelete, handleCo
 
             {/* Modal Content */}
             <div className="py-4 sm:py-12 px-8 sm:px-12 flex flex-col items-center justify-center gap-7">
-              {/* Icon */}
               <div className="bg-red-100 rounded-full p-4">
                 <Trash2 size={48} className="text-red-600" />
               </div>
 
-              {/* Content */}
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">
                   Remove
@@ -48,7 +49,6 @@ const DeleteConfirmationModal = ({ showDeleteModal, handleCancelDelete, handleCo
                 </p>
               </div>
 
-              {/* Buttons */}
               <div className="flex justify-center gap-3 w-full">
                 <button
                   onClick={handleCancelDelete}

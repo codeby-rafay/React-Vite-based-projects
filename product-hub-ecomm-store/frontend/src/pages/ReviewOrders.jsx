@@ -55,7 +55,6 @@ const ReviewOrders = () => {
         setOrders(response.data.orders);
       }
     } catch (error) {
-      console.error("Error fetching orders:", error);
       toast.error("Failed to load orders", {
         position: "top-right",
         autoClose: 3000,
