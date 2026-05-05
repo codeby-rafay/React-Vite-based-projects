@@ -46,7 +46,7 @@ A modern, full-stack e-commerce application built with React and Vite frontend, 
 - **Password Security**: bcryptjs for password hashing
 - **CORS**: Enabled for frontend communication
 - **Role-Based Access**: User roles (admin/user) for authorization
-- **Admin Features**: Login history tracking and user management
+- **Admin Features**: Login/signup history tracking and order management
 
 ## State Management
 
