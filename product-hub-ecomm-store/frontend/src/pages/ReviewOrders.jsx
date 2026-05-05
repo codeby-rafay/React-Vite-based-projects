@@ -293,6 +293,30 @@ const ReviewOrders = () => {
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between">
               <div>
+                <p className="text-gray-500 text-sm font-medium">Delivered</p>
+                <p className="text-3xl font-bold text-green-500 mt-2">
+                  {orders.filter((o) => o.orderStatus === "delivered").length}
+                </p>
+              </div>
+              <Package size={32} className="text-green-500 opacity-20" />
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-500 text-sm font-medium">Cancelled</p>
+                <p className="text-3xl font-bold text-red-500 mt-2">
+                  {orders.filter((o) => o.orderStatus === "cancelled").length}
+                </p>
+              </div>
+              <Package size={32} className="text-red-500 opacity-20" />
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
                 <p className="text-gray-500 text-sm font-medium">
                   Total Revenue
                 </p>
