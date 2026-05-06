@@ -14,7 +14,7 @@ const Saved = lazy(() => import("./pages/Saved"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
-const ReviewOrders = lazy(() => import("./pages/ReviewOrders"));
+const ReviewOrdersAdmin = lazy(() => import("./pages/ReviewOrdersAdmin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
@@ -60,7 +60,7 @@ function App() {
               path="/admin/order-reviews"
               element={
                 <ProtectedAdminRoute>
-                  <ReviewOrders />
+                  <ReviewOrdersAdmin />
                 </ProtectedAdminRoute>
               }
             />

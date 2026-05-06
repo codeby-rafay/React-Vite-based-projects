@@ -19,7 +19,7 @@ import OrderSearchBar from "../components/OrderSearchBar";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { toast, Slide } from "react-toastify";
 
-const ReviewOrders = () => {
+const ReviewOrdersAdmin = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedOrderId, setExpandedOrderId] = useState(null);
@@ -635,4 +635,4 @@ const ReviewOrders = () => {
   );
 };
 
-export default ReviewOrders;
+export default ReviewOrdersAdmin;
