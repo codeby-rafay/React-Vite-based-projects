@@ -5,7 +5,7 @@ const BrowseProductBtn = () => {
     <div>
       <Link
         to="/products"
-        className="bg-orange-500 hover:bg-orange-600 text-white px-4 sm:px-8 py-3.5 rounded-xl font-semibold text-sm transition-colors whitespace-nowrap"
+        className="bg-orange-500 hover:bg-orange-700 text-white px-4 sm:px-8 py-3.5 rounded-xl font-semibold text-sm transition-all whitespace-nowrap"
       >
         Browse All Products
       </Link>

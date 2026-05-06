@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const Cards = ({ categoryIcons, categories, formatName }) => {
   return (
@@ -15,8 +16,8 @@ const Cards = ({ categoryIcons, categories, formatName }) => {
               {formatName(slug)}
             </h3>
             {/* Arrow */}
-            <div className="text-orange-400 text-xs mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              Browse →
+            <div className="text-orange-400 flex items-center gap-1 text-xs mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              Browse <ArrowRight size={14} strokeWidth={2} />
             </div>
           </div>
         </Link>

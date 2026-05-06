@@ -5,12 +5,17 @@ const ShopbyCategoryBtn = () => {
     <div>
       <Link
         to="/categories"
-        className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 px-4 sm:px-8 py-3.5 rounded-xl font-semibold text-sm transition-colors whitespace-nowrap"
+        className="relative overflow-hidden inline-flex items-center justify-center bg-white text-gray-700 border border-gray-200 px-4 sm:px-8 py-3.5 rounded-xl font-semibold text-sm whitespace-nowrap group"
       >
-        Shop by Category
+        {/* Animated background */}
+        <span className="absolute inset-0 bg-gray-900 rounded-xl transform -translate-x-full group-hover:translate-x-0 transition-transform duration-400 ease-in-out"></span>
+
+        <span className="relative z-10 group-hover:text-white">
+          Shop by Category
+        </span>
       </Link>
     </div>
   );
 };
 
-export default ShopbyCategoryBtn ;
+export default ShopbyCategoryBtn;

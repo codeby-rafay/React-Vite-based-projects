@@ -37,7 +37,7 @@ function Footer() {
               <li>
                 <Link
                   to="/"
-                  className="hover:text-orange-400 transition-colors hover:translate-x-1 inline-block"
+                  className="hover:text-orange-400 transition-all hover:translate-x-1 inline-block"
                 >
                   Home
                 </Link>
@@ -45,7 +45,7 @@ function Footer() {
               <li>
                 <Link
                   to="/products"
-                  className="hover:text-orange-400 transition-colors hover:translate-x-1 inline-block"
+                  className="hover:text-orange-400 transition-all hover:translate-x-1 inline-block"
                 >
                   All Products
                 </Link>
@@ -53,7 +53,7 @@ function Footer() {
               <li>
                 <Link
                   to="/categories"
-                  className="hover:text-orange-400 transition-colors hover:translate-x-1 inline-block"
+                  className="hover:text-orange-400 transition-all hover:translate-x-1 inline-block"
                 >
                   Categories
                 </Link>
@@ -61,7 +61,7 @@ function Footer() {
               <li>
                 <Link
                   to="/about"
-                  className="hover:text-orange-400 transition-colors hover:translate-x-1 inline-block"
+                  className="hover:text-orange-400 transition-all hover:translate-x-1 inline-block"
                 >
                   About Us
                 </Link>
@@ -69,7 +69,7 @@ function Footer() {
               <li>
                 <Link
                   to="/contact"
-                  className="hover:text-orange-400 transition-colors hover:translate-x-1 inline-block"
+                  className="hover:text-orange-400 transition-all hover:translate-x-1 inline-block"
                 >
                   Contact
                 </Link>
@@ -81,14 +81,14 @@ function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">About This App</h4>
             <p className="text-sm text-gray-400 leading-relaxed">
-              Product Hub is a modern e-commerce web application where users can
+              ProductHub is a modern e-commerce web application where users can
               explore, search, and browse products across different categories.
             </p>
           </div>
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-6 text-center text-xs text-gray-500">
-          © 2026 Producthub. All rights reserved.
+          © 2026 ProductHub. All rights reserved.
         </div>
       </div>
     </footer>

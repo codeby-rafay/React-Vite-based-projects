@@ -34,7 +34,7 @@ function About() {
           Your Online Shopping Destination
         </h1>
         <p className="mt-4 text-gray-500 leading-relaxed max-w-xl mx-auto">
-          Product Hub is a modern e-commerce web application where users can
+          ProductHub is a modern e-commerce web application where users can
           explore, search, and browse products across different categories. It
           provides a smooth and responsive shopping experience with clean UI and
           fast performance.
@@ -71,7 +71,7 @@ function About() {
         <h2 className="text-lg font-bold text-orange-800 mb-3">Our Mission</h2>
         <p className="text-sm text-orange-700 leading-relaxed">
           Our goal is to provide a simple, fast, and user-friendly platform for
-          users to explore products online. Product Hub focuses on delivering a
+          users to explore products online. ProductHub focuses on delivering a
           smooth browsing experience with modern web technologies and scalable
           architecture.
         </p>

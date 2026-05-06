@@ -18,8 +18,14 @@ function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { FillAllFieldsToast, EnterValidEmailToast, Welcometoast, login } =
-    useShop();
+  const {
+    FillAllFieldsToast,
+    EnterValidEmailToast,
+    Welcometoast,
+    login,
+    PasswordLengthToast,
+    PasswordNotMatchToast,
+  } = useShop();
 
   // Define Google response handler with useCallback
   const handleGoogleResponse = useCallback(
@@ -113,28 +119,12 @@ function Signup() {
     }
 
     if (formData.password.length < 6) {
-      toast.error("Password must be at least 6 characters", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      PasswordLengthToast();
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      PasswordNotMatchToast();
       return;
     }
 

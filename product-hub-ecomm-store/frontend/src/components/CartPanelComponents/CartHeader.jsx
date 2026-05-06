@@ -12,7 +12,7 @@ const CartHeader = ({handleClose, cartCount}) => {
         </h2>
         <button
           onClick={handleClose}
-          className="text-gray-400 hover:text-gray-600 transition-colors hover:bg-gray-200 rounded-md cursor-pointer"
+          className="text-gray-400 hover:text-gray-600 p-1 transition-colors hover:bg-gray-200 rounded-lg cursor-pointer"
         >
           <X size={22} />
         </button>

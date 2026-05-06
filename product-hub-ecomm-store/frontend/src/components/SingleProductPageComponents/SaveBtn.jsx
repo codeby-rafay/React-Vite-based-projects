@@ -21,7 +21,7 @@ const SaveBtn = ({ product }) => {
         className={`py-3 px-4 flex items-center gap-2 cursor-pointer rounded-xl transition-colors ${
           saved
             ? "bg-red-100 hover:bg-red-200 text-red-600"
-            : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+            : "bg-gray-200 hover:bg-gray-300 text-gray-900"
         }`}
       >
         <img

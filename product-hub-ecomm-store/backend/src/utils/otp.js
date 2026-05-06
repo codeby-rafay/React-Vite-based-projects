@@ -24,16 +24,16 @@ const sendOTPEmail = async (email, otp) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "Password Reset OTP - Product Hub",
+      subject: "Password Reset OTP - ProductHub",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #ff9500 0%, #ffb84d 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
-            <h1 style="color: white; margin: 0;">Product Hub</h1>
+            <h1 style="color: white; margin: 0;">ProductHub</h1>
           </div>
           <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px;">
             <h2 style="color: #1f2937; margin-bottom: 20px;">Password Reset Request</h2>
             <p style="color: #6b7280; line-height: 1.6; margin-bottom: 20px;">
-              You requested a password reset for your Product Hub account. 
+              You requested a password reset for your ProductHub account. 
               Use the OTP below to verify your identity and reset your password.
             </p>
             <div style="background: white; border: 2px solid #ff9500; border-radius: 8px; padding: 20px; text-align: center; margin: 30px 0;">
@@ -48,7 +48,7 @@ const sendOTPEmail = async (email, otp) => {
             </p>
             <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
             <p style="color: #9ca3af; font-size: 12px; text-align: center; margin: 0;">
-              © 2024 Product Hub. All rights reserved.
+              © 2026 ProductHub. All rights reserved.
             </p>
           </div>
         </div>
@@ -58,12 +58,12 @@ const sendOTPEmail = async (email, otp) => {
     await transporter.sendMail(mailOptions);
     return true;
   } catch (error) {
-    console.error("Error sending OTP email:", error);
+    console.error("Error sending OTP Email:", error);
     throw error;
   }
 };
 
-// Store OTP with expiration (10 minutes)
+// expiration of OTP (10 minutes)
 const storeOTP = (email, otp) => {
   const expirationTime = Date.now() + 10 * 60 * 1000; // 10 minutes
   otpStore.set(email, {
@@ -77,19 +77,31 @@ const verifyOTP = (email, otp) => {
   const stored = otpStore.get(email);
 
   if (!stored) {
-    return { valid: false, message: "OTP not found. Please request a new OTP." };
+    return {
+      valid: false,
+      message: "OTP not found. Please request a new OTP.",
+    };
   }
 
   if (Date.now() > stored.expiresAt) {
     otpStore.delete(email);
-    return { valid: false, message: "OTP has expired. Please request a new OTP." };
+    return {
+      valid: false,
+      message: "OTP has expired. Please request a new OTP.",
+    };
   }
 
   if (stored.otp !== otp) {
-    return { valid: false, message: "Invalid OTP. Please try again." };
+    return {
+      valid: false,
+      message: "Invalid OTP. Please try again.",
+    };
   }
 
-  return { valid: true, message: "OTP verified successfully." };
+  return {
+    valid: true,
+    message: "OTP verified successfully.",
+  };
 };
 
 // Clear OTP after verification

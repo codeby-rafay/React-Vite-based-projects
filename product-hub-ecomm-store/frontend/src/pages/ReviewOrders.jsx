@@ -230,9 +230,9 @@ const ReviewOrders = () => {
     <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 p-4 md:p-8">
       <button
         onClick={() => navigate("/admin/dashboard")}
-        className="flex items-center cursor-pointer text-2xl gap-1 text-orange-500 hover:text-orange-600 font-semibold transition-colors hover:underline"
+        className="flex items-center cursor-pointer text-2xl gap-1 hover:-translate-x-2 transition-all text-orange-500 hover:text-orange-700 font-semibold hover:underline"
       >
-        <ArrowLeft size={24} strokeWidth={2} /> Back
+        <ArrowLeft size={24} strokeWidth={2} /> <span>Back</span>
       </button>
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-6">

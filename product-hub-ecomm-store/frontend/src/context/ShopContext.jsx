@@ -218,6 +218,30 @@ export function ShopProvider({ children }) {
     });
   };
 
+  const PasswordLengthToast = () => {
+    toast.error("Password must be at least 6 characters", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      transition: Slide,
+    });
+  };
+
+  const PasswordNotMatchToast = () => {
+    toast.error("Passwords do not match", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      transition: Slide,
+    });
+  };
+
   return (
     <ShopContext.Provider
       value={{
@@ -243,6 +267,8 @@ export function ShopProvider({ children }) {
         EnterValidEmailToast,
         DeleteRecordToast,
         Welcometoast,
+        PasswordLengthToast,
+        PasswordNotMatchToast,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Home, ShoppingBag, HelpCircle } from "lucide-react";
+import { Home, ShoppingBag, HelpCircle, ArrowRight } from "lucide-react";
 
 function NotFound() {
   return (
@@ -32,7 +32,7 @@ function NotFound() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
           <Link
             to="/"
-            className="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 hover:shadow-lg hover:-translate-y-1"
+            className="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-200 hover:shadow-lg hover:-translate-y-2"
           >
             <Home size={20} />
             Go to Home
@@ -40,10 +40,15 @@ function NotFound() {
 
           <Link
             to="/products"
-            className="inline-flex items-center justify-center gap-2 border-2 border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold py-4 px-8 rounded-xl transition-all duration-200"
+            className="relative overflow-hidden inline-flex items-center justify-center gap-2 border-2 border-orange-500 text-orange-500 font-semibold py-4 px-8 rounded-xl group"
           >
-            <ShoppingBag size={20} />
-            Continue Shopping
+            {/* Animated background */}
+            <span className="absolute inset-0 bg-orange-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-600 ease-in-out"></span>
+
+            <span className="relative z-10 flex items-center gap-2 group-hover:text-white">
+              <ShoppingBag size={20} />
+              Continue Shopping
+            </span>
           </Link>
         </div>
 
@@ -58,9 +63,12 @@ function NotFound() {
           </p>
           <Link
             to="/contact"
-            className="text-orange-500 hover:text-orange-600 font-semibold text-sm"
+            className="text-orange-500 hover:text-orange-600 font-semibold text-sm flex gap-1 hover:translate-x-2 transition-all items-center justify-center"
           >
-            Contact Us →
+            Contact Us{" "}
+            <span>
+              <ArrowRight size={16} />
+            </span>
           </Link>
         </div>
 

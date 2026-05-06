@@ -3,6 +3,7 @@ import { Mail, ArrowLeft, Loader, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast, Slide } from "react-toastify";
 import axios from "axios";
+import { useShop } from "../context/ShopContext";
 
 const ResetPassword = () => {
   const [step, setStep] = useState(1); // 1: Email, 2: OTP Verification, 3: New Password
@@ -13,6 +14,12 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const {
+    EnterValidEmailToast,
+    FillAllFieldsToast,
+    PasswordLengthToast,
+    PasswordNotMatchToast,
+  } = useShop;
   const navigate = useNavigate();
 
   const API_BASE_URL = "http://localhost:3000/api";
@@ -36,15 +43,7 @@ const ResetPassword = () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      toast.error("Please enter a valid email address", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      EnterValidEmailToast();
       return;
     }
 
@@ -53,7 +52,7 @@ const ResetPassword = () => {
       await axios.post(`${API_BASE_URL}/send-otp`, { email });
 
       setStep(2);
-      toast.success("OTP sent to your email! Check spam folder if needed.", {
+      toast.success("OTP sent to your Email. Check spam folder if needed.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -149,41 +148,22 @@ const ResetPassword = () => {
     e.preventDefault();
 
     if (!newPassword.trim() || !confirmPassword.trim()) {
-      toast.error("Please fill in all fields", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      FillAllFieldsToast();
       return;
     }
 
     if (newPassword.length < 6) {
-      toast.error("Password must be at least 6 characters", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      PasswordLengthToast();
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      PasswordLengthToast();
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      PasswordNotMatchToast();
       return;
     }
 
@@ -195,7 +175,7 @@ const ResetPassword = () => {
         newPassword,
       });
 
-      toast.success("Password reset successfully! Redirecting to login...", {
+      toast.success("Password reset successfully!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -232,7 +212,9 @@ const ResetPassword = () => {
           className="absolute top-10 left-5 mb-6 flex cursor-pointer hover:underline items-center gap-2 text-orange-500 hover:text-orange-700 text-xl font-bold transition-colors"
         >
           <ArrowLeft size={24} />
-          Back to Login
+          <span className="hover:translate-x-1 transition-all inline-block">
+            Back to Login
+          </span>
         </button>
 
         {/* Header */}
