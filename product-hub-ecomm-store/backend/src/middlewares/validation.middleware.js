@@ -42,8 +42,44 @@ const googleLoginValidationRules = [
   validateResult,
 ];
 
+const sendOTPValidationRules = [
+  body("email").isEmail().withMessage("Please enter a valid email address"),
+
+  validateResult,
+];
+
+const verifyOTPValidationRules = [
+  body("email").isEmail().withMessage("Please enter a valid email address"),
+
+  body("otp")
+    .isLength({ min: 4, max: 6 })
+    .withMessage("OTP must be 4–6 digits")
+    .isNumeric()
+    .withMessage("OTP must contain only numbers"),
+
+  validateResult,
+];
+
+const resetPasswordValidationRules = [
+  body("email").isEmail().withMessage("Please enter a valid email address"),
+
+  body("otp")
+    .isLength({ min: 4, max: 6 })
+    .isNumeric()
+    .withMessage("Invalid OTP"),
+
+  body("newPassword")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters long"),
+
+  validateResult,
+];
+
 module.exports = {
   signupValidationRules,
   loginValidationRules,
   googleLoginValidationRules,
+  sendOTPValidationRules,
+  verifyOTPValidationRules,
+  resetPasswordValidationRules,
 };

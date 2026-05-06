@@ -24,7 +24,11 @@ const ResetPassword = () => {
     if (!email.trim()) {
       toast.error("Please enter your email address", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
       return;
@@ -34,7 +38,11 @@ const ResetPassword = () => {
     if (!emailRegex.test(email)) {
       toast.error("Please enter a valid email address", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
       return;
@@ -47,7 +55,11 @@ const ResetPassword = () => {
       setStep(2);
       toast.success("OTP sent to your email! Check spam folder if needed.", {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
     } catch (error) {
@@ -56,7 +68,11 @@ const ResetPassword = () => {
         "Failed to send OTP. Please try again.";
       toast.error(errorMsg, {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
     } finally {
@@ -71,7 +87,11 @@ const ResetPassword = () => {
     if (!otp.trim()) {
       toast.error("Please enter the OTP", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
       return;
@@ -80,7 +100,11 @@ const ResetPassword = () => {
     if (otp.length !== 6) {
       toast.error("OTP must be 6 digits", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
       return;
@@ -96,7 +120,11 @@ const ResetPassword = () => {
       setStep(3);
       toast.success("OTP verified successfully!", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
     } catch (error) {
@@ -104,7 +132,11 @@ const ResetPassword = () => {
         error.response?.data?.message || "Invalid OTP. Please try again.";
       toast.error(errorMsg, {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
     } finally {
@@ -119,7 +151,11 @@ const ResetPassword = () => {
     if (!newPassword.trim() || !confirmPassword.trim()) {
       toast.error("Please fill in all fields", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
       return;
@@ -128,7 +164,11 @@ const ResetPassword = () => {
     if (newPassword.length < 6) {
       toast.error("Password must be at least 6 characters", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
       return;
@@ -137,7 +177,11 @@ const ResetPassword = () => {
     if (newPassword !== confirmPassword) {
       toast.error("Passwords do not match", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
       return;
@@ -153,7 +197,11 @@ const ResetPassword = () => {
 
       toast.success("Password reset successfully! Redirecting to login...", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
       setTimeout(() => navigate("/login"), 2000);
@@ -163,7 +211,11 @@ const ResetPassword = () => {
         "Failed to reset password. Please try again.";
       toast.error(errorMsg, {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
         transition: Slide,
       });
     } finally {
@@ -281,7 +333,7 @@ const ResetPassword = () => {
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="w-full text-orange-500 hover:text-orange-600 py-2 font-medium cursor-pointer text-sm transition-colors"
+                className="w-full text-orange-500 hover:text-orange-700 py-2 font-medium cursor-pointer text-sm transition-colors"
               >
                 Change Email
               </button>
