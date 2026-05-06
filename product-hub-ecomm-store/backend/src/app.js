@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-// import morgan from "morgan";
+// const morgan = require("morgan")
 const cookies = require("cookie-parser");
 const authRoutes = require("./routes/auth.routes");
 const orderRoutes = require("./routes/order.routes");
