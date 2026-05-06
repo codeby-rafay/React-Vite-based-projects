@@ -20,6 +20,10 @@ async function googleLogin(req, res) {
   try {
     const { token } = req.body;
 
+    if (!token) {
+      return res.status(400).json({ message: "Token is required" });
+    }
+
     // verify token from Google
     const ticket = await client.verifyIdToken({
       idToken: token,

@@ -43,6 +43,7 @@ function Login() {
       } catch (error) {
         toast.error(
           error.response?.data?.message ||
+          error.response?.data?.errors?.[0]?.msg ||
             error.message ||
             "Google login failed",
           {
@@ -116,6 +117,7 @@ function Login() {
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
+          error.response?.data?.errors?.[0]?.msg ||
           error.message ||
           "Login failed. Please try again",
         {

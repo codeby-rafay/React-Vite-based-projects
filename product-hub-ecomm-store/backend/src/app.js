@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+// import morgan from "morgan";
 const cookies = require("cookie-parser");
 const authRoutes = require("./routes/auth.routes");
 const orderRoutes = require("./routes/order.routes");
@@ -17,11 +18,7 @@ app.use(
 
 app.use(express.json());
 app.use(cookies());
-
-// Logging middleware
-app.use((req, res, next) => {
-  next();
-});
+// app.use(morgan("dev"));
 
 app.use("/api", authRoutes);
 app.use("/api", orderRoutes);

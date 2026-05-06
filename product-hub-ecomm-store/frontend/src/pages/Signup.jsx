@@ -22,46 +22,52 @@ function Signup() {
     useShop();
 
   // Define Google response handler with useCallback
-  const handleGoogleResponse = useCallback(async (response) => {
-    try {
-      const token = response.credential;
+  const handleGoogleResponse = useCallback(
+    async (response) => {
+      try {
+        const token = response.credential;
 
-      // send token to backend using axios
-      const res = await axios.post("http://localhost:3000/api/google-login", {
-        token,
-      });
+        // send token to backend using axios
+        const res = await axios.post("http://localhost:3000/api/google-login", {
+          token,
+        });
 
-      const data = res.data;
+        const data = res.data;
 
-      if (!data?.user || !data?.token) {
-        throw new Error("Invalid server response");
+        if (!data?.user || !data?.token) {
+          throw new Error("Invalid server response");
+        }
+
+        // Save user info using our login function from context
+        login(data.user, data.token);
+
+        Welcometoast(data.user);
+
+        // Navigate to home
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          navigate("/");
+        }, 100);
+      } catch (error) {
+        toast.error(
+          error.response?.data?.message ||
+            error.response?.data?.errors?.[0]?.msg ||
+            error.message ||
+            "Google login failed",
+          {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            transition: Slide,
+          },
+        );
       }
-
-      // Save user info using our login function from context
-      login(data.user, data.token);
-
-      Welcometoast(data.user);
-
-      // Navigate to home
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        navigate("/");
-      }, 100);
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message || error.message || "Google login failed",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          transition: Slide,
-        },
-      );
-    }
-  }, [login, navigate, Welcometoast]);
+    },
+    [login, navigate, Welcometoast],
+  );
 
   // Initialize Google Sign-In globally (only once)
   useGoogleSignIn(handleGoogleResponse, "googleBtn");
@@ -87,8 +93,8 @@ function Signup() {
       return;
     }
 
-    if (formData.fullName.trim().length < 2) {
-      toast.error("Please enter a valid full name", {
+    if (formData.fullName.trim().length < 3) {
+      toast.error("Please enter a valid Full Name", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -180,6 +186,7 @@ function Signup() {
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
+          error.response?.data?.errors?.[0]?.msg ||
           error.message ||
           "Signup failed. Please try again.",
         {
@@ -333,10 +340,7 @@ function Signup() {
                 onChange={handleChange}
                 className="w-4 h-4 border border-gray-300 rounded-lg mt-0.5"
               />
-              <label
-                htmlFor="acceptTerms"
-                className="text-sm text-gray-600 cursor-pointer"
-              >
+              <label htmlFor="acceptTerms" className="text-sm text-gray-600">
                 I agree to the{" "}
                 <Link
                   to="#"

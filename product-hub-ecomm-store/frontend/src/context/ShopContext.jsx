@@ -183,7 +183,7 @@ export function ShopProvider({ children }) {
   };
 
   const EnterValidEmailToast = () => {
-    toast.error("Please enter a valid email", {
+    toast.error("Please enter a valid Email", {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
