@@ -98,6 +98,7 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => query.trim().length >= 1 && setShowSuggestions(true)}
           placeholder={placeholder}
+          required
           className="w-full pl-9 pr-9 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent bg-white"
         />
 

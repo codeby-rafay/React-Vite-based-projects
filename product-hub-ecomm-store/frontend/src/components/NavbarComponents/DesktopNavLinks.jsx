@@ -1,6 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Heart, ChevronDown, LogOut, Bookmark } from "lucide-react";
+import {
+  Heart,
+  ChevronDown,
+  LogOut,
+  Bookmark,
+  Bell,
+  Cuboid,
+} from "lucide-react";
 import axios from "axios";
 import { useShop } from "../../context/ShopContext";
 import { toast, Slide } from "react-toastify";
@@ -28,10 +35,10 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
       toast.error(
         error.response?.data?.message ||
           error.message ||
-          "An error occurred during logout."
+          "An error occurred during logout.",
       );
     }
-    
+
     logout(); // Clears user from context and localStorage
     setDropdownOpen(false);
     toast.success("You have been signed out.", {
@@ -119,6 +126,26 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
                     {savedItems.length}
                   </span>
                 )}
+              </Link>
+
+              {/* Notifications link */}
+              <Link
+                to="/notifications"
+                onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+              >
+                <Bell size={16} className="text-orange-500" />
+                Notifications
+              </Link>
+
+              {/* My Order link */}
+              <Link
+                to="/my-orders"
+                onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+              >
+                <Cuboid size={16} className="text-orange-500" />
+                My Orders
               </Link>
 
               {/* Sign Out button */}
