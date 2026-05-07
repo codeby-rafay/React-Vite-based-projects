@@ -5,13 +5,15 @@ import { Loading, ErrorMessage } from "../components/LoadingError";
 import { Sparkle } from "lucide-react";
 import BrowseAllProductBtn from "../components/HomePageComponents/BrowseAllProductBtn";
 import ShopbyCategoryBtn from "../components/HomePageComponents/ShopbyCategoryBtn";
-import SeeAllProductsBtn from "../components/HomePageComponents/SeeAllProductsBtn";
 import ViewAllLink from "../components/HomePageComponents/ViewAllLink";
+import SeeAllProducts from "../components/HomePageComponents/SeeAllProducts";
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  window.scrollTo(0, 0);
 
   useEffect(() => {
     // Fetch products when the page loads
@@ -144,9 +146,7 @@ function Home() {
             ))}
           </div>
 
-          <div>
-            <SeeAllProductsBtn />
-          </div>
+          <SeeAllProducts />
         </section>
       )}
     </div>

@@ -52,6 +52,8 @@ function Categories() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  window.scrollTo(0, 0);
+
   useEffect(() => {
     // Fetch category list when component loads
     const fetchCategories = async () => {

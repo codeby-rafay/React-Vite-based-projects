@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
-const SeeAllProductsBtn = () => {
+const SeeAllProducts = () => {
   return (
     <div className="text-center mt-10 flex justify-center">
       <Link
@@ -14,4 +14,4 @@ const SeeAllProductsBtn = () => {
   );
 };
 
-export default SeeAllProductsBtn;
+export default SeeAllProducts;

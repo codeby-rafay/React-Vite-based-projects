@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getSingleProduct } from "../api/products";
 import { Loading, ErrorMessage } from "../components/LoadingError";
-import { Star } from "lucide-react";
-import BacktoProductsBtn from "../components/SingleProductPageComponents/BacktoProductsBtn";
+import { Star, ArrowLeft } from "lucide-react";
 import AddtoCartBtn from "../components/SingleProductPageComponents/AddtoCartBtn";
 import SaveBtn from "../components/SingleProductPageComponents/SaveBtn";
 import CustomerReview from "../components/SingleProductPageComponents/CustomerReview";
@@ -20,9 +19,8 @@ function SingleProduct() {
   const { getQtyInCart } = useShop();
 
   useEffect(() => {
-    // Scroll to top when product page loads
     window.scrollTo(0, 0);
-    
+
     const fetchProduct = async () => {
       try {
         setLoading(true);
@@ -219,7 +217,12 @@ function SingleProduct() {
       <CustomerReview product={product} />
 
       <div className="mt-10">
-        <BacktoProductsBtn />
+        <Link
+          to="/products"
+          className="inline-flex items-center gap-2 text-orange-500 hover:text-orange-700 font-bold text-lg hover:-translate-x-2 transition-all"
+        >
+          <ArrowLeft size={24} strokeWidth={2} /> <span>Back to Products</span>
+        </Link>
       </div>
     </div>
   );
