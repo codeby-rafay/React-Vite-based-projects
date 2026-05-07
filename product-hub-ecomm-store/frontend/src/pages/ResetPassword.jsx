@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Mail, ArrowLeft, Loader, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast, Slide } from "react-toastify";
@@ -184,7 +184,7 @@ const ResetPassword = () => {
         draggable: true,
         transition: Slide,
       });
-      setTimeout(() => navigate("/login"), 2000);
+      setTimeout(() => navigate("/login"), 1000);
     } catch (error) {
       const errorMsg =
         error.response?.data?.message ||
@@ -209,12 +209,10 @@ const ResetPassword = () => {
         {/* Back Button */}
         <button
           onClick={() => navigate("/login")}
-          className="absolute top-10 left-5 mb-6 flex cursor-pointer hover:underline items-center gap-2 text-orange-500 hover:text-orange-700 text-xl font-bold transition-colors"
+          className="absolute top-10 left-5 mb-6 flex cursor-pointer hover:-translate-x-2 transition-all hover:underline items-center gap-2 text-orange-500 hover:text-orange-700 text-xl font-bold"
         >
           <ArrowLeft size={24} />
-          <span className="hover:translate-x-1 transition-all inline-block">
-            Back to Login
-          </span>
+          <span>Back to Login</span>
         </button>
 
         {/* Header */}
@@ -240,7 +238,10 @@ const ResetPassword = () => {
           {step === 1 && (
             <form onSubmit={handleSendOTP} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="email-input"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Email Address
                 </label>
                 <div className="relative">
@@ -251,6 +252,7 @@ const ResetPassword = () => {
                   <input
                     type="email"
                     value={email}
+                    id="email-input"
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 pl-12 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all"
@@ -280,11 +282,15 @@ const ResetPassword = () => {
           {step === 2 && (
             <form onSubmit={handleVerifyOTP} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="otp-input"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Enter OTP
                 </label>
                 <input
                   type="text"
+                  id="otp-input"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.toUpperCase())}
                   placeholder="Enter 6-digit OTP"
@@ -326,12 +332,16 @@ const ResetPassword = () => {
           {step === 3 && (
             <form onSubmit={handleResetPassword} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="newPassword-input"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   New Password
                 </label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
+                    id="newPassword-input"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Enter new password"
@@ -341,7 +351,7 @@ const ResetPassword = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
+                    className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600 cursor-pointer"
                   >
                     {showPassword ? "Hide" : "Show"}
                   </button>
@@ -364,7 +374,7 @@ const ResetPassword = () => {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600"
+                    className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600 cursor-pointer"
                   >
                     {showConfirmPassword ? "Hide" : "Show"}
                   </button>
@@ -394,11 +404,11 @@ const ResetPassword = () => {
 
         {/* Progress Indicator */}
         <div className="mt-8 flex justify-center gap-2">
-          {[1, 2, 3].map((s) => (
+          {[1, 2, 3].map((idx) => (
             <div
-              key={s}
+              key={idx}
               className={`h-2 rounded-full transition-all ${
-                s <= step ? "bg-orange-500 w-8" : "bg-gray-200 w-2"
+                idx <= step ? "bg-orange-500 w-8" : "bg-gray-200 w-2"
               }`}
             />
           ))}

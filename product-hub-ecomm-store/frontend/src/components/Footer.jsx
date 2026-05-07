@@ -8,12 +8,15 @@ function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
                 <span className="text-white font-bold text-sm">
                   <img
-                    className="size-10 rounded-lg"
+                    className="w-10 h-10 shrink-0"
                     src="https://media.licdn.com/dms/image/v2/D4E0BAQFq1CCkGzPR-w/company-logo_200_200/company-logo_200_200/0/1713840703024/product_hub_nyc_logo?e=2147483647&v=beta&t=hSAdtTSPN5ol9maUrYCrYLWfgfEvkPmHz90sKbUlKoI"
                     alt="Logo"
+                    width="40"
+                    height="40"
+                    loading="eager"
                   />
                 </span>
               </div>

@@ -4,33 +4,50 @@ const orderSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "signup",
-    required: true,
+    required: [true, "User ID is required"],
   },
   userEmail: {
     type: String,
-    required: true,
+    required: [true, "User email is required"],
   },
   userName: {
     type: String,
-    required: true,
+    required: [true, "Username is required"],
   },
   products: [
     {
-      id: String,
-      name: String,
-      price: Number,
-      quantity: Number,
-      category: String,
-      description: String,
+      id: {
+        type: String,
+        required: [true, "Product ID is required"],
+      },
+      name: {
+        type: String,
+        required: [true, "Product name is required"],
+      },
+      price: {
+        type: Number,
+        required: [true, "Product price is required"],
+      },
+      quantity: {
+        type: Number,
+        required: [true, "Product quantity is required"],
+      },
+      category: {
+        type: String,
+        required: [true, "Product category is required"],
+      },
+      description: {
+        type: String,
+      },
     },
   ],
   totalAmount: {
     type: Number,
-    required: true,
+    required: [true, "Total amount is required"],
   },
   totalItems: {
     type: Number,
-    required: true,
+    required: [true, "Total items is required"],
   },
   orderStatus: {
     type: String,
@@ -46,9 +63,11 @@ const orderSchema = new mongoose.Schema({
     type: String,
     enum: ["card", "cod"],
     default: "cod",
+    required: [true, "Payment method is required"],
   },
   shippingAddress: {
     type: String,
+    required: [true, "Shipping address is required"],
   },
   notes: {
     type: String,

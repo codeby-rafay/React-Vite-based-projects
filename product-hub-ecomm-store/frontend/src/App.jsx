@@ -28,7 +28,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col bg-[#fafaf8]">
       {!isAdminRoute && !isResetPasswordRoute && <Navbar />}
-      <main className="grow">
+      <main className="grow min-h-[80vh]">
         <Suspense
           fallback={
             <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">

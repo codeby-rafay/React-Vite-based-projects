@@ -215,7 +215,10 @@ function Signup() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Full Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="fullName-input"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Full Name
               </label>
               <div className="relative">
@@ -228,6 +231,7 @@ function Signup() {
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleChange}
+                  id="fullName-input"
                   placeholder="John Doe"
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 pl-12 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all"
                 />
@@ -236,7 +240,10 @@ function Signup() {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="email-input"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -249,6 +256,8 @@ function Signup() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  id="email-input"
+                  autoComplete="email"
                   placeholder="you@example.com"
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 pl-12 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all"
                 />
@@ -257,7 +266,10 @@ function Signup() {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="password-input"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Password
               </label>
               <div className="relative">
@@ -268,6 +280,7 @@ function Signup() {
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
+                  id="password-input"
                   value={formData.password}
                   onChange={handleChange}
                   autoComplete="new-password"
@@ -289,7 +302,10 @@ function Signup() {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="confirmPassword-input"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Confirm Password
               </label>
               <div className="relative">
@@ -300,6 +316,7 @@ function Signup() {
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
+                  id="confirmPassword-input"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   autoComplete="new-password"

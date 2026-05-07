@@ -3,15 +3,16 @@ const mongoose = require("mongoose");
 const signupSchema = new mongoose.Schema({
   fullName: {
     type: String,
-    required: true,
+    required: [true, "Full name is required"],
   },
   email: {
     type: String,
-    unique: true,
-    required: true,
+    unique: [ true, "Email already exists"],
+    required: [true, "Email is required"],
   },
   password: {
     type: String,
+    required: [true, "Password is required"],
     default: null, // null for Google users
   },
   googleId: {

@@ -43,7 +43,7 @@ function Login() {
       } catch (error) {
         toast.error(
           error.response?.data?.message ||
-          error.response?.data?.errors?.[0]?.msg ||
+            error.response?.data?.errors?.[0]?.msg ||
             error.message ||
             "Google login failed",
           {
@@ -156,7 +156,10 @@ function Login() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="email-input"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -169,6 +172,8 @@ function Login() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  id="email-input"
+                  autoComplete="email"
                   placeholder="you@example.com"
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 pl-12 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all"
                 />
@@ -178,7 +183,10 @@ function Login() {
             {/* Password */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password-input"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Password
                 </label>
                 <Link
@@ -198,6 +206,7 @@ function Login() {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
+                  id="password-input"
                   placeholder="••••••••"
                   autoComplete="new-password"
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 pl-12 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition-all"
@@ -258,7 +267,7 @@ function Login() {
             Don't have an account?{" "}
             <Link
               to="/signup"
-              className="text-orange-500 hover:text-orange-600 font-semibold"
+              className="text-orange-500 hover:text-orange-700 font-semibold"
             >
               Sign up
             </Link>

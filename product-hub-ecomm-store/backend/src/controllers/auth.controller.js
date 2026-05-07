@@ -15,8 +15,8 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Google OAuth route
+//  (post api)
 async function googleLogin(req, res) {
-  //  (post api)
   try {
     const { token } = req.body;
 
@@ -75,7 +75,7 @@ async function googleLogin(req, res) {
         role: user.role || "user",
       },
       JWT_SECRET,
-      { expiresIn: "7d" },
+      { expiresIn: "1d" },
     );
 
     res.cookie("authToken", jwtToken);
@@ -130,7 +130,7 @@ async function signup(req, res) {
         role: createdUser.role || "user",
       },
       JWT_SECRET,
-      { expiresIn: "7d" },
+      { expiresIn: "1d" },
     );
 
     res.cookie("authToken", token);
@@ -230,7 +230,7 @@ async function login(req, res) {
       role: user.role,
     },
     JWT_SECRET,
-    { expiresIn: "7d" },
+    { expiresIn: "1d" },
   );
 
   res.cookie("authToken", token);
@@ -275,7 +275,6 @@ async function deleteLogin(req, res) {
 }
 
 //route 4: PASSWORD RESET - OTP
-// Send OTP to email
 async function sendOTP(req, res) {
   try {
     const { email } = req.body;
@@ -284,7 +283,6 @@ async function sendOTP(req, res) {
       return res.status(400).json({ message: "Email is required" });
     }
 
-    // Check if user exists
     const user = await signupModel.findOne({ email });
     if (!user) {
       return res
@@ -352,7 +350,7 @@ async function resetPassword(req, res) {
     }
 
     // Verify OTP one more time
-    const verification = verifyOTP(email, otp);
+    const verification = verifyOTPUtil(email, otp);
     if (!verification.valid) {
       return res.status(400).json({ message: verification.message });
     }
@@ -363,6 +361,7 @@ async function resetPassword(req, res) {
       { email },
       { password: hashedPassword },
       { new: true },
+      { returnDocument: "after" },
     );
 
     if (!updatedUser) {

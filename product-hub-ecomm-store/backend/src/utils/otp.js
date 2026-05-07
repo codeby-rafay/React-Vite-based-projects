@@ -1,18 +1,18 @@
-const nodemailer = require("nodemailer");
 require("dotenv").config();
+const nodemailer = require("nodemailer");
 
-// Store OTPs temporarily in memory (in production, use Redis or database)
+// store OTPs temporarily in server memory
 const otpStore = new Map();
 
-// Generate random 6-digit OTP
+// generate random 6-digit OTP
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-// Send OTP via email
+// send OTP via email to user
 const sendOTPEmail = async (email, otp) => {
   try {
-    // Configure email service (using Gmail here)
+    // configure email service
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -65,14 +65,14 @@ const sendOTPEmail = async (email, otp) => {
 
 // expiration of OTP (10 minutes)
 const storeOTP = (email, otp) => {
-  const expirationTime = Date.now() + 10 * 60 * 1000; // 10 minutes
+  const expirationTime = Date.now() + 10 * 60 * 1000;
   otpStore.set(email, {
     otp,
     expiresAt: expirationTime,
   });
 };
 
-// Verify OTP
+// verify OTP
 const verifyOTP = (email, otp) => {
   const stored = otpStore.get(email);
 
@@ -104,7 +104,7 @@ const verifyOTP = (email, otp) => {
   };
 };
 
-// Clear OTP after verification
+// clear OTP after verification
 const clearOTP = (email) => {
   otpStore.delete(email);
 };
