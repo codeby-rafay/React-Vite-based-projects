@@ -168,17 +168,20 @@ const ReviewOrdersAdmin = () => {
     }
 
     const query = searchQuery.toLowerCase().trim();
+
     return filteredOrders.filter((order) => {
       const orderId = order._id.toLowerCase();
       const userName = (order.userName || "").toLowerCase();
       const userEmail = (order.userEmail || "").toLowerCase();
       const status = order.orderStatus.toLowerCase();
+      const paymentMethod = (order.paymentMethod || "").toLowerCase();
 
       return (
         orderId.includes(query) ||
         userName.includes(query) ||
         userEmail.includes(query) ||
-        status.includes(query)
+        status.includes(query) ||
+        paymentMethod.includes(query)
       );
     });
   }, [filteredOrders, searchQuery]);
@@ -204,7 +207,9 @@ const ReviewOrdersAdmin = () => {
   };
 
   const totalRevenue = useMemo(() => {
-    return filteredOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    return filteredOrders
+      .filter((order) => order.orderStatus !== "cancelled")
+      .reduce((sum, order) => sum + (order.totalAmount || 0), 0);
   }, [filteredOrders]);
 
   // Handle search
