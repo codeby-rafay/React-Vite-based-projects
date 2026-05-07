@@ -11,9 +11,10 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
   const { login, FillAllFieldsToast, EnterValidEmailToast, Welcometoast } =
     useShop();
+
+  window.scrollTo(0, 0);
 
   const handleGoogleResponse = useCallback(
     async (response) => {

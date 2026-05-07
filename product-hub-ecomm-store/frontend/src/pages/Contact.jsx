@@ -11,7 +11,7 @@ const contactSchema = z.object({
   message: z
     .string()
     .min(1, "Message is required")
-    .min(10, "Message must be at least 10 characters"),
+    .min(4, "Message must be at least 4 characters"),
 });
 
 function Contact() {
@@ -26,14 +26,13 @@ function Contact() {
       return {};
     } catch (error) {
       const errors = {};
-
       error.issues.forEach((err) => {
         errors[err.path[0]] = err.message;
       });
-
       return errors;
     }
   };
+
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
@@ -86,7 +85,6 @@ function Contact() {
               console.log("Form submitted:", values);
 
               setSubmitted(true);
-
               resetForm();
             }}
           >
@@ -94,53 +92,67 @@ function Contact() {
               <Form className="space-y-5">
                 {/* Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="name-input"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Your Name
                   </label>
 
                   <Field
                     type="text"
                     name="name"
+                    id="name-input"
                     placeholder="Your name"
+                    autoComplete="name"
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                   />
 
                   <ErrorMessage
                     name="name"
                     component="p"
-                    className="text-red-500 text-xs mt-1"
+                    className="text-red-500 text-xs mt-2 ml-1"
                   />
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="email-input"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Email Address
                   </label>
 
                   <Field
                     type="email"
                     name="email"
+                    id="email-input"
                     placeholder="hello@gmail.com"
+                    autoComplete="email"
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                   />
 
                   <ErrorMessage
                     name="email"
                     component="p"
-                    className="text-red-500 text-xs mt-1"
+                    className="text-red-500 text-xs mt-2 ml-1"
                   />
                 </div>
 
                 {/* Message */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="message-input"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Message
                   </label>
 
                   <Field
                     as="textarea"
                     name="message"
+                    id="message-input"
                     rows={5}
                     placeholder="Write your message here..."
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent resize-none"
@@ -149,7 +161,7 @@ function Contact() {
                   <ErrorMessage
                     name="message"
                     component="p"
-                    className="text-red-500 text-xs mt-1"
+                    className="text-red-500 text-xs mt-2 ml-1"
                   />
                 </div>
 

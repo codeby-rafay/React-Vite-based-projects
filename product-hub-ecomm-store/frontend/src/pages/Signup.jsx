@@ -27,6 +27,8 @@ function Signup() {
     PasswordNotMatchToast,
   } = useShop();
 
+  window.scrollTo(0, 0);
+
   // Define Google response handler with useCallback
   const handleGoogleResponse = useCallback(
     async (response) => {

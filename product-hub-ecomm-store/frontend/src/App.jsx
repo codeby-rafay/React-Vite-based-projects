@@ -26,6 +26,8 @@ function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isResetPasswordRoute = location.pathname === "/reset-password";
+  const isAuthRoute =
+    location.pathname === "/login" || location.pathname === "/signup";
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fafaf8]">
@@ -74,7 +76,9 @@ function App() {
         </Suspense>
       </main>
       {!isAdminRoute && <Footer />}
-      {!isAdminRoute && !isResetPasswordRoute && <CartDisplay />}
+      {!isAdminRoute && !isResetPasswordRoute && !isAuthRoute && (
+        <CartDisplay />
+      )}
       <ToastContainer />
     </div>
   );
