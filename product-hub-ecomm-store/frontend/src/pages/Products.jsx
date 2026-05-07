@@ -14,7 +14,7 @@ function Products() {
   const [currentPage, setCurrentPage] = useState(0);
   const LIMIT = 12;
 
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
   // Fetch products
   const fetchProducts = async (query = "", page = 0) => {

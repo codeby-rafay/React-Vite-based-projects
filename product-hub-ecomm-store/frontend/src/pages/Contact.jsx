@@ -97,7 +97,7 @@ function Contact() {
             <button
               onClick={handleSubmit}
               disabled={!form.name || !form.email || !form.message}
-              className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-200 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-colors"
+              className="w-full bg-orange-500 hover:bg-orange-700 disabled:bg-gray-200 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-colors"
             >
               Send Message
             </button>
