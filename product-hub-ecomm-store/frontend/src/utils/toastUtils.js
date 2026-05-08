@@ -1,6 +1,5 @@
 import { toast, Slide } from "react-toastify";
 
-// TOAST NOTIFICATIONS
 export const addtocartToast = () => {
   toast.success("Product Added to Cart!", {
     position: "top-right",
