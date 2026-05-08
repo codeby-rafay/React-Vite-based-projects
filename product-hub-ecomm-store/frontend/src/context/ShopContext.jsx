@@ -1,11 +1,28 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { toast, Slide } from "react-toastify";
+import axiosInstance from "../utils/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const ShopContext = createContext();
 
 export const useShop = () => useContext(ShopContext);
 
 export function ShopProvider({ children }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const verifyUser = async () => {
+      if (!currentUser) return;
+
+      try {
+        await axiosInstance.get("/check-auth");
+      } catch (error) {
+        logout();
+      }
+    };
+    verifyUser();
+  }, []);
+
   // if user is already logged in or not
   const [currentUser, setCurrentUser] = useState(() => {
     const savedUser = localStorage.getItem("currentUser");
@@ -16,11 +33,21 @@ export function ShopProvider({ children }) {
   const getCartKey = (userId) => `cart_${userId}`;
   const getSavedItemsKey = (userId) => `savedItems_${userId}`;
 
-  // this function runs after user successfully login
+  // this function runs after user successful login
   const login = (userData, token) => {
+    // Decode JWT to get expiry time
+    const decoded = JSON.parse(atob(token.split(".")[1]));
+
+    const expiryTime = decoded.exp * 1000; // convert to milliseconds
+
+    // Save user + token + expiry
     localStorage.setItem("currentUser", JSON.stringify(userData));
+    localStorage.setItem("token", token);
+    localStorage.setItem("tokenExpiry", expiryTime);
+
     setCurrentUser(userData);
 
+    // restore user-specific data
     const userCart = localStorage.getItem(getCartKey(userData.id));
     const userSavedItems = localStorage.getItem(getSavedItemsKey(userData.id));
 
@@ -29,12 +56,58 @@ export function ShopProvider({ children }) {
   };
 
   // called when user Sign out
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await axiosInstance.post("/logout");
+    } catch (error) {}
+
     localStorage.removeItem("currentUser");
+
     setCurrentUser(null);
+
     setCartItems([]);
+
     setSavedItems([]);
   };
+
+  // auto logout when token expires
+  useEffect(() => {
+    const expiry = localStorage.getItem("tokenExpiry");
+
+    if (!expiry) return;
+
+    const timeLeft = Number(expiry) - Date.now();
+
+    if (timeLeft <= 0) {
+      logout();
+
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 800);
+
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      toast.error("Session expired. Please login again.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
+
+      logout();
+
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 800);
+    }, timeLeft);
+
+    return () => clearTimeout(timer);
+  }, [currentUser]);
 
   // cart state
   const [cartItems, setCartItems] = useState(() => {
@@ -130,118 +203,6 @@ export function ShopProvider({ children }) {
   const isSaved = (productId) =>
     savedItems.some((item) => item.id === productId);
 
-  // TOAST NOTIFICATIONS
-  const addtocartToast = () => {
-    toast.success("Product Added to Cart!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      theme: "dark",
-      transition: Slide,
-    });
-  };
-
-  const saveToast = () => {
-    toast.success("Product Saved!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      theme: "dark",
-      transition: Slide,
-    });
-  };
-
-  const unsaveToast = () => {
-    toast.success("Product Removed!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      theme: "dark",
-      transition: Slide,
-    });
-  };
-
-  const FillAllFieldsToast = () => {
-    toast.error("Please fill in all fields", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      transition: Slide,
-    });
-  };
-
-  const EnterValidEmailToast = () => {
-    toast.error("Please enter a valid Email", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      transition: Slide,
-    });
-  };
-
-  const DeleteRecordToast = () => {
-    toast.success("Record deleted successfully", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      transition: Slide,
-    });
-  };
-
-  const Welcometoast = (user) => {
-    toast.success(`Welcome, ${user.fullName}!`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      transition: Slide,
-    });
-  };
-
-  const PasswordLengthToast = () => {
-    toast.error("Password must be at least 6 characters", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      transition: Slide,
-    });
-  };
-
-  const PasswordNotMatchToast = () => {
-    toast.error("Passwords do not match", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      transition: Slide,
-    });
-  };
-
   return (
     <ShopContext.Provider
       value={{
@@ -260,15 +221,6 @@ export function ShopProvider({ children }) {
         savedItems,
         toggleSave,
         isSaved,
-        addtocartToast,
-        saveToast,
-        unsaveToast,
-        FillAllFieldsToast,
-        EnterValidEmailToast,
-        DeleteRecordToast,
-        Welcometoast,
-        PasswordLengthToast,
-        PasswordNotMatchToast,
       }}
     >
       {children}

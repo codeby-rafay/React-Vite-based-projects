@@ -75,7 +75,7 @@ async function googleLogin(req, res) {
         role: user.role || "user",
       },
       JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "3h" },
     );
 
     res.cookie("authToken", jwtToken);
@@ -130,7 +130,7 @@ async function signup(req, res) {
         role: createdUser.role || "user",
       },
       JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "3h" },
     );
 
     res.cookie("authToken", token);
@@ -230,7 +230,7 @@ async function login(req, res) {
       role: user.role,
     },
     JWT_SECRET,
-    { expiresIn: "1d" },
+    { expiresIn: "3h" },
   );
 
   res.cookie("authToken", token);
@@ -384,8 +384,39 @@ async function resetPassword(req, res) {
 
 // Logout
 async function logout(req, res) {
-  res.clearCookie("authToken");
-  res.status(200).json({ message: "Logout successfully" });
+  res.clearCookie("authToken", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+
+  res.status(200).json({
+    message: "Logout successfully",
+  });
+}
+
+// Check if user is authenticated (for frontend, when the page loads to confirm the user session is valid.)
+async function checkAuth(req, res) {
+  try {
+    const token = req.cookies.authToken;
+
+    if (!token) {
+      return res.status(401).json({
+        authenticated: false,
+      });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    res.status(200).json({
+      authenticated: true,
+      user: decoded,
+    });
+  } catch (error) {
+    return res.status(401).json({
+      authenticated: false,
+    });
+  }
 }
 
 module.exports = {
@@ -400,4 +431,5 @@ module.exports = {
   verifyOTP,
   resetPassword,
   logout,
+  checkAuth,
 };

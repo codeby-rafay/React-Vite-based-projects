@@ -15,7 +15,7 @@ const authAdmin = async (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(400).json({ message: "Unauthorized" });
+    res.status(401).json({ message: "Token expired or invalid" });
   }
 };
 
@@ -34,7 +34,7 @@ const authUser = async (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(400).json({ message: "Unauthorized" });
+    res.status(401).json({ message: "Token expired or invalid" });
   }
 };
 

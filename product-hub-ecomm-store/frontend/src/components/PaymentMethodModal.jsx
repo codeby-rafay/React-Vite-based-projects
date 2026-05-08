@@ -154,9 +154,9 @@ function PaymentMethodModal({
           <button
             onClick={handleConfirm}
             disabled={!selectedMethod}
-            className={`px-8 py-2 rounded-lg cursor-pointer font-bold text-white transition-colors ${
+            className={`px-8 py-2 rounded-lg cursor-pointer font-bold text-white active:scale-95 transition-colors ${
               selectedMethod
-                ? "bg-orange-500 hover:bg-orange-600"
+                ? "bg-orange-500 hover:bg-orange-700"
                 : "bg-gray-400 cursor-not-allowed"
             }`}
           >

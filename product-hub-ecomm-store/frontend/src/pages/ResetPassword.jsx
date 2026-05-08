@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Mail, ArrowLeft, Loader, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast, Slide } from "react-toastify";
-import axios from "axios";
-import { useShop } from "../context/ShopContext";
+import { EnterValidEmailToast, FillAllFieldsToast, PasswordLengthToast, PasswordNotMatchToast } from "../utils/toastUtils";
+import axiosInstance from "../utils/axiosInstance";
 
 const ResetPassword = () => {
   const [step, setStep] = useState(1); // 1: Email, 2: OTP Verification, 3: New Password
@@ -14,15 +14,7 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const {
-    EnterValidEmailToast,
-    FillAllFieldsToast,
-    PasswordLengthToast,
-    PasswordNotMatchToast,
-  } = useShop;
   const navigate = useNavigate();
-
-  const API_BASE_URL = "http://localhost:3000/api";
 
   // Step 1: Send OTP
   const handleSendOTP = async (e) => {
@@ -49,7 +41,8 @@ const ResetPassword = () => {
 
     try {
       setLoading(true);
-      await axios.post(`${API_BASE_URL}/send-otp`, { email });
+
+      await axiosInstance.post("/send-otp", { email });
 
       setStep(2);
       toast.success("OTP sent to your Email. Check spam folder if needed.", {
@@ -111,7 +104,8 @@ const ResetPassword = () => {
 
     try {
       setLoading(true);
-      await axios.post(`${API_BASE_URL}/verify-otp`, {
+
+      await axiosInstance.post("/verify-otp", {
         email,
         otp,
       });
@@ -169,7 +163,7 @@ const ResetPassword = () => {
 
     try {
       setLoading(true);
-      await axios.post(`${API_BASE_URL}/reset-password`, {
+      await axiosInstance.post("/reset-password", {
         email,
         otp,
         newPassword,

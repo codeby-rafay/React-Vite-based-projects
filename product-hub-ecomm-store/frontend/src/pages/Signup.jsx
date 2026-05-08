@@ -2,9 +2,16 @@ import { useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { toast, Slide } from "react-toastify";
-import axios from "axios";
 import { useShop } from "../context/ShopContext";
 import { useGoogleSignIn } from "../hooks/useGoogleSignIn";
+import axiosInstance from "../utils/axiosInstance";
+import {
+  FillAllFieldsToast,
+  EnterValidEmailToast,
+  Welcometoast,
+  PasswordLengthToast,
+  PasswordNotMatchToast,
+} from "../utils/toastUtils";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -18,14 +25,7 @@ function Signup() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const {
-    FillAllFieldsToast,
-    EnterValidEmailToast,
-    Welcometoast,
-    login,
-    PasswordLengthToast,
-    PasswordNotMatchToast,
-  } = useShop();
+  const { login } = useShop();
 
   window.scrollTo(0, 0);
 
@@ -36,7 +36,7 @@ function Signup() {
         const token = response.credential;
 
         // send token to backend using axios
-        const res = await axios.post("http://localhost:3000/api/google-login", {
+        const res = await axiosInstance.post("/google-login", {
           token,
         });
 
@@ -146,7 +146,7 @@ function Signup() {
     try {
       setLoading(true);
 
-      const response = await axios.post("http://localhost:3000/api/signup", {
+      const response = await axiosInstance.post("/signup", {
         fullName: formData.fullName.trim(),
         email: formData.email,
         password: formData.password,

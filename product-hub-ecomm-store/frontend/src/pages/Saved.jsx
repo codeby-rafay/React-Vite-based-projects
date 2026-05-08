@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
 import { Heart } from "lucide-react";
+import { unsaveToast } from "../utils/toastUtils";
 
 function Saved() {
-  const { savedItems, toggleSave, unsaveToast } = useShop();
+  const { savedItems, toggleSave } = useShop();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

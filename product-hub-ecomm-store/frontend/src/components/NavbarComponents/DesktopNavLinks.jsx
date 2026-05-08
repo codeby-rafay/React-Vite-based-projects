@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import { useShop } from "../../context/ShopContext";
 import { toast, Slide } from "react-toastify";
+import { LogoutToast } from "../../utils/toastUtils";
 
 const DesktopNavLinks = ({ navLinks, isActive }) => {
   const { currentUser, logout, savedItems } = useShop();
@@ -36,20 +37,21 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
         error.response?.data?.message ||
           error.message ||
           "An error occurred during logout.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        },
       );
     }
 
     logout(); // Clears user from context and localStorage
     setDropdownOpen(false);
-    toast.success("You have been signed out.", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      transition: Slide,
-    });
+    LogoutToast();
     navigate("/login");
   };
 

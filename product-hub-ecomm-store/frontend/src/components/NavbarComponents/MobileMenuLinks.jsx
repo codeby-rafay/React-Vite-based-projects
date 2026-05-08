@@ -3,6 +3,7 @@ import { Heart, LogOut } from "lucide-react";
 import axios from "axios";
 import { useShop } from "../../context/ShopContext";
 import { toast, Slide } from "react-toastify";
+import { LogoutToast } from "../../utils/toastUtils";
 
 const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
   const { currentUser, logout, savedItems } = useShop();
@@ -17,21 +18,22 @@ const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
       toast.error(
         error.response?.data?.message ||
           error.message ||
-          "An error occurred during logout."
+          "An error occurred during logout.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        },
       );
     }
-    
+
     logout();
     setMenuOpen(false);
-    toast.success("You have been signed out.", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      transition: Slide,
-    });
+    LogoutToast();
     navigate("/login");
   };
 

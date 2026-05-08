@@ -14,10 +14,10 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import axios from "axios";
+import { toast, Slide } from "react-toastify";
+import axiosInstance from "../utils/axiosInstance";
 import OrderSearchBar from "../components/OrderSearchBar";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
-import { toast, Slide } from "react-toastify";
 
 const ReviewOrdersAdmin = () => {
   const [orders, setOrders] = useState([]);
@@ -40,18 +40,15 @@ const ReviewOrdersAdmin = () => {
     });
   };
 
-  const API_BASE_URL = "http://localhost:3000/api";
-
   useEffect(() => {
     fetchOrders();
-  }, [API_BASE_URL]);
+  }, []);
 
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_BASE_URL}/orders/admin`, {
-        withCredentials: true,
-      });
+
+      const response = await axiosInstance.get("/orders/admin");
 
       if (response.data?.orders) {
         setOrders(response.data.orders);
@@ -73,15 +70,9 @@ const ReviewOrdersAdmin = () => {
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     try {
-      const response = await axios.patch(
-        `${API_BASE_URL}/orders/admin/${orderId}`,
-        {
-          orderStatus: newStatus,
-        },
-        {
-          withCredentials: true,
-        },
-      );
+      const response = await axiosInstance.patch(`/orders/admin/${orderId}`, {
+        orderStatus: newStatus,
+      });
 
       if (response.data?.order) {
         setOrders(
@@ -119,9 +110,8 @@ const ReviewOrdersAdmin = () => {
     if (!orderToDelete) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/orders/admin/${orderToDelete}`, {
-        withCredentials: true,
-      });
+      await axiosInstance.delete(`/orders/admin/${orderToDelete}`);
+
       setOrders(orders.filter((o) => o._id !== orderToDelete));
       setShowDeleteModal(false);
       setOrderToDelete(null);

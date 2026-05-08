@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import {
   Users,
   LogIn,
@@ -13,10 +13,11 @@ import { useNavigate } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
 import { toast, Slide } from "react-toastify";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import { DeleteRecordToast } from "../utils/toastUtils";
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");
-  const { logout, currentUser, DeleteRecordToast } = useShop();
+  const { logout, currentUser } = useShop();
   const [loginData, setLoginData] = useState([]);
   const [signupData, setSignupData] = useState([]);
   const [googleloginData, setGoogleLoginData] = useState([]);
@@ -30,8 +31,6 @@ function AdminPage() {
   const [recordToDelete, setRecordToDelete] = useState(null);
   const [deleteType, setDeleteType] = useState(null); // 'login' or 'signup'
   const navigate = useNavigate();
-
-  const API_BASE_URL = "http://localhost:3000";
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -50,9 +49,8 @@ function AdminPage() {
       try {
         setLoadingLogin(true);
         setErrorLogin(null);
-        const response = await axios.get(`${API_BASE_URL}/api/login`, {
-          withCredentials: true,
-        });
+
+        const response = await axiosInstance.get("/login");
         const data = response.data;
         const formattedData = data.logins.map((record) => ({
           ...record,
@@ -76,9 +74,8 @@ function AdminPage() {
       try {
         setLoadingSignup(true);
         setErrorSignup(null);
-        const response = await axios.get(`${API_BASE_URL}/api/signup`, {
-          withCredentials: true,
-        });
+
+        const response = await axiosInstance.get("/signup");
         const data = response.data;
         const formattedData = data.signups.map((record) => ({
           ...record,
@@ -113,13 +110,11 @@ function AdminPage() {
 
     try {
       if (deleteType === "login") {
-        await axios.delete(`${API_BASE_URL}/api/login/${recordToDelete}`, {
-          withCredentials: true,
-        });
+        await axiosInstance.delete(`/login/${recordToDelete}`);
+
         // Refresh the login data after deletion
-        const response = await axios.get(`${API_BASE_URL}/api/login`, {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get("/login");
+
         const data = response.data;
         const formattedData = data.logins.map((record) => ({
           ...record,
@@ -127,13 +122,11 @@ function AdminPage() {
         }));
         setLoginData(formattedData);
       } else if (deleteType === "signup") {
-        await axios.delete(`${API_BASE_URL}/api/signup/${recordToDelete}`, {
-          withCredentials: true,
-        });
+        await axiosInstance.delete(`/signup/${recordToDelete}`);
+
         // Refresh the signup data after deletion
-        const response = await axios.get(`${API_BASE_URL}/api/signup`, {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.get("/signup");
+
         const data = response.data;
         const formattedData = data.signups.map((record) => ({
           ...record,

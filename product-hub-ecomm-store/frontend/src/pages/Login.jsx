@@ -2,17 +2,21 @@ import { useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, AlignCenter } from "lucide-react";
 import { toast, Slide } from "react-toastify";
-import axios from "axios";
 import { useShop } from "../context/ShopContext";
 import { useGoogleSignIn } from "../hooks/useGoogleSignIn";
+import axiosInstance from "../utils/axiosInstance";
+import {
+  FillAllFieldsToast,
+  EnterValidEmailToast,
+  Welcometoast,
+} from "../utils/toastUtils";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login, FillAllFieldsToast, EnterValidEmailToast, Welcometoast } =
-    useShop();
+  const { login } = useShop();
 
   window.scrollTo(0, 0);
 
@@ -22,7 +26,7 @@ function Login() {
         const token = response.credential;
 
         // send token to backend using axios
-        const res = await axios.post("http://localhost:3000/api/google-login", {
+        const res = await axiosInstance.post("/google-login", {
           token,
         });
 
@@ -87,7 +91,7 @@ function Login() {
     try {
       setLoading(true);
 
-      const response = await axios.post("http://localhost:3000/api/login", {
+      const response = await axiosInstance.post("/login", {
         email: formData.email,
         password: formData.password,
       });

@@ -7,17 +7,20 @@ const ProtectedAdminRoute = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser || currentUser.role !== "admin") {
+    // no user
+    if (!currentUser) {
       navigate("/login", { replace: true });
+      return;
+    }
+
+    // optional extra safety (role check)
+    if (currentUser.role !== "admin") {
+      navigate("/", { replace: true });
     }
   }, [currentUser, navigate]);
 
-  // If user is not admin, don't render anything (component already navigated to home)
-  if (!currentUser || currentUser.role !== "admin") {
-    return null;
-  }
+  if (!currentUser || currentUser.role !== "admin") return null;
 
-  // If user is admin, render the admin page
   return children;
 };
 

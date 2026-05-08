@@ -11,6 +11,7 @@ const {
   verifyOTP,
   resetPassword,
   logout,
+  checkAuth,
 } = require("../controllers/auth.controller");
 const {
   signupValidationRules,
@@ -34,5 +35,6 @@ router.post("/send-otp", sendOTPValidationRules, sendOTP);
 router.post("/verify-otp", verifyOTPValidationRules, verifyOTP);
 router.post("/reset-password", resetPasswordValidationRules, resetPassword);
 router.post("/logout", logout);
+router.get("/check-auth", checkAuth);
 
 module.exports = router;

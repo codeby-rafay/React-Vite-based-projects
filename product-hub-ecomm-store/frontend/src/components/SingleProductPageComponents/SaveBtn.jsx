@@ -1,7 +1,8 @@
 import { useShop } from "../../context/ShopContext";
+import { saveToast, unsaveToast } from "../../utils/toastUtils";
 
 const SaveBtn = ({ product }) => {
-  const { toggleSave, isSaved, saveToast, unsaveToast } = useShop();
+  const { toggleSave, isSaved } = useShop();
 
   const saved = isSaved(product?.id);
 
