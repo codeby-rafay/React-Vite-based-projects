@@ -18,6 +18,20 @@ export function ShopProvider({ children }) {
         await axiosInstance.get("/check-auth");
       } catch (error) {
         logout();
+
+        setTimeout(() => {
+          navigate("/login", { replace: true });
+        }, 800);
+
+        toast.error("Session expired. Please login again.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        });
       }
     };
     verifyUser();
@@ -29,23 +43,26 @@ export function ShopProvider({ children }) {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
+  const [tokenExpiry, setTokenExpiry] = useState(null);
+
   // each user gets separate data
   const getCartKey = (userId) => `cart_${userId}`;
   const getSavedItemsKey = (userId) => `savedItems_${userId}`;
 
   // this function runs after user successful login
   const login = (userData, token) => {
-    // Decode JWT to get expiry time
-    const decoded = JSON.parse(atob(token.split(".")[1]));
-
-    const expiryTime = decoded.exp * 1000; // convert to milliseconds
-
-    // Save user + token + expiry
+    // Save user data to localStorage (token stays in the httpOnly cookie)
     localStorage.setItem("currentUser", JSON.stringify(userData));
-    localStorage.setItem("token", token);
-    localStorage.setItem("tokenExpiry", expiryTime);
-
     setCurrentUser(userData);
+
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        setTokenExpiry(decoded.exp * 1000);
+      } catch (error) {
+        console.error("Failed to schedule session expiry:", error);
+      }
+    }
 
     // restore user-specific data
     const userCart = localStorage.getItem(getCartKey(userData.id));
@@ -59,7 +76,17 @@ export function ShopProvider({ children }) {
   const logout = async () => {
     try {
       await axiosInstance.post("/logout");
-    } catch (error) {}
+    } catch (error) {
+      toast.error("Error occurred while logging out.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
+    }
 
     localStorage.removeItem("currentUser");
 
@@ -72,11 +99,9 @@ export function ShopProvider({ children }) {
 
   // auto logout when token expires
   useEffect(() => {
-    const expiry = localStorage.getItem("tokenExpiry");
+    if (!tokenExpiry) return;
 
-    if (!expiry) return;
-
-    const timeLeft = Number(expiry) - Date.now();
+    const timeLeft = Number(tokenExpiry) - Date.now();
 
     if (timeLeft <= 0) {
       logout();
@@ -107,7 +132,7 @@ export function ShopProvider({ children }) {
     }, timeLeft);
 
     return () => clearTimeout(timer);
-  }, [currentUser]);
+  }, [currentUser, tokenExpiry]);
 
   // cart state
   const [cartItems, setCartItems] = useState(() => {

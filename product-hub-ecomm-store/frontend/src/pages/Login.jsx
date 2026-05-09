@@ -18,8 +18,6 @@ function Login() {
   const navigate = useNavigate();
   const { login } = useShop();
 
-  window.scrollTo(0, 0);
-
   const handleGoogleResponse = useCallback(
     async (response) => {
       try {

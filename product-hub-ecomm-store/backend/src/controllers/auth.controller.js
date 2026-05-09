@@ -78,7 +78,12 @@ async function googleLogin(req, res) {
       { expiresIn: "3h" },
     );
 
-    res.cookie("authToken", jwtToken);
+    res.cookie("authToken", jwtToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 3 * 60 * 60 * 1000, // 3 hours
+    });
 
     res.json({
       message: "Google login successful!",
@@ -133,7 +138,13 @@ async function signup(req, res) {
       { expiresIn: "3h" },
     );
 
-    res.cookie("authToken", token);
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      // maxAge: 3 * 60 * 60 * 1000, // 3 hours
+      maxAge: 3 * 60 * 60 * 1000, // 3 hours
+    });
 
     res.status(201).json({
       message: "Account created successfully!",
@@ -183,68 +194,80 @@ async function deleteSignup(req, res) {
 // route 2: LOGIN
 // (post api)
 async function login(req, res) {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ message: "Please fill in all fields" });
-  }
+    if (!email || !password) {
+      return res.status(400).json({ message: "Please fill in all fields" });
+    }
 
-  const user = await signupModel.findOne({ email });
-  if (!user) {
-    return res.status(400).json({
-      message: "No account found with this email. Please signup first.",
+    const user = await signupModel.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        message: "No account found with this email. Please signup first.",
+      });
+    }
+
+    // Check if user only has Google login (no password set)
+    if (!user.password) {
+      return res.status(400).json({
+        message:
+          "This account was created with Google Sign-In. Please use Google to login.",
+      });
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+      return res.status(400).json({
+        message: "Incorrect password or email. Please try again.",
+      });
+    }
+
+    // Store only last login
+    await loginModel.findOneAndUpdate(
+      { email: user.email },
+      {
+        fullName: user.fullName,
+        timestamp: new Date(),
+      },
+      { upsert: true, returnDocument: "after" },
+    );
+
+    // login token creation
+    const token = jwt.sign(
+      {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+      },
+      JWT_SECRET,
+      { expiresIn: "3h" },
+    );
+
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      // maxAge: 3 * 60 * 60 * 1000,
+      // 3 hours
+      maxAge: 3 * 60 * 60 * 1000, // 3 hours
     });
-  }
 
-  // Check if user only has Google login (no password set)
-  if (!user.password) {
-    return res.status(400).json({
-      message:
-        "This account was created with Google Sign-In. Please use Google to login.",
+    res.json({
+      message: "Login successful!",
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+      },
+      token,
     });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Error logging in. Please try again." });
   }
-
-  const isPasswordCorrect = await bcrypt.compare(password, user.password);
-  if (!isPasswordCorrect) {
-    return res.status(400).json({
-      message: "Incorrect password or email. Please try again.",
-    });
-  }
-
-  // Store only last login
-  await loginModel.findOneAndUpdate(
-    { email: user.email },
-    {
-      fullName: user.fullName,
-      timestamp: new Date(),
-    },
-    { upsert: true, returnDocument: "after" },
-  );
-
-  // login token creation
-  const token = jwt.sign(
-    {
-      id: user._id,
-      fullName: user.fullName,
-      email: user.email,
-      role: user.role,
-    },
-    JWT_SECRET,
-    { expiresIn: "3h" },
-  );
-
-  res.cookie("authToken", token);
-
-  res.json({
-    message: "Login successful!",
-    token,
-    user: {
-      id: user._id,
-      fullName: user.fullName,
-      email: user.email,
-      role: user.role,
-    },
-  });
 }
 
 // (get api)
@@ -415,6 +438,7 @@ async function checkAuth(req, res) {
   } catch (error) {
     return res.status(401).json({
       authenticated: false,
+      message: "Invalid or expired token",
     });
   }
 }
