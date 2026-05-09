@@ -6,6 +6,7 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const dropdownRef = useRef(null);
   const timeoutRef = useRef(null);
 
@@ -32,6 +33,7 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
         setShowSuggestions(true);
       } catch (error) {
         console.error("Error fetching suggestions:", error);
+        setError("Failed to load suggestions");
         setSuggestions([]);
       } finally {
         setLoading(false);
@@ -101,6 +103,8 @@ function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
           required
           className="w-full pl-9 pr-9 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent bg-white"
         />
+
+        {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
 
         {/* Clear button */}
         {query && (
