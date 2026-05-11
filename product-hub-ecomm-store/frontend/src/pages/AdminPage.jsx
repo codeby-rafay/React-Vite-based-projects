@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
-import {
-  Users,
-  LogIn,
-  UserPlus,
-  Trash2,
-  Eye,
-  LogOut,
-  ArrowRight,
-} from "lucide-react";
+import { Users, LogIn, UserPlus, Trash2, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
 import { toast, Slide } from "react-toastify";
@@ -165,7 +157,7 @@ function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 py-12 px-4">
+    <div className="w-full bg-linear-to-br from-orange-50 to-amber-50 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12">
@@ -192,12 +184,6 @@ function AdminPage() {
                 className="flex items-center cursor-pointer gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors active:scale-95 shadow-md hover:shadow-lg"
               >
                 Logout <LogOut size={20} />
-              </button>
-              <button
-                onClick={() => navigate("/admin/order-reviews")}
-                className="flex items-center cursor-pointer gap-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors active:scale-95 shadow-md hover:shadow-lg"
-              >
-                Review Orders <ArrowRight size={16} strokeWidth={2} />
               </button>
             </div>
           </div>

@@ -3,6 +3,8 @@ import { lazy, Suspense } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CartDisplay from "./components/CartDisplay";
+
+const AdminLayout = lazy(() => import("./components/AdminLayout"));
 const Home = lazy(() => import("./pages/Home"));
 const Products = lazy(() => import("./pages/Products"));
 const SingleProduct = lazy(() => import("./pages/SingleProduct"));
@@ -14,7 +16,7 @@ const Saved = lazy(() => import("./pages/Saved"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
-const ReviewOrdersAdmin = lazy(() => import("./pages/ReviewOrdersAdmin"));
+const ManageOrdersAdmin = lazy(() => import("./pages/ManageOrdersAdmin"));
 const NotFound404 = lazy(() => import("./pages/NotFound404"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Notifications = lazy(() => import("./pages/Notifications"));
@@ -59,15 +61,19 @@ function App() {
               path="/admin/dashboard"
               element={
                 <ProtectedAdminRoute>
-                  <AdminPage />
+                  <AdminLayout>
+                    <AdminPage />
+                  </AdminLayout>
                 </ProtectedAdminRoute>
               }
             />
             <Route
-              path="/admin/order-reviews"
+              path="/admin/manage-orders"
               element={
                 <ProtectedAdminRoute>
-                  <ReviewOrdersAdmin />
+                  <AdminLayout>
+                    <ManageOrdersAdmin />
+                  </AdminLayout>
                 </ProtectedAdminRoute>
               }
             />

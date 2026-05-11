@@ -4,23 +4,19 @@ import { useNavigate } from "react-router-dom";
 import {
   Package,
   User,
-  Mail,
   Calendar,
   DollarSign,
-  Eye,
   ChevronDown,
   Loader,
   AlertCircle,
-  ArrowLeft,
   Trash2,
-  X,
 } from "lucide-react";
 import { toast, Slide } from "react-toastify";
 import axiosInstance from "../utils/axiosInstance";
 import OrderSearchBar from "../components/OrderSearchBar";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 
-const ReviewOrdersAdmin = () => {
+const ManageOrdersAdmin = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedOrderId, setExpandedOrderId] = useState(null);
@@ -241,13 +237,7 @@ const ReviewOrdersAdmin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 p-4 md:p-8">
-      <button
-        onClick={() => navigate(-1)}
-        className="flex items-center cursor-pointer text-lg gap-1 hover:-translate-x-2 transition-all text-orange-500 hover:text-orange-700 font-semibold hover:underline"
-      >
-        <ArrowLeft size={20} strokeWidth={2} /> <span>Back</span>
-      </button>
+    <div className="w-full bg-linear-to-br from-orange-50 to-amber-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-6">
           {/* Header */}
@@ -699,4 +689,4 @@ const ReviewOrdersAdmin = () => {
   );
 };
 
-export default ReviewOrdersAdmin;
+export default ManageOrdersAdmin;
