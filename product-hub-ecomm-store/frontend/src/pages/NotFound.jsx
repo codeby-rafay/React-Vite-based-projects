@@ -63,7 +63,7 @@ function NotFound() {
           </p>
           <Link
             to="/contact"
-            className="text-orange-500 hover:text-orange-600 font-semibold text-sm flex gap-1 hover:translate-x-2 transition-all items-center justify-center"
+            className="text-orange-500 hover:text-orange-700 font-semibold text-sm flex gap-1 hover:translate-x-2 transition-all items-center justify-center"
           >
             Contact Us{" "}
             <span>

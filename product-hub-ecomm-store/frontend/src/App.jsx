@@ -24,6 +24,7 @@ import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();
+
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isResetPasswordRoute = location.pathname === "/reset-password";
   const isAuthRoute =
