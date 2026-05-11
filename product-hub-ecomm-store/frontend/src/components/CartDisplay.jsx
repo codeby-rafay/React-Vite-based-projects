@@ -166,12 +166,12 @@ function CartDisplay() {
       {/* Floating Cart Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 z-50 bg-orange-500 hover:bg-orange-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition-colors cursor-pointer"
+        className="fixed bottom-6 left-6 z-50 bg-orange-500 hover:bg-orange-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition-colors cursor-pointer"
       >
         <ShoppingCart size={24} />
         {/* Notification badge if items are in cart */}
         {cartCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
             {cartCount}
           </span>
         )}

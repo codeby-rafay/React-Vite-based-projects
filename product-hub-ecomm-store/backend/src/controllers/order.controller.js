@@ -104,7 +104,9 @@ async function getAllOrdersAdmin(req, res) {
 async function getUserOrders(req, res) {
   try {
     const { userId } = req.params;
-    const orders = await orderModel.find({ userId }).sort({ timestamp: -1 });
+    const orders = await orderModel
+      .find({ userId, hiddenForUser: { $ne: true } })
+      .sort({ timestamp: -1 });
 
     res.status(200).json({
       message: "User orders fetched successfully",
@@ -170,10 +172,94 @@ async function deleteOrderAdmin(req, res) {
   }
 }
 
+// DELETE API - Hide order from user side only (keeps database and admin view intact)
+async function deleteUserOrder(req, res) {
+  try {
+    const { orderId } = req.params;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const order = await orderModel.findOne({ _id: orderId });
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Ensure the logged-in user owns this order
+    if (order.userId.toString() !== userId.toString()) {
+      return res
+        .status(403)
+        .json({ message: "You don't have permission to delete this order" });
+    }
+
+    await orderModel.findOneAndUpdate(
+      { _id: orderId },
+      { hiddenForUser: true },
+      { returnDocument: "after" },
+    );
+
+    res.status(200).json({ message: "Order deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting order" });
+  }
+}
+
+// PATCH API - User can update their own order status (cancel only)
+async function updateOrderStatusUser(req, res) {
+  try {
+    const { orderId } = req.params;
+    const { orderStatus } = req.body;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    // Only allow cancelling from user side
+    if (!orderStatus || orderStatus !== "cancelled") {
+      return res.status(400).json({ message: "Invalid status update" });
+    }
+
+    const order = await orderModel.findOne({ _id: orderId });
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (order.userId.toString() !== userId.toString()) {
+      return res
+        .status(403)
+        .json({ message: "You don't have permission to update this order" });
+    }
+
+    if (
+      !(order.orderStatus === "pending" || order.orderStatus === "confirmed")
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Order cannot be cancelled at this stage" });
+    }
+
+    order.orderStatus = "cancelled";
+    // Optionally set payment status
+    order.paymentStatus =
+      order.paymentStatus === "completed" ? order.paymentStatus : "failed";
+
+    const updated = await order.save(); // store changes in DB
+
+    res.status(200).json({ message: "Order cancelled", order: updated });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating order" });
+  }
+}
+
 module.exports = {
   createOrder,
   getAllOrdersAdmin,
   getUserOrders,
   updateOrderStatusAdmin,
   deleteOrderAdmin,
+  deleteUserOrder,
+  updateOrderStatusUser,
 };

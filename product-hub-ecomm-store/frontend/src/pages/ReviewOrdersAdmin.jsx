@@ -106,6 +106,39 @@ const ReviewOrdersAdmin = () => {
     setShowDeleteModal(true);
   };
 
+  const handleMarkReturned = async (orderId) => {
+    try {
+      const response = await axiosInstance.patch(`/orders/admin/${orderId}`, {
+        paymentStatus: "returned",
+      });
+
+      if (response.data?.order) {
+        setOrders(
+          orders.map((o) => (o._id === orderId ? response.data.order : o)),
+        );
+        toast.success("Payment status set to returned", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to mark payment as returned", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
+    }
+  };
+
   const handleConfirmDelete = async () => {
     if (!orderToDelete) return;
 
@@ -189,9 +222,10 @@ const ReviewOrdersAdmin = () => {
 
   const getPaymentStatusColor = (status) => {
     const colors = {
-      completed: "bg-green-50 text-green-700",
-      pending: "bg-yellow-50 text-yellow-700",
-      failed: "bg-red-50 text-red-700",
+      completed: "bg-green-100 text-green-700",
+      pending: "bg-yellow-100 text-yellow-700",
+      returned: "bg-red-100 text-red-700",
+      failed: "bg-red-100 text-red-700",
     };
     return colors[status] || colors.pending;
   };
@@ -492,7 +526,9 @@ const ReviewOrdersAdmin = () => {
                           {order.userEmail}
                         </p>
                         <p className="text-gray-600">
-                          <span className="font-semibold">Shipping Address:</span>{" "}
+                          <span className="font-semibold">
+                            Shipping Address:
+                          </span>{" "}
                           {order.shippingAddress}
                         </p>
                         <p className="text-gray-600">
@@ -643,13 +679,25 @@ const ReviewOrdersAdmin = () => {
                       </select>
                     </div>
 
-                    <button
-                      onClick={() => handleDeleteClick(order._id)}
-                      className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors cursor-pointer flex items-center gap-2"
-                    >
-                      <Trash2 size={18} />
-                      Delete Order
-                    </button>
+                    <div className="flex items-center gap-3">
+                      {order.paymentStatus === "completed" &&
+                        order.orderStatus === "cancelled" && (
+                          <button
+                            onClick={() => handleMarkReturned(order._id)}
+                            className="px-4 py-2 bg-green-200 text-green-700 cursor-pointer hover:bg-green-300 border border-green-100 rounded-lg text-sm font-medium transition-colors"
+                          >
+                            Mark Returned
+                          </button>
+                        )}
+
+                      <button
+                        onClick={() => handleDeleteClick(order._id)}
+                        className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors cursor-pointer flex items-center gap-2"
+                      >
+                        <Trash2 size={18} />
+                        Delete Order
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

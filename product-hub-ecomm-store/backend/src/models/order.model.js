@@ -56,7 +56,7 @@ const orderSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ["pending", "completed", "failed"],
+    enum: ["pending", "completed", "returned", "failed"],
     default: "pending",
   },
   paymentMethod: {
@@ -70,6 +70,10 @@ const orderSchema = new mongoose.Schema({
   },
   notes: {
     type: String,
+  },
+  hiddenForUser: {
+    type: Boolean,
+    default: false,
   },
   timestamp: {
     type: Date,
