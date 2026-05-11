@@ -222,7 +222,9 @@ function PaymentMethodModal({
                     </Field>
                     <Truck className="ml-3 text-green-600" size={24} />
                     <div className="ml-4">
-                      <p className="font-semibold text-gray-800">Cash on Delivery</p>
+                      <p className="font-semibold text-gray-800">
+                        Cash on Delivery
+                      </p>
                       <p className="text-sm text-gray-600">
                         Pay when your order arrives at your doorstep
                       </p>
@@ -236,7 +238,7 @@ function PaymentMethodModal({
                   />
                 </div>
 
-                <div className="bg-gray-50 px-0 pt-2 flex gap-3 justify-end border-t border-gray-200 sticky bottom-0">
+                <div className="bg-gray-50 px-0 pt-2 flex gap-3 justify-end border-t border-gray-200">
                   <button
                     type="button"
                     onClick={onClose}
@@ -247,9 +249,9 @@ function PaymentMethodModal({
                   <button
                     type="submit"
                     disabled={isSubmitting || !(isValid && dirty)}
-                    className={`px-8 py-2 rounded-lg cursor-pointer font-bold text-white active:scale-95 transition-colors ${
-                      isValid && dirty
-                        ? "bg-orange-500 hover:bg-orange-700"
+                    className={`px-8 py-2 rounded-lg font-bold text-white transition-colors ${
+                      isValid && dirty && !isSubmitting
+                        ? "active:scale-95 cursor-pointer bg-orange-500 hover:bg-orange-700"
                         : "bg-gray-400 cursor-not-allowed"
                     }`}
                   >
