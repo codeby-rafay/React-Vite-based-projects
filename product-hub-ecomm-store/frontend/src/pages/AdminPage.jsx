@@ -9,7 +9,7 @@ import { DeleteRecordToast } from "../utils/toastUtils";
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");
-  const { logout, currentUser } = useShop();
+  const { currentUser } = useShop();
   const [loginData, setLoginData] = useState([]);
   const [signupData, setSignupData] = useState([]);
   const [googleloginData, setGoogleLoginData] = useState([]);
@@ -151,11 +151,6 @@ function AdminPage() {
     setDeleteType(null);
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
   return (
     <div className="w-full bg-linear-to-br from-orange-50 to-amber-50 py-8 px-4">
       <div className="max-w-7xl mx-auto">
@@ -177,14 +172,6 @@ function AdminPage() {
                   Manage login and signup records
                 </p>
               </div>
-            </div>
-            <div className="flex gap-6">
-              <button
-                onClick={handleLogout}
-                className="flex items-center cursor-pointer gap-2 bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors active:scale-95 shadow-md hover:shadow-lg"
-              >
-                Logout <LogOut size={20} />
-              </button>
             </div>
           </div>
         </div>

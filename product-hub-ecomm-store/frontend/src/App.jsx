@@ -21,6 +21,7 @@ const NotFound404 = lazy(() => import("./pages/NotFound404"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Notifications = lazy(() => import("./pages/Notifications"));
 const ReviewOrdersUser = lazy(() => import("./pages/ReviewOrdersUser"));
+const CustomerFeedback = lazy(() => import("./pages/CustomerFeedback"));
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import { ToastContainer } from "react-toastify";
 
@@ -73,6 +74,16 @@ function App() {
                 <ProtectedAdminRoute>
                   <AdminLayout>
                     <ManageOrdersAdmin />
+                  </AdminLayout>
+                </ProtectedAdminRoute>
+              }
+            />
+            <Route
+              path="/admin/customer-feedback"
+              element={
+                <ProtectedAdminRoute>
+                  <AdminLayout>
+                    <CustomerFeedback />
                   </AdminLayout>
                 </ProtectedAdminRoute>
               }

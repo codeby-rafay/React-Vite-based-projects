@@ -1,11 +1,20 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { LayoutDashboard, FileText, Menu, X } from "lucide-react";
+import { useShop } from "../context/ShopContext";
+import {
+  LayoutDashboard,
+  FileText,
+  Menu,
+  X,
+  Package,
+  LogOut,
+} from "lucide-react";
 import { useState } from "react";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useShop();
 
   const navItems = [
     {
@@ -16,6 +25,11 @@ const AdminSidebar = () => {
     {
       label: "Manage Orders",
       path: "/admin/manage-orders",
+      icon: Package,
+    },
+    {
+      label: "Customer Feedback",
+      path: "/admin/customer-feedback",
       icon: FileText,
     },
   ];
@@ -25,6 +39,11 @@ const AdminSidebar = () => {
   const handleNavigation = (path) => {
     navigate(path);
     setIsOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
   };
 
   return (
@@ -39,7 +58,7 @@ const AdminSidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed md:sticky top-0 left-0 h-screen md:h-auto w-64 bg-white border-r border-gray-200 shadow-md md:shadow-none transition-transform duration-300 z-30 ${
+        className={`fixed top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 shadow-md transition-transform duration-300 z-30 ${
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
@@ -74,9 +93,20 @@ const AdminSidebar = () => {
             })}
           </nav>
 
-          {/* Sidebar Footer */}
-          <div className="p-4 border-t border-gray-200 text-xs text-gray-500 text-center">
-            <p>Admin Portal v1.0</p>
+          {/* Sidebar */}
+          <div className="border-t border-gray-200">
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center gap-3 px-6 py-3 text-left text-white bg-red-500 hover:bg-red-700 font-semibold transition-colors cursor-pointer"
+            >
+              <LogOut size={20} />
+              <span>Logout</span>
+            </button>
+
+            <div className="p-4 text-xs text-gray-500 text-center">
+              <p>Admin Portal v1.0</p>
+            </div>
           </div>
         </div>
       </aside>
