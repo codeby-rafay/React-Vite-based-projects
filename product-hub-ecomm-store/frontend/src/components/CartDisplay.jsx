@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ShoppingCart, Loader } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { toast, Slide } from "react-toastify";
 import axios from "axios";
 import { useShop } from "../context/ShopContext";
@@ -65,7 +65,11 @@ function CartDisplay() {
     }, 300);
   };
 
-  const handlePaymentMethodSelect = async (paymentMethod) => {
+  const handlePaymentMethodSelect = async ({
+    paymentMethod,
+    shippingAddress,
+    notes,
+  }) => {
     try {
       setIsProcessing(true);
       setShowPaymentModal(false);
@@ -83,7 +87,9 @@ function CartDisplay() {
         })),
         totalAmount: parseFloat(totalPrice),
         totalItems: cartItems.length,
-        paymentMethod: paymentMethod,
+        paymentMethod,
+        shippingAddress,
+        notes,
       };
 
       const response = await axios.post(

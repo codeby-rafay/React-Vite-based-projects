@@ -484,15 +484,19 @@ const ReviewOrdersAdmin = () => {
                       </h4>
                       <div className="space-y-2 text-sm">
                         <p className="text-gray-600">
-                          <span className="font-medium">Name:</span>{" "}
+                          <span className="font-semibold">Name:</span>{" "}
                           {order.userName}
                         </p>
                         <p className="text-gray-600 break-all">
-                          <span className="font-medium">Email:</span>{" "}
+                          <span className="font-semibold">Email:</span>{" "}
                           {order.userEmail}
                         </p>
                         <p className="text-gray-600">
-                          <span className="font-medium">Items:</span>{" "}
+                          <span className="font-semibold">Shipping Address:</span>{" "}
+                          {order.shippingAddress}
+                        </p>
+                        <p className="text-gray-600">
+                          <span className="font-semibold">Items:</span>{" "}
                           {order.totalItems}
                         </p>
                       </div>
@@ -505,13 +509,13 @@ const ReviewOrdersAdmin = () => {
                       </h4>
                       <div className="space-y-2 text-sm">
                         <p className="text-gray-600">
-                          <span className="font-medium">Date:</span>{" "}
+                          <span className="font-semibold">Date:</span>{" "}
                           {order.timestamp
                             ? formatDate(order.timestamp)
                             : "N/A"}
                         </p>
                         <p className="text-gray-600">
-                          <span className="font-medium">Payment Method:</span>
+                          <span className="font-semibold">Payment Method:</span>
                           <span
                             className={`ml-2 px-2 py-1 rounded text-xs font-semibold uppercase ${
                               order.paymentMethod === "card"
@@ -525,13 +529,19 @@ const ReviewOrdersAdmin = () => {
                           </span>
                         </p>
                         <p className="text-gray-600">
-                          <span className="font-medium">Payment Status:</span>
+                          <span className="font-semibold">Payment Status:</span>
                           <span
                             className={`ml-2 px-2 py-1 rounded text-xs font-semibold capitalize ${getPaymentStatusColor(
                               order.paymentStatus,
                             )}`}
                           >
                             {order.paymentStatus}
+                          </span>
+                        </p>
+                        <p className="text-gray-600">
+                          <span className="font-semibold">Notes:</span>
+                          <span className="ml-1 py-1 rounded text-md capitalize">
+                            {order.notes}
                           </span>
                         </p>
                       </div>

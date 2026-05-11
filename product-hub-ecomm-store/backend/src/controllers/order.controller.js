@@ -24,13 +24,16 @@ async function createOrder(req, res) {
       return res.status(400).json({ message: "User email is required" });
     }
     if (!userName) {
-      return res.status(400).json({ message: "User name is required" });
+      return res.status(400).json({ message: "Username is required" });
     }
     if (!products) {
       return res.status(400).json({ message: "Products array is required" });
     }
     if (!totalAmount && totalAmount !== 0) {
       return res.status(400).json({ message: "Total amount is required" });
+    }
+    if (!shippingAddress) {
+      return res.status(400).json({ message: "Shipping address is required" });
     }
 
     if (!Array.isArray(products)) {

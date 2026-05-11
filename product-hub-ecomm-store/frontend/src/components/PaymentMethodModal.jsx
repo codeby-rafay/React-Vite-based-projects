@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { CreditCard, Truck, X, ShoppingBag } from "lucide-react";
 
 function PaymentMethodModal({
@@ -8,13 +9,24 @@ function PaymentMethodModal({
   cartItems = [],
   totalPrice = 0,
 }) {
-  const [selectedMethod, setSelectedMethod] = useState(null);
+  const initialValues = {
+    paymentMethod: "",
+    shippingAddress: "",
+    notes: "",
+  };
 
-  const handleConfirm = () => {
-    if (selectedMethod) {
-      onSelect(selectedMethod);
-      setSelectedMethod(null);
+  const validate = (values) => {
+    const errors = {};
+
+    if (!values.shippingAddress.trim()) {
+      errors.shippingAddress = "Shipping address is required";
     }
+
+    if (!values.paymentMethod) {
+      errors.paymentMethod = "Please select a payment method";
+    }
+
+    return errors;
   };
 
   if (!isOpen) return null;
@@ -87,81 +99,166 @@ function PaymentMethodModal({
 
         {/* Payment Method Selection */}
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Select Payment Method
-          </h3>
-          <div className="space-y-3">
-            {/* Card Payment Option */}
-            <label
-              className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                selectedMethod === "card"
-                  ? "border-orange-500 bg-orange-50"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
-            >
-              <input
-                type="radio"
-                name="payment"
-                value="card"
-                checked={selectedMethod === "card"}
-                onChange={(e) => setSelectedMethod(e.target.value)}
-                className="w-5 h-5 text-orange-500 cursor-pointer"
-              />
-              <CreditCard className="ml-3 text-orange-500" size={24} />
-              <div className="ml-4">
-                <p className="font-semibold text-gray-800">Pay Now</p>
-                <p className="text-sm text-gray-600">
-                  Pay immediately using your credit/debit card
-                </p>
-              </div>
-            </label>
-
-            {/* Cash on Delivery Option */}
-            <label
-              className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                selectedMethod === "cod"
-                  ? "border-orange-500 bg-orange-50"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
-            >
-              <input
-                type="radio"
-                name="payment"
-                value="cod"
-                checked={selectedMethod === "cod"}
-                onChange={(e) => setSelectedMethod(e.target.value)}
-                className="w-5 h-5 text-orange-500 cursor-pointer"
-              />
-              <Truck className="ml-3 text-green-600" size={24} />
-              <div className="ml-4">
-                <p className="font-semibold text-gray-800">Cash on Delivery</p>
-                <p className="text-sm text-gray-600">
-                  Pay when your order arrives at your doorstep
-                </p>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="bg-gray-50 px-6 py-4 flex gap-3 justify-end border-t border-gray-200 sticky bottom-0">
-          <button
-            onClick={onClose}
-            className="px-6 py-2 text-gray-700 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors font-medium"
+          <Formik
+            initialValues={initialValues}
+            validate={validate}
+            onSubmit={(values, { resetForm }) => {
+              onSelect({
+                paymentMethod: values.paymentMethod,
+                shippingAddress: values.shippingAddress.trim(),
+                notes: values.notes.trim(),
+              });
+              resetForm();
+            }}
           >
-            Cancel
-          </button>
-          <button
-            onClick={handleConfirm}
-            disabled={!selectedMethod}
-            className={`px-8 py-2 rounded-lg cursor-pointer font-bold text-white active:scale-95 transition-colors ${
-              selectedMethod
-                ? "bg-orange-500 hover:bg-orange-700"
-                : "bg-gray-400 cursor-not-allowed"
-            }`}
-          >
-            Place Order
-          </button>
+            {({ values, setFieldTouched, isSubmitting, isValid, dirty }) => (
+              <Form className="space-y-6">
+                <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Shipping Details
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label
+                        htmlFor="shipping-address"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Shipping Address
+                      </label>
+
+                      <Field
+                        as="textarea"
+                        id="shipping-address"
+                        name="shippingAddress"
+                        rows={3}
+                        placeholder="Street, apartment, city, state, and postal code"
+                        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"
+                      />
+
+                      <ErrorMessage
+                        name="shippingAddress"
+                        component="p"
+                        className="mt-2 text-sm font-medium text-red-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="delivery-notes"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Delivery Notes
+                      </label>
+
+                      <Field
+                        as="textarea"
+                        id="delivery-notes"
+                        name="notes"
+                        rows={2}
+                        placeholder="Add delivery instructions, landmark details, or any special notes"
+                        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Select Payment Method
+                </h3>
+
+                <div className="space-y-3">
+                  <label
+                    className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                      values.paymentMethod === "card"
+                        ? "border-orange-500 bg-orange-50"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <Field name="paymentMethod">
+                      {({ field, form }) => (
+                        <input
+                          {...field}
+                          type="radio"
+                          value="card"
+                          checked={field.value === "card"}
+                          onChange={() => {
+                            form.setFieldValue("paymentMethod", "card");
+                            form.setFieldTouched("paymentMethod", true, false);
+                          }}
+                          className="w-5 h-5 text-orange-500 cursor-pointer"
+                        />
+                      )}
+                    </Field>
+                    <CreditCard className="ml-3 text-orange-500" size={24} />
+                    <div className="ml-4">
+                      <p className="font-semibold text-gray-800">Pay Now</p>
+                      <p className="text-sm text-gray-600">
+                        Pay immediately using your credit/debit card
+                      </p>
+                    </div>
+                  </label>
+
+                  <label
+                    className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                      values.paymentMethod === "cod"
+                        ? "border-orange-500 bg-orange-50"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <Field name="paymentMethod">
+                      {({ field, form }) => (
+                        <input
+                          {...field}
+                          type="radio"
+                          value="cod"
+                          checked={field.value === "cod"}
+                          onChange={() => {
+                            form.setFieldValue("paymentMethod", "cod");
+                            form.setFieldTouched("paymentMethod", true, false);
+                          }}
+                          className="w-5 h-5 text-orange-500 cursor-pointer"
+                        />
+                      )}
+                    </Field>
+                    <Truck className="ml-3 text-green-600" size={24} />
+                    <div className="ml-4">
+                      <p className="font-semibold text-gray-800">Cash on Delivery</p>
+                      <p className="text-sm text-gray-600">
+                        Pay when your order arrives at your doorstep
+                      </p>
+                    </div>
+                  </label>
+
+                  <ErrorMessage
+                    name="paymentMethod"
+                    component="p"
+                    className="text-sm font-medium text-red-500"
+                  />
+                </div>
+
+                <div className="bg-gray-50 px-0 pt-2 flex gap-3 justify-end border-t border-gray-200 sticky bottom-0">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="px-6 py-2 text-gray-700 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || !(isValid && dirty)}
+                    className={`px-8 py-2 rounded-lg cursor-pointer font-bold text-white active:scale-95 transition-colors ${
+                      isValid && dirty
+                        ? "bg-orange-500 hover:bg-orange-700"
+                        : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                  >
+                    Place Order
+                  </button>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
     </div>
