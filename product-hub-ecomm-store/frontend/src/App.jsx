@@ -15,7 +15,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const ReviewOrdersAdmin = lazy(() => import("./pages/ReviewOrdersAdmin"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const NotFound404 = lazy(() => import("./pages/NotFound404"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Notifications = lazy(() => import("./pages/Notifications"));
 const ReviewOrdersUser = lazy(() => import("./pages/ReviewOrdersUser"));
@@ -72,7 +72,7 @@ function App() {
               }
             />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<NotFound404 />} />
           </Routes>
         </Suspense>
       </main>
