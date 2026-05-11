@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { useShop } from "../context/ShopContext";
 import { toast, Slide } from "react-toastify";
+import { DeleteOrderToast } from "../utils/toastUtils";
 import {
   Package,
   Calendar,
@@ -23,7 +24,7 @@ const ReviewOrdersUser = () => {
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState(null);
-  const [actionType, setActionType] = useState(null); // 'delete' | 'cancel'
+  const [actionType, setActionType] = useState(null); // delete or cancel
   const [expandedOrderId, setExpandedOrderId] = useState(null);
 
   useEffect(() => {
@@ -82,11 +83,7 @@ const ReviewOrdersUser = () => {
       if (actionType === "delete") {
         await axiosInstance.delete(`/orders/user/${orderToDelete}`);
         setOrders((prev) => prev.filter((o) => o._id !== orderToDelete));
-        toast.success("Order deleted successfully", {
-          transition: Slide,
-          pauseOnHover: false,
-          draggable: true,
-        });
+        DeleteOrderToast();
       } else if (actionType === "cancel") {
         const res = await axiosInstance.patch(`/orders/user/${orderToDelete}`, {
           orderStatus: "cancelled",
@@ -134,7 +131,9 @@ const ReviewOrdersUser = () => {
   };
 
   const totalRevenue = useMemo(() => {
-    return orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0);
+    return orders
+      .filter((order) => order.orderStatus !== "cancelled")
+      .reduce((sum, order) => sum + (order.totalAmount || 0), 0);
   }, [orders]);
 
   const totalDelivered = useMemo(() => {
@@ -520,7 +519,7 @@ const ReviewOrdersUser = () => {
               ? "Are you sure you want to cancel this order?"
               : "Are you sure you want to delete this order?"
           }
-          buttonLabel={actionType === "cancel" ? "Cancel Order" : "Delete"}
+          buttonLabel={actionType === "cancel" ? "Cancel Order" : "Delete Order"}
         />
       </div>
     </div>

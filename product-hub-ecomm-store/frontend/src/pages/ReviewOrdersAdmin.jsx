@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { DeleteOrderToast, FailedToLoadOrdersToast } from "../utils/toastUtils";
 import { useNavigate } from "react-router-dom";
 import {
   Package,
@@ -54,15 +55,7 @@ const ReviewOrdersAdmin = () => {
         setOrders(response.data.orders);
       }
     } catch (error) {
-      toast.error("Failed to load orders", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      FailedToLoadOrdersToast();
     } finally {
       setLoading(false);
     }
@@ -148,15 +141,7 @@ const ReviewOrdersAdmin = () => {
       setOrders(orders.filter((o) => o._id !== orderToDelete));
       setShowDeleteModal(false);
       setOrderToDelete(null);
-      toast.success("Order deleted successfully", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      DeleteOrderToast();
     } catch (error) {
       toast.error("Failed to delete order", {
         position: "top-right",
@@ -258,10 +243,10 @@ const ReviewOrdersAdmin = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 p-4 md:p-8">
       <button
-        onClick={() => navigate("/admin/dashboard")}
-        className="flex items-center cursor-pointer text-2xl gap-1 hover:-translate-x-2 transition-all text-orange-500 hover:text-orange-700 font-semibold hover:underline"
+        onClick={() => navigate(-1)}
+        className="flex items-center cursor-pointer text-lg gap-1 hover:-translate-x-2 transition-all text-orange-500 hover:text-orange-700 font-semibold hover:underline"
       >
-        <ArrowLeft size={24} strokeWidth={2} /> <span>Back</span>
+        <ArrowLeft size={20} strokeWidth={2} /> <span>Back</span>
       </button>
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-6">

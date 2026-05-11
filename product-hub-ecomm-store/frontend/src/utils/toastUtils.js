@@ -122,3 +122,27 @@ export const LogoutToast = () => {
     transition: Slide,
   });
 };
+
+export const DeleteOrderToast = () => {
+  toast.success("Order deleted successfully", {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: false,
+    draggable: true,
+    transition: Slide,
+  });
+};
+
+export const FailedToLoadOrdersToast = () => {
+  toast.error("Failed to load orders", {
+    position: "top-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: false,
+    draggable: true,
+    transition: Slide,
+  });
+};
