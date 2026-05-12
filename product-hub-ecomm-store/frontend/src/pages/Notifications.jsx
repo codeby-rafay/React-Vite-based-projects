@@ -7,7 +7,11 @@ import { useShop } from "../context/ShopContext";
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser: user, unreadNotificationCount, setUnreadNotificationCount } = useShop();
+  const {
+    currentUser: user,
+    unreadNotificationCount,
+    setUnreadNotificationCount,
+  } = useShop();
 
   // Fetch notifications from backend
   const fetchNotifications = async () => {
@@ -37,7 +41,6 @@ const Notifications = () => {
   // Mark single notification as read
   const markAsRead = async (notification) => {
     try {
-      // If already read, do nothing
       if (notification.isRead) return;
 
       const notificationId = notification._id;
@@ -48,7 +51,9 @@ const Notifications = () => {
       );
       // Optimistic UI update: mark locally without full reload
       setNotifications((prev) =>
-        prev.map((n) => (n._id === notificationId ? { ...n, isRead: true } : n)),
+        prev.map((n) =>
+          n._id === notificationId ? { ...n, isRead: true } : n,
+        ),
       );
       setUnreadNotificationCount(Math.max(0, unreadNotificationCount - 1));
     } catch (error) {
@@ -59,11 +64,7 @@ const Notifications = () => {
   // Mark all notifications as read
   const markAllAsRead = async () => {
     try {
-      await axiosInstance.put(
-        `/notifications/${user.id}/read-all`,
-        {},
-        { withCredentials: true },
-      );
+      await axiosInstance.put(`/notifications/${user.id}/read-all`, {});
       fetchNotifications(); // Refresh notifications
     } catch (error) {
       console.error("Error marking all as read:", error);
@@ -73,10 +74,8 @@ const Notifications = () => {
   // Delete single notification
   const deleteNotification = async (notificationId) => {
     try {
-      await axiosInstance.delete(`/notifications/${notificationId}`, {
-        withCredentials: true,
-      });
-      fetchNotifications(); // Refresh notifications
+      await axiosInstance.delete(`/notifications/${notificationId}`);
+      fetchNotifications();
     } catch (error) {
       console.error("Error deleting notification:", error);
     }
@@ -85,10 +84,8 @@ const Notifications = () => {
   // Clear all notifications
   const clearAllNotifications = async () => {
     try {
-      await axiosInstance.delete(`/notifications/${user.id}/clear-all`, {
-        withCredentials: true,
-      });
-      fetchNotifications(); // Refresh notifications
+      await axiosInstance.delete(`/notifications/${user.id}/clear-all`);
+      fetchNotifications();
     } catch (error) {
       console.error("Error clearing notifications:", error);
     }
@@ -241,11 +238,17 @@ const Notifications = () => {
                           <div className="mt-3 text-sm text-gray-600 bg-white bg-opacity-50 p-2 rounded">
                             <p>
                               <strong>Order ID:</strong>{" "}
-                              {String(notification.orderDetails.orderNumber || "").slice(-8).toUpperCase()}
+                              {String(
+                                notification.orderDetails.orderNumber || "",
+                              )
+                                .slice(-8)
+                                .toUpperCase()}
                             </p>
                             <p>
                               <strong>Product:</strong>{" "}
-                              {notification.orderDetails.productName || notification.orderDetails.product || "N/A"}
+                              {notification.orderDetails.productName ||
+                                notification.orderDetails.product ||
+                                "N/A"}
                             </p>
                             <p>
                               <strong>Amount:</strong> Rs{" "}

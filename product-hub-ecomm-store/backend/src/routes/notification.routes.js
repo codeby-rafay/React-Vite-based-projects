@@ -1,5 +1,3 @@
-// scratch
-
 const express = require("express");
 const {
   getUserNotifications,

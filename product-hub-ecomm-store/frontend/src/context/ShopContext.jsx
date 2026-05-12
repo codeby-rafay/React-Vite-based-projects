@@ -152,7 +152,6 @@ export function ShopProvider({ children }) {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // ...........................................................................
   // unread notifications count
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
 
@@ -162,10 +161,13 @@ export function ShopProvider({ children }) {
 
     const fetchUnreadCount = async () => {
       try {
-        const response = await axiosInstance.get(`/notifications/${currentUser.id}`);
+        const response = await axiosInstance.get(
+          `/notifications/${currentUser.id}`,
+        );
         setUnreadNotificationCount(response.data.unreadCount || 0);
       } catch (error) {
         console.error("Error fetching unread notifications:", error);
+        throw error || new Error("Failed to fetch unread notifications");
       }
     };
 
@@ -176,7 +178,6 @@ export function ShopProvider({ children }) {
     const interval = setInterval(fetchUnreadCount, 15000);
     return () => clearInterval(interval);
   }, [currentUser?.id]);
-// ......................................................................
 
   useEffect(() => {
     if (currentUser) {

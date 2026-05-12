@@ -1,5 +1,3 @@
-// scratch
-
 const notificationModel = require("../models/notification.model");
 const orderModel = require("../models/order.model");
 
@@ -143,10 +141,7 @@ async function clearAllNotifications(req, res) {
   try {
     const { userId } = req.params;
 
-    await notificationModel.updateMany(
-      { userId },
-      { hiddenForUser: true },
-    );
+    await notificationModel.updateMany({ userId }, { hiddenForUser: true });
 
     res.status(200).json({
       message: "All notifications cleared successfully",
