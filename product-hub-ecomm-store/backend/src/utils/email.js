@@ -191,7 +191,6 @@ function orderStatusUpdateEmail(
   return html;
 }
 
-// Send email function
 async function sendEmail(toEmail, subject, htmlContent) {
   try {
     const mailOptions = {

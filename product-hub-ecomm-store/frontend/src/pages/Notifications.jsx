@@ -279,7 +279,7 @@ const Notifications = () => {
                         e.stopPropagation();
                         deleteNotification(notification._id);
                       }}
-                      className="text-gray-400 hover:text-red-600 cursor-pointer transition text-xl"
+                      className="text-gray-600 hover:text-red-500 bg-gray-200 px-2 py-1 rounded-lg cursor-pointer transition-colors font-medium"
                       title="Delete notification"
                     >
                       ✕
