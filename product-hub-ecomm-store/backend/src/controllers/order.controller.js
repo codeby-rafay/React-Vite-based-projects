@@ -1,5 +1,13 @@
 const orderModel = require("../models/order.model");
 const jwt = require("jsonwebtoken");
+// ..........................................................
+const { createNotification } = require("./notification.controller");
+const {
+  sendEmail,
+  orderPlacedEmail,
+  orderStatusUpdateEmail,
+} = require("../utils/email");
+// ..........................................................
 
 // route 3: ORDERS
 // (POST API)
@@ -70,6 +78,36 @@ async function createOrder(req, res) {
 
     const order = await orderModel.create(newOrder);
 
+    // ............................................................................................
+
+    // Extract product names from products array
+    const productNames = products.map((p) => p.name).join(", ");
+
+    // Create notification for order placed
+    await createNotification(
+      userId,
+      order._id,
+      "order_placed",
+      "Order Placed Successfully! 🎉",
+      `Your order #${order._id} has been placed. Total: Rs ${totalAmount}. Track your order status here.`,
+      {
+        orderNumber: order._id,
+        totalAmount: order.totalAmount,
+        paymentMethod: order.paymentMethod,
+        orderStatus: order.orderStatus,
+        productName: productNames,
+      },
+    );
+
+    // Send order placed email
+    const emailHtml = orderPlacedEmail(userName, userEmail, order);
+    await sendEmail(
+      userEmail,
+      "Order Confirmation - Your Order Has Been Placed",
+      emailHtml,
+    );
+// .............................................................................................
+
     res.status(201).json({
       message: "Order placed successfully!",
       order,
@@ -124,6 +162,15 @@ async function updateOrderStatusAdmin(req, res) {
     const { orderId } = req.params;
     const { orderStatus, paymentStatus, notes, shippingAddress } = req.body;
 
+    // .........................................................................
+
+    // Get the original order to track status changes
+    const originalOrder = await orderModel.findById(orderId);
+    if (!originalOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    // .........................................................................
+
     let updateData = {
       ...(orderStatus !== undefined && { orderStatus }),
       ...(paymentStatus !== undefined && { paymentStatus }),
@@ -141,17 +188,79 @@ async function updateOrderStatusAdmin(req, res) {
       { returnDocument: "after" },
     );
 
-    if (!updatedOrder) {
-      return res.status(404).json({ message: "Order not found" });
+    // .........................................................................
+    // Send notification and email if order status changed
+    if (orderStatus && orderStatus !== originalOrder.orderStatus) {
+      const statusTitles = {
+        confirmed: "Order Confirmed! ✅",
+        shipped: "Order Shipped! 🚚",
+        delivered: "Order Delivered! 📦",
+        cancelled: "Order Cancelled ❌",
+      };
+
+      const statusMessages = {
+        confirmed: "Your order has been confirmed by our team.",
+        shipped: "Your order is on the way to you.",
+        delivered: "Your order has been delivered successfully.",
+        cancelled: "Your order has been cancelled.",
+      };
+
+      // Extract product names from products array
+      const productNames = originalOrder.products.map((p) => p.name).join(", ");
+
+      // Create notification for user
+      await createNotification(
+        originalOrder.userId,
+        orderId,
+        `order_${orderStatus}`,
+        statusTitles[orderStatus] || `Order Status Updated`,
+        statusMessages[orderStatus] ||
+          `Your order status has been updated to ${orderStatus}`,
+        {
+          orderNumber: orderId,
+          totalAmount: originalOrder.totalAmount,
+          paymentMethod: originalOrder.paymentMethod,
+          orderStatus: orderStatus,
+          previousStatus: originalOrder.orderStatus,
+          productName: productNames,
+        },
+      );
+
+      // Send email to user
+      const emailHtml = orderStatusUpdateEmail(
+        originalOrder.userName,
+        originalOrder.userEmail,
+        originalOrder,
+        orderStatus,
+        originalOrder.orderStatus,
+      );
+
+      const emailSubjects = {
+        confirmed: "Order Confirmed - Your Order Is Confirmed",
+        shipped: "Order Shipped - Your Order Is On The Way",
+        delivered: "Order Delivered - Your Order Has Arrived",
+        cancelled: "Order Cancelled - Cancellation Confirmation",
+      };
+
+      await sendEmail(
+        originalOrder.userEmail,
+        emailSubjects[orderStatus] || "Order Status Update",
+        emailHtml,
+      );
     }
+    // .........................................................................
 
     res.status(200).json({
       message: "Order updated successfully",
       order: updatedOrder,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error updating order" });
+        // .........................................................................
+    res
+      .status(500)
+      .json({ message: "Error updating order", error: error.message });
   }
+      // .........................................................................
 }
 
 // DELETE API - Delete order
@@ -241,18 +350,59 @@ async function updateOrderStatusUser(req, res) {
         .json({ message: "Order cannot be cancelled at this stage" });
     }
 
+    // .........................................................................
+
+    const previousStatus = order.orderStatus;
     order.orderStatus = "cancelled";
     // Optionally set payment status
     order.paymentStatus =
       order.paymentStatus === "completed" ? order.paymentStatus : "failed";
 
-    const updated = await order.save(); // store changes in DB
+    const updated = await order.save();
+
+    // Extract product names from products array
+    const productNames = order.products.map((p) => p.name).join(", ");
+
+    // Create cancellation notification
+    await createNotification(
+      userId,
+      orderId,
+      "order_cancelled",
+      "Order Cancelled ❌",
+      "Your order has been cancelled successfully. Check your email for refund details.",
+      {
+        orderNumber: orderId,
+        totalAmount: order.totalAmount,
+        paymentMethod: order.paymentMethod,
+        orderStatus: "cancelled",
+        previousStatus: previousStatus,
+        productName: productNames,
+      },
+    );
+
+    // Send cancellation email
+    const emailHtml = orderStatusUpdateEmail(
+      order.userName,
+      order.userEmail,
+      order,
+      "cancelled",
+      previousStatus,
+    );
+
+    await sendEmail(
+      order.userEmail,
+      "Order Cancelled - Cancellation Confirmation",
+      emailHtml,
+    );
 
     res.status(200).json({ message: "Order cancelled", order: updated });
   } catch (error) {
-    res.status(500).json({ message: "Error updating order" });
+    res
+      .status(500)
+      .json({ message: "Error updating order", error: error.message });
   }
 }
+    // .........................................................................
 
 module.exports = {
   createOrder,

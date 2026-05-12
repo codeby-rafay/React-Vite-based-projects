@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookies = require("cookie-parser");
 const authRoutes = require("./routes/auth.routes");
 const orderRoutes = require("./routes/order.routes");
+const notificationRoutes = require("./routes/notification.routes");
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use(cookies());
 
 app.use("/api", authRoutes);
 app.use("/api", orderRoutes);
+app.use("/api", notificationRoutes);
 
 module.exports = app;

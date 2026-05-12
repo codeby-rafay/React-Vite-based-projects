@@ -419,7 +419,7 @@ const ManageOrdersAdmin = () => {
                         Order ID
                       </p>
                       <p className="text-sm font-mono font-bold text-gray-900 mt-1">
-                        {order._id.slice(-8).toUpperCase()}
+                        {String(order._id).slice(-8).toUpperCase()}
                       </p>
                     </div>
 

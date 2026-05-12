@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { X, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -10,6 +10,32 @@ const DeleteConfirmationModal = ({
   description = "You sure you want to remove this order?",
   buttonLabel = "Delete",
 }) => {
+  const [confirmDisabled, setConfirmDisabled] = useState(false);
+
+  // Wrap the provided handler to prevent double clicks
+  const onConfirm = async () => {
+    if (confirmDisabled) return;
+    setConfirmDisabled(true);
+
+    try {
+      const result = handleConfirmDelete && handleConfirmDelete();
+      if (result && typeof result.then === "function") {
+        await result;
+      }
+    } catch (err) {
+      console.error("Error in confirm handler:", err);
+    } finally {
+      setConfirmDisabled(false);
+    }
+  };
+
+  // Re-enable confirm button when modal closes or after handler finishes
+  useEffect(() => {
+    if (!showDeleteModal) {
+      setConfirmDisabled(false);
+    }
+  }, [showDeleteModal]);
+
   const titleParts = title.split(" ");
   const firstWord = titleParts[0];
   const restWords = titleParts.slice(1).join(" ");
@@ -64,8 +90,13 @@ const DeleteConfirmationModal = ({
                   Cancel
                 </button>
                 <button
-                  onClick={handleConfirmDelete}
-                  className="flex-1 px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition-colors cursor-pointer"
+                  onClick={onConfirm}
+                  disabled={confirmDisabled}
+                  className={`flex-1 px-6 py-2 text-white cursor-pointer font-semibold rounded-lg transition-colors ${
+                    confirmDisabled
+                      ? "bg-red-400 opacity-70 cursor-not-allowed"
+                      : "bg-red-500 hover:bg-red-600"
+                  }`}
                 >
                   {buttonLabel}
                 </button>

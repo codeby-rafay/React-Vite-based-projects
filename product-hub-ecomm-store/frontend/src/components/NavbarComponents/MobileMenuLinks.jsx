@@ -1,15 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Heart, LogOut } from "lucide-react";
+import { Heart, LogOut, Bell } from "lucide-react";
 import axios from "axios";
 import { useShop } from "../../context/ShopContext";
 import { toast, Slide } from "react-toastify";
 import { LogoutToast } from "../../utils/toastUtils";
 
 const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
-  const { currentUser, logout, savedItems } = useShop();
+  const { currentUser, logout, savedItems, unreadNotificationCount } = useShop();
   const navigate = useNavigate();
 
   const hasSaved = savedItems.length > 0;
+  const hasUnreadNotifications = unreadNotificationCount > 0;
 
   const handleLogout = async () => {
     try {
@@ -82,6 +83,21 @@ const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
                   {hasSaved && (
                     <span className="ml-auto bg-red-100 text-red-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                       {savedItems.length}
+                    </span>
+                  )}
+                </Link>
+
+                {/* Notifications link */}
+                <Link
+                  to="/notifications"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium mb-1 text-orange-500 hover:bg-orange-50 transition-colors"
+                >
+                  <Bell size={16} />
+                  Notifications
+                  {hasUnreadNotifications && (
+                    <span className="ml-auto bg-red-100 text-red-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {unreadNotificationCount}
                     </span>
                   )}
                 </Link>

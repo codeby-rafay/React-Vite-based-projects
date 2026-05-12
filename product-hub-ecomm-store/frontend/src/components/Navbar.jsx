@@ -9,7 +9,7 @@ import MobileMenuBtn from "./NavbarComponents/MobileMenuBtn";
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-  const { savedItems } = useShop();
+  const { savedItems, unreadNotificationCount } = useShop();
 
   // Note: "Saved" is no longer here - it moved to the user dropdown
   const navLinks = [
@@ -53,6 +53,7 @@ function Navbar() {
             menuOpen={menuOpen}
             setMenuOpen={setMenuOpen}
             savedItems={savedItems}
+            unreadNotificationCount={unreadNotificationCount}
           />
         </div>
 
@@ -61,6 +62,7 @@ function Navbar() {
           navLinks={navLinks}
           isActive={isActive}
           savedItems={savedItems}
+          unreadNotificationCount={unreadNotificationCount}
           menuOpen={menuOpen}
           setMenuOpen={setMenuOpen}
         />

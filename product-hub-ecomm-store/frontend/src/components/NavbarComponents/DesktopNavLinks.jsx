@@ -14,7 +14,7 @@ import { toast, Slide } from "react-toastify";
 import { LogoutToast } from "../../utils/toastUtils";
 
 const DesktopNavLinks = ({ navLinks, isActive }) => {
-  const { currentUser, logout, savedItems } = useShop();
+  const { currentUser, logout, savedItems, unreadNotificationCount } = useShop();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null); // This ref is used to detect clicks outside the dropdown, to close it
@@ -56,6 +56,7 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
   };
 
   const hasSaved = savedItems.length > 0;
+  const hasUnreadNotifications = unreadNotificationCount > 0;
 
   return (
     <div className="hidden md:flex items-center ml-auto gap-1">
@@ -88,8 +89,8 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
                 {currentUser.fullName.charAt(0)}
               </div>
 
-              {/* Red dot */}
-              {hasSaved && (
+              {/* Red dot for unread notifications or saved items */}
+              {(hasUnreadNotifications || hasSaved) && (
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
               )}
 
@@ -138,6 +139,12 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
               >
                 <Bell size={16} className="text-orange-500" />
                 Notifications
+                {/* Show count badge if there are unread notifications */}
+                {hasUnreadNotifications && (
+                  <span className="ml-auto bg-red-100 text-red-500 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {unreadNotificationCount}
+                  </span>
+                )}
               </Link>
 
               {/* My Order link */}

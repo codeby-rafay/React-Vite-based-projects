@@ -1,5 +1,6 @@
-const MobileMenuBtn = ({menuOpen, setMenuOpen, savedItems}) => {
+const MobileMenuBtn = ({menuOpen, setMenuOpen, savedItems, unreadNotificationCount}) => {
   const hasSaved = savedItems && savedItems.length > 0;
+  const hasUnreadNotifications = unreadNotificationCount > 0;
   
   return (
     <div>
@@ -36,8 +37,8 @@ const MobileMenuBtn = ({menuOpen, setMenuOpen, savedItems}) => {
                 d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
-            {/* Red dot - only shows if user has saved items */}
-            {hasSaved && (
+            {/* Red dot - shows if user has saved items or unread notifications */}
+            {(hasSaved || hasUnreadNotifications) && (
               <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
             )}
           </>

@@ -152,6 +152,32 @@ export function ShopProvider({ children }) {
     return saved ? JSON.parse(saved) : [];
   });
 
+  // ...........................................................................
+  // unread notifications count
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
+
+  // Fetch unread notification count periodically
+  useEffect(() => {
+    if (!currentUser?.id) return;
+
+    const fetchUnreadCount = async () => {
+      try {
+        const response = await axiosInstance.get(`/notifications/${currentUser.id}`);
+        setUnreadNotificationCount(response.data.unreadCount || 0);
+      } catch (error) {
+        console.error("Error fetching unread notifications:", error);
+      }
+    };
+
+    // Fetch on mount
+    fetchUnreadCount();
+
+    // Fetch every 15 seconds
+    const interval = setInterval(fetchUnreadCount, 15000);
+    return () => clearInterval(interval);
+  }, [currentUser?.id]);
+// ......................................................................
+
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem(
@@ -246,6 +272,8 @@ export function ShopProvider({ children }) {
         savedItems,
         toggleSave,
         isSaved,
+        unreadNotificationCount,
+        setUnreadNotificationCount,
       }}
     >
       {children}

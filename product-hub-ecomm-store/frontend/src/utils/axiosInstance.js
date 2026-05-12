@@ -13,7 +13,6 @@ axiosInstance.interceptors.response.use(
 
   (error) => {
     if (error.response?.status === 401) {
-      // remove saved user
       localStorage.removeItem("currentUser");
 
       toast.error("Session expired. Please login again.", {
@@ -26,7 +25,6 @@ axiosInstance.interceptors.response.use(
         transition: Slide,
       });
 
-      // redirect to login
       window.location.href = "/login";
     }
 
