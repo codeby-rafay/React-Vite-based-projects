@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Heart, LogOut, Bell } from "lucide-react";
+import { Heart, LogOut, Bell, Cuboid } from "lucide-react";
 import axios from "axios";
 import { useShop } from "../../context/ShopContext";
 import { toast, Slide } from "react-toastify";
@@ -91,7 +91,7 @@ const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
                 <Link
                   to="/notifications"
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium mb-1 text-orange-500 hover:bg-orange-50 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium mb-1 text-gray-700 hover:bg-orange-50 transition-colors"
                 >
                   <Bell size={16} />
                   Notifications
@@ -100,6 +100,16 @@ const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
                       {unreadNotificationCount}
                     </span>
                   )}
+                </Link>
+
+                {/* My Orders link (mobile) */}
+                <Link
+                  to="/my-orders"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium mb-1 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                >
+                  <Cuboid size={16} className="text-orange-500" />
+                  My Orders
                 </Link>
 
                 {/* Sign Out button */}

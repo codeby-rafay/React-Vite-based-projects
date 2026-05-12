@@ -204,6 +204,7 @@ async function sendEmail(toEmail, subject, htmlContent) {
     return true;
   } catch (error) {
     console.error("Error sending email:", error);
+    throw error || new Error("Failed to send email");
     return false;
   }
 }
