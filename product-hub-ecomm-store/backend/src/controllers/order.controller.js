@@ -89,7 +89,7 @@ async function createOrder(req, res) {
       order._id,
       "order_placed",
       "Order Placed Successfully! 🎉",
-      `Your order #${order._id.slice(-8).toUpperCase()} has been placed. Total: Rs ${totalAmount}. Track your order status here.`,
+      `Your order No.${String(order._id).slice(-8).toUpperCase()} has been placed. Total: Rs ${totalAmount}. Track your order status here.`,
       {
         orderNumber: order._id,
         totalAmount: order.totalAmount,

@@ -179,14 +179,14 @@ const Notifications = () => {
             {unreadNotificationCount > 0 && (
               <button
                 onClick={markAllAsRead}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 cursor-pointer transition text-sm font-medium"
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 cursor-pointer active:scale-95 transition text-sm font-medium"
               >
                 Mark All as Read
               </button>
             )}
             <button
               onClick={clearAllNotifications}
-              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 cursor-pointer transition text-sm font-medium"
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 cursor-pointer active:scale-95 transition text-sm font-medium"
             >
               Clear All
             </button>
