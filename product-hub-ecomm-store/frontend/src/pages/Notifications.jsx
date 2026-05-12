@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { useShop } from "../context/ShopContext";
+import { toast, Slide } from "react-toastify";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -29,9 +30,19 @@ const Notifications = () => {
       const count = response.data.unreadCount || 0;
       setUnreadNotificationCount(count);
     } catch (error) {
-      console.error(
-        "Error fetching notifications:",
-        error.response?.data || error.message,
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to Load notifications.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        },
       );
     } finally {
       setLoading(false);
@@ -44,12 +55,8 @@ const Notifications = () => {
       if (notification.isRead) return;
 
       const notificationId = notification._id;
-      await axiosInstance.put(
-        `/notifications/${notificationId}/read`,
-        {},
-        { withCredentials: true },
-      );
-      // Optimistic UI update: mark locally without full reload
+      await axiosInstance.put(`/notifications/${notificationId}/read`);
+      // Optimistic UI update: mark locally without full reload (frontend update ui immediately, backend will update on next fetch)
       setNotifications((prev) =>
         prev.map((n) =>
           n._id === notificationId ? { ...n, isRead: true } : n,
@@ -57,17 +64,55 @@ const Notifications = () => {
       );
       setUnreadNotificationCount(Math.max(0, unreadNotificationCount - 1));
     } catch (error) {
-      console.error("Error marking notification as read:", error);
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to mark notification as read.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        },
+      );
     }
   };
 
   // Mark all notifications as read
   const markAllAsRead = async () => {
     try {
-      await axiosInstance.put(`/notifications/${user.id}/read-all`, {});
-      fetchNotifications(); // Refresh notifications
+      await axiosInstance.put(`/notifications/${user.id}/read-all`);
+      // fetchNotifications(); // Refresh notifications
+      // Optimistic UI update: mark all as read locally without full reload
+      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      setUnreadNotificationCount(0);
+      toast.success("All notifications marked as read!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
     } catch (error) {
-      console.error("Error marking all as read:", error);
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to mark all notifications as read.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        },
+      );
     }
   };
 
@@ -75,9 +120,26 @@ const Notifications = () => {
   const deleteNotification = async (notificationId) => {
     try {
       await axiosInstance.delete(`/notifications/${notificationId}`);
-      fetchNotifications();
+      // Optimistic UI update: remove from UI immediately
+      setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
+
+      // optional: update unread count if needed
+      setUnreadNotificationCount((prev) => Math.max(0, prev - 1));
     } catch (error) {
-      console.error("Error deleting notification:", error);
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to delete notification.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        },
+      );
     }
   };
 
@@ -85,9 +147,32 @@ const Notifications = () => {
   const clearAllNotifications = async () => {
     try {
       await axiosInstance.delete(`/notifications/${user.id}/clear-all`);
-      fetchNotifications();
+      setNotifications([]);
+      setUnreadNotificationCount(0);
+      toast.success("All notifications cleared!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
     } catch (error) {
-      console.error("Error clearing notifications:", error);
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to clear notifications.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        },
+      );
     }
   };
 

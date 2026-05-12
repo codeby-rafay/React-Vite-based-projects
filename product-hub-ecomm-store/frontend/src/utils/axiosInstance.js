@@ -1,10 +1,9 @@
 import axios from "axios";
 import { toast, Slide } from "react-toastify";
-import { useShop } from "../context/ShopContext";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:3000/api",
-  withCredentials: true,
+  withCredentials: true, // allow browser to send cookies, jwt tokens, session data with every requests (without it backend won't receive cookies and won't be able to authenticate user)
 });
 
 // AUTO LOGOUT IF TOKEN EXPIRES
