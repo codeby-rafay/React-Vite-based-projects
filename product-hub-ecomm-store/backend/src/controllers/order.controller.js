@@ -196,7 +196,6 @@ async function updateOrderStatusAdmin(req, res) {
         cancelled: "Your order has been cancelled.",
       };
 
-      // Extract product names from products array
       const productNames = originalOrder.products.map((p) => p.name).join(", ");
 
       // Create notification for user
@@ -337,6 +336,7 @@ async function updateOrderStatusUser(req, res) {
         .json({ message: "Order cannot be cancelled at this stage" });
     }
 
+    // notification and email logic
     const previousStatus = order.orderStatus;
     order.orderStatus = "cancelled";
     // Optionally set payment status
