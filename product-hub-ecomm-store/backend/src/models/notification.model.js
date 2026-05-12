@@ -24,7 +24,6 @@ const notificationSchema = new mongoose.Schema({
       "order_cancelled",
       "payment_completed",
       "payment_failed",
-      "payment_returned",
     ],
     required: [true, "Notification type is required"],
   },

@@ -63,6 +63,15 @@ const Notifications = () => {
         ),
       );
       setUnreadNotificationCount(Math.max(0, unreadNotificationCount - 1));
+      toast.success("Notification marked as read!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -85,7 +94,7 @@ const Notifications = () => {
   const markAllAsRead = async () => {
     try {
       await axiosInstance.put(`/notifications/${user.id}/read-all`);
-      // fetchNotifications(); // Refresh notifications
+      // fetchNotifications(); // Refresh notifications (can be done through this way also but we are doing optimistic update to avoid extra loading time)
       // Optimistic UI update: mark all as read locally without full reload
       setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
       setUnreadNotificationCount(0);
@@ -122,9 +131,16 @@ const Notifications = () => {
       await axiosInstance.delete(`/notifications/${notificationId}`);
       // Optimistic UI update: remove from UI immediately
       setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
-
-      // optional: update unread count if needed
       setUnreadNotificationCount((prev) => Math.max(0, prev - 1));
+      toast.success("Notification deleted!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -220,6 +236,12 @@ const Notifications = () => {
         bg: "bg-yellow-50",
         border: "border-l-4 border-yellow-500",
         textColor: "text-yellow-700",
+      },
+      payment_failed: {
+        icon: "⚠️",
+        bg: "bg-red-50",
+        border: "border-l-4 border-red-500",
+        textColor: "text-red-700",
       },
     };
 
