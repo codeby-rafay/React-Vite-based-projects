@@ -3,6 +3,9 @@ import { lazy, Suspense } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CartDisplay from "./components/CartDisplay";
+import { SkeletonLoader } from "./components/SkeletonLoader";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
+import { ToastContainer } from "react-toastify";
 
 const AdminLayout = lazy(() => import("./components/AdminLayout"));
 const Home = lazy(() => import("./pages/Home"));
@@ -22,8 +25,6 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Notifications = lazy(() => import("./pages/Notifications"));
 const ReviewOrdersUser = lazy(() => import("./pages/ReviewOrdersUser"));
 const CustomerFeedback = lazy(() => import("./pages/CustomerFeedback"));
-import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
-import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();
@@ -37,14 +38,7 @@ function App() {
     <div className="min-h-screen flex flex-col bg-[#fafaf8]">
       {!isAdminRoute && !isResetPasswordRoute && <Navbar />}
       <main className="grow min-h-[80vh]">
-        <Suspense
-          fallback={
-            <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
-              <div className="w-12 h-12 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div>
-              <p className="mt-4 text-gray-500 text-sm">Loading...</p>
-            </div>
-          }
-        >
+        <Suspense fallback={<SkeletonLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
