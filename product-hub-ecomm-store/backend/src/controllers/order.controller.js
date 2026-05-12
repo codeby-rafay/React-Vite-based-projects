@@ -1,13 +1,11 @@
 const orderModel = require("../models/order.model");
 const jwt = require("jsonwebtoken");
-// ..........................................................
 const { createNotification } = require("./notification.controller");
 const {
   sendEmail,
   orderPlacedEmail,
   orderStatusUpdateEmail,
 } = require("../utils/email");
-// ..........................................................
 
 // route 3: ORDERS
 // (POST API)
@@ -78,8 +76,6 @@ async function createOrder(req, res) {
 
     const order = await orderModel.create(newOrder);
 
-    // ............................................................................................
-
     // Extract product names from products array
     const productNames = products.map((p) => p.name).join(", ");
 
@@ -106,7 +102,6 @@ async function createOrder(req, res) {
       "Order Confirmation - Your Order Has Been Placed",
       emailHtml,
     );
-// .............................................................................................
 
     res.status(201).json({
       message: "Order placed successfully!",
@@ -162,14 +157,11 @@ async function updateOrderStatusAdmin(req, res) {
     const { orderId } = req.params;
     const { orderStatus, paymentStatus, notes, shippingAddress } = req.body;
 
-    // .........................................................................
-
     // Get the original order to track status changes
     const originalOrder = await orderModel.findById(orderId);
     if (!originalOrder) {
       return res.status(404).json({ message: "Order not found" });
     }
-    // .........................................................................
 
     let updateData = {
       ...(orderStatus !== undefined && { orderStatus }),
@@ -188,7 +180,6 @@ async function updateOrderStatusAdmin(req, res) {
       { returnDocument: "after" },
     );
 
-    // .........................................................................
     // Send notification and email if order status changed
     if (orderStatus && orderStatus !== originalOrder.orderStatus) {
       const statusTitles = {
@@ -248,19 +239,15 @@ async function updateOrderStatusAdmin(req, res) {
         emailHtml,
       );
     }
-    // .........................................................................
-
     res.status(200).json({
       message: "Order updated successfully",
       order: updatedOrder,
     });
   } catch (error) {
-        // .........................................................................
     res
       .status(500)
       .json({ message: "Error updating order", error: error.message });
   }
-      // .........................................................................
 }
 
 // DELETE API - Delete order
@@ -350,8 +337,6 @@ async function updateOrderStatusUser(req, res) {
         .json({ message: "Order cannot be cancelled at this stage" });
     }
 
-    // .........................................................................
-
     const previousStatus = order.orderStatus;
     order.orderStatus = "cancelled";
     // Optionally set payment status
@@ -360,7 +345,6 @@ async function updateOrderStatusUser(req, res) {
 
     const updated = await order.save();
 
-    // Extract product names from products array
     const productNames = order.products.map((p) => p.name).join(", ");
 
     // Create cancellation notification
@@ -402,7 +386,6 @@ async function updateOrderStatusUser(req, res) {
       .json({ message: "Error updating order", error: error.message });
   }
 }
-    // .........................................................................
 
 module.exports = {
   createOrder,
