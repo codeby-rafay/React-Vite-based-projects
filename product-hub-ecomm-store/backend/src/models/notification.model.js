@@ -24,6 +24,7 @@ const notificationSchema = new mongoose.Schema({
       "order_cancelled",
       "payment_completed",
       "payment_failed",
+      "payment_returned",
     ],
     required: [true, "Notification type is required"],
   },
@@ -65,7 +66,7 @@ const notificationSchema = new mongoose.Schema({
   },
 });
 
-// Compound index for efficient querying
+// Compound index
 notificationSchema.index({ userId: 1, createdAt: -1 });
 notificationSchema.index({ userId: 1, isRead: 1 });
 
