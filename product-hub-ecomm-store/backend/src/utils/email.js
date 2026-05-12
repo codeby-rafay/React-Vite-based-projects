@@ -158,8 +158,8 @@ function orderStatusUpdateEmail(
           <div class="status-info">
             <h3>Order Update</h3>
             <p><strong>Order ID:</strong>${String(order._id).slice(-8).toUpperCase()}</p>
-            <p><strong>Previous Status:</strong> ${previousStatus}</p>
             <p><strong>Current Status:</strong> ${newStatus}</p>
+            <p><strong>Previous Status:</strong> ${previousStatus}</p>
             <p><strong>Order Amount:</strong> Rs ${order.totalAmount}</p>
           </div>
 
