@@ -12,7 +12,6 @@ import {
   ChevronDown,
   Loader,
   AlertCircle,
-  ArrowLeft,
 } from "lucide-react";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { useNavigate } from "react-router-dom";
@@ -173,12 +172,6 @@ const ReviewOrdersUser = () => {
         {/* Header */}
         <div className="mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-6">
           <div>
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center cursor-pointer text-lg gap-1 hover:-translate-x-2 transition-all text-orange-500 hover:text-orange-700 font-semibold mb-4"
-            >
-              <ArrowLeft size={20} strokeWidth={2} /> <span>Back</span>
-            </button>
             <h1
               className="text-4xl md:text-5xl font-bold text-gray-900 mb-2"
               style={{ fontFamily: "Playfair Display, serif" }}
