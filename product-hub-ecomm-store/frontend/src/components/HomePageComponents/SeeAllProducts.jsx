@@ -6,9 +6,14 @@ const SeeAllProducts = () => {
     <div className="text-center mt-10 flex justify-center">
       <Link
         to="/products"
-        className="btn bg-orange-500 hover:bg-orange-700 w-1/5 justify-center text-white px-10 py-3 rounded-xl flex items-center gap-2 font-semibold text-md transition-colors"
+        className="relative overflow-hidden inline-flex items-center justify-center gap-2 bg-orange-500 text-white font-semibold py-4 px-8 rounded-xl lg:bg-transparent lg:border-3 lg:border-orange-500 lg:text-orange-500 group"
       >
-        See All Products <ArrowRight size={16} strokeWidth={2} />
+        {/* Animated background */}
+        <span className="absolute inset-0 bg-orange-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-600 ease-in-out hidden lg:block"></span>
+
+        <span className="relative z-10 flex items-center gap-2 lg:group-hover:text-white">
+          See All Products <ArrowRight size={16} strokeWidth={2} />
+        </span>
       </Link>
     </div>
   );
