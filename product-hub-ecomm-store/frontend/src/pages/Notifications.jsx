@@ -1,5 +1,3 @@
-// scratch
-
 import { useState, useEffect } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { useShop } from "../context/ShopContext";
@@ -94,8 +92,7 @@ const Notifications = () => {
   const markAllAsRead = async () => {
     try {
       await axiosInstance.put(`/notifications/${user.id}/read-all`);
-      // fetchNotifications(); // Refresh notifications (can be done through this way also but we are doing optimistic update to avoid extra loading time)
-      // Optimistic UI update: mark all as read locally without full reload
+      // fetchNotifications(); // Refresh notifications (can be done through this way also but we are doing optimistic ui update to avoid extra loading time)
       setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
       setUnreadNotificationCount(0);
       toast.success("All notifications marked as read!", {
@@ -129,7 +126,6 @@ const Notifications = () => {
   const deleteNotification = async (notificationId) => {
     try {
       await axiosInstance.delete(`/notifications/${notificationId}`);
-      // Optimistic UI update: remove from UI immediately
       setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
       setUnreadNotificationCount((prev) => Math.max(0, prev - 1));
       toast.success("Notification deleted!", {
