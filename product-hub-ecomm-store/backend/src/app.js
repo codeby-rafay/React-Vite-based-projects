@@ -6,6 +6,7 @@ const cookies = require("cookie-parser");
 const authRoutes = require("./routes/auth.routes");
 const orderRoutes = require("./routes/order.routes");
 const notificationRoutes = require("./routes/notification.routes");
+const feedbackRoutes = require("./routes/feedback.routes");
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use(cookies());
 app.use("/api", authRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", notificationRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 module.exports = app;

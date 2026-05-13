@@ -239,7 +239,15 @@ const Notifications = () => {
         border: "border-l-4 border-red-500",
         textColor: "text-red-700",
       },
+      //................................................
+      feedback_reply: {
+        icon: "💬",
+        bg: "bg-orange-100",
+        border: "border-l-4 border-orange-500",
+        textColor: "text-orange-700",
+      },
     };
+    //...................................................
 
     return styles[type] || styles.order_placed;
   };
@@ -329,13 +337,50 @@ const Notifications = () => {
                             {notification.title}
                           </h3>
                           {!notification.isRead && (
-                            <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+                            <span className="bg-orange-500 text-white rounded-full px-3 py-1 text-[10px] font-semibold">
+                              New Message
+                            </span>
                           )}
                         </div>
-                        <p className="text-gray-700 mt-1 text-sm">
-                          {notification.message}
-                        </p>
+                        {notification.type !== "feedback_reply" && (
+                          <p className="text-gray-700 mt-1 text-sm">
+                            {notification.message}
+                          </p>
+                        )}
+                        {/* ....................................................................... */}
+                        {/* Show feedback reply details if available */}
+                        {notification.type === "feedback_reply" &&
+                          notification.userMessage && (
+                            <div className="mt-3 space-y-3 text-sm bg-white bg-opacity-50 p-3 rounded">
+                              {/* User's Original Message */}
+                              <div className="border-l-4 border-blue-500 pl-3">
+                                <p className="font-semibold text-gray-700 mb-1">
+                                  Your Message:
+                                </p>
+                                <p className="text-gray-600 italic">
+                                  "{notification.userMessage}"
+                                </p>
+                              </div>
 
+                              {/* divider */}
+                              <div className="relative my-6 overflow-hidden rounded-full h-0.5 bg-gray-200">
+                                <div className="absolute inset-0 bg-linear-to-r from-transparent via-orange-400 to-transparent animate-pulse"></div>
+                              </div>
+
+                              {/* Admin's Reply */}
+                              {notification.adminReply && (
+                                <div className="border-l-4 border-green-500 pl-3">
+                                  <p className="font-semibold text-gray-700 mb-1">
+                                    Response:
+                                  </p>
+                                  <p className="text-gray-600 italic">
+                                    "{notification.adminReply}"
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        {/* ....................................................................... */}
                         {/* Show order details if available */}
                         {notification.orderDetails && (
                           <div className="mt-3 text-sm text-gray-600 bg-white bg-opacity-50 p-2 rounded">
@@ -365,7 +410,6 @@ const Notifications = () => {
                             </p>
                           </div>
                         )}
-
                         <p className="text-xs text-gray-500 mt-2">
                           {new Date(
                             notification.createdAt,

@@ -1,11 +1,11 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { SkeletonLoader } from "./components/SkeletonLoader";
+import { ToastContainer } from "react-toastify";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CartDisplay from "./components/CartDisplay";
-import { SkeletonLoader } from "./components/SkeletonLoader";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
-import { ToastContainer } from "react-toastify";
 
 const AdminLayout = lazy(() => import("./components/AdminLayout"));
 const Home = lazy(() => import("./pages/Home"));
@@ -24,7 +24,7 @@ const NotFound404 = lazy(() => import("./pages/NotFound404"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Notifications = lazy(() => import("./pages/Notifications"));
 const ReviewOrdersUser = lazy(() => import("./pages/ReviewOrdersUser"));
-const CustomerFeedback = lazy(() => import("./pages/CustomerFeedback"));
+const UserFeedback = lazy(() => import("./pages/UserFeedback"));
 
 function App() {
   const location = useLocation();
@@ -73,11 +73,11 @@ function App() {
               }
             />
             <Route
-              path="/admin/customer-feedback"
+              path="/admin/user-feedback"
               element={
                 <ProtectedAdminRoute>
                   <AdminLayout>
-                    <CustomerFeedback />
+                    <UserFeedback />
                   </AdminLayout>
                 </ProtectedAdminRoute>
               }

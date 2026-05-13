@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { z } from "zod";
+import axiosInstance from "../utils/axiosInstance";
+import { toast, Slide } from "react-toastify";
 
 // Zod Schema
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
-
   email: z.string().min(1, "Email is required").email("Invalid email address"),
-
   message: z
     .string()
     .min(1, "Message is required")
@@ -17,7 +17,7 @@ const contactSchema = z.object({
 function Contact() {
   const [submitted, setSubmitted] = useState(false);
 
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
   // Convert Zod errors to Formik errors
   const validate = (values) => {
@@ -32,6 +32,61 @@ function Contact() {
       return errors;
     }
   };
+
+  //.....................................................
+
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      // Get current user from localStorage
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+      if (!currentUser) {
+        toast.error("Please login to send a message", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          transition: Slide,
+        });
+        return;
+      }
+
+      // Send to backend
+      const response = await axiosInstance.post("/feedback/submit", {
+        userId: currentUser.id,
+        userEmail: values.email,
+        userName: values.name,
+        subject: "Contact Form Message",
+        message: values.message,
+      });
+
+      toast.success(response.data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
+
+      setSubmitted(true);
+      resetForm();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to send message", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        transition: Slide,
+      });
+    }
+  };
+  //.....................................................
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -62,7 +117,7 @@ function Contact() {
           </h2>
 
           <p className="text-green-600 text-sm">
-            Thank you for reaching out. We'll get back to you soon.
+            Thank you for reaching out. We'll get back to you soon!
           </p>
 
           <button
@@ -81,12 +136,7 @@ function Contact() {
               message: "",
             }}
             validate={validate}
-            onSubmit={(values, { resetForm }) => {
-              console.log("Form submitted:", values);
-
-              setSubmitted(true);
-              resetForm();
-            }}
+            onSubmit={handleSubmit}
           >
             {({ isSubmitting, isValid, dirty }) => (
               <Form className="space-y-5">
@@ -171,7 +221,7 @@ function Contact() {
                   disabled={isSubmitting || !(isValid && dirty)}
                   className="w-full bg-orange-500 hover:bg-orange-700 disabled:bg-gray-200 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-colors"
                 >
-                  Send Message
+                  {isSubmitting ? "Sending..." : "Send Message"}
                 </button>
               </Form>
             )}

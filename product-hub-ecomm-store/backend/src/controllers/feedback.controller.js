@@ -1,0 +1,212 @@
+// scratch
+
+const feedbackModel = require("../models/feedback.model");
+const notificationModel = require("../models/notification.model");
+const { sendFeedbackEmail } = require("../utils/feedbackEmail");
+const { sendFeedbackReplyEmail } = require("../utils/feedbackReplyEmail");
+
+// POST - Submit contact us form
+async function submitFeedback(req, res) {
+  try {
+    const { userId, userEmail, userName, subject, message } = req.body;
+
+    if (!userId || !userEmail || !userName || !subject || !message) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const feedback = await feedbackModel.create({
+      userId,
+      userEmail,
+      userName,
+      subject,
+      message,
+      status: "unread",
+    });
+
+    // Send thank you email to user
+    await sendFeedbackEmail(userEmail, userName, message);
+
+    res.status(201).json({
+      message: "Feedback submitted successfully!",
+      feedback,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error submitting feedback" });
+  }
+}
+
+// GET - Get all feedback (admin only)
+async function getAllFeedback(req, res) {
+  try {
+    const feedback = await feedbackModel
+      .find()
+      .sort({ createdAt: -1 })
+      .populate("userId", "fullName email")
+      .populate("adminReply.repliedBy", "fullName email");
+
+    const unreadCount = await feedbackModel.countDocuments({
+      status: "unread",
+    });
+
+    const repliedCount = await feedbackModel.countDocuments({
+      status: "replied",
+    });
+
+    res.status(200).json({
+      message: "Feedback fetched successfully",
+      feedback,
+      stats: {
+        total: feedback.length,
+        unread: unreadCount,
+        replied: repliedCount,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error loading feedbacks" });
+  }
+}
+
+// GET - Get specific feedback by ID
+async function getFeedbackById(req, res) {
+  try {
+    const { feedbackId } = req.params;
+
+    const feedback = await feedbackModel
+      .findById(feedbackId)
+      .populate("userId", "fullName email")
+      .populate("adminReply.repliedBy", "fullName email");
+
+    if (!feedback) {
+      return res.status(404).json({ message: "Feedback not found" });
+    }
+
+    // Mark as read if admin views it
+    if (feedback.status === "unread") {
+      feedback.status = "read";
+      await feedback.save();
+    }
+
+    res.status(200).json({
+      message: "Feedback fetched successfully",
+      feedback,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error loading feedback" });
+  }
+}
+
+// PUT - Reply to feedback (admin only)
+async function replyToFeedback(req, res) {
+  try {
+    const { feedbackId } = req.params;
+    const { reply } = req.body;
+    const adminId = req.user.id;
+
+    if (!reply) {
+      return res.status(400).json({ message: "Reply message is required" });
+    }
+
+    const feedback = await feedbackModel.findById(feedbackId);
+
+    if (!feedback) {
+      return res.status(404).json({ message: "Feedback not found" });
+    }
+
+    // Update feedback with admin reply
+    feedback.adminReply = {
+      reply,
+      repliedAt: new Date(),
+      repliedBy: adminId,
+    };
+    feedback.status = "replied";
+
+    await feedback.save();
+
+    // Send reply email to user
+    await sendFeedbackReplyEmail(
+      feedback.userEmail,
+      feedback.userName,
+      feedback.message,
+      reply,
+    );
+
+    // Create notification for user
+    try {
+      await notificationModel.create({
+        userId: feedback.userId,
+        type: "feedback_reply",
+        title: "Response to Your Feedback",
+        message: `Reply to your message: "${feedback.adminReply.reply}"`,
+        feedbackId: feedbackId,
+        userMessage: feedback.message,
+        adminReply: feedback.adminReply.reply,
+        isRead: false,
+      });
+    } catch (notifError) {
+      throw new Error("Failed to create notification for feedback reply");
+      res
+        .status(500)
+        .json({ message: "Error creating notification for feedback reply" });
+    }
+
+    res.status(200).json({
+      message: "Reply sent successfully!",
+      feedback,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error replying to feedback" });
+  }
+}
+
+// PUT - Mark feedback as read (admin only)
+async function markFeedbackAsRead(req, res) {
+  try {
+    const { feedbackId } = req.params;
+
+    const feedback = await feedbackModel.findById(feedbackId);
+
+    if (!feedback) {
+      return res.status(404).json({ message: "Feedback not found" });
+    }
+
+    if (feedback.status === "unread") {
+      feedback.status = "read";
+      await feedback.save();
+    }
+
+    res.status(200).json({
+      message: "Feedback marked as read",
+      feedback,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error marking feedback as read" });
+  }
+}
+
+// DELETE - Delete feedback (admin only)
+async function deleteFeedback(req, res) {
+  try {
+    const { feedbackId } = req.params;
+
+    const feedback = await feedbackModel.findByIdAndDelete(feedbackId);
+
+    if (!feedback) {
+      return res.status(404).json({ message: "Feedback not found" });
+    }
+
+    res.status(200).json({
+      message: "Feedback deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting feedback" });
+  }
+}
+
+module.exports = {
+  submitFeedback,
+  getAllFeedback,
+  getFeedbackById,
+  markFeedbackAsRead,
+  replyToFeedback,
+  deleteFeedback,
+};

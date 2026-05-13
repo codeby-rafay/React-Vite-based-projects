@@ -1,5 +1,3 @@
-// scratch (done)
-
 const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema({
@@ -12,7 +10,10 @@ const notificationSchema = new mongoose.Schema({
   orderId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "order",
-    required: [true, "Order ID is required"],
+  },
+  feedbackId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "feedback",
   },
   type: {
     type: String,
@@ -24,6 +25,7 @@ const notificationSchema = new mongoose.Schema({
       "order_cancelled",
       "payment_completed",
       "payment_failed",
+      "feedback_reply",
     ],
     required: [true, "Notification type is required"],
   },
@@ -47,6 +49,12 @@ const notificationSchema = new mongoose.Schema({
     orderStatus: String,
     productName: String,
     previousStatus: String,
+  },
+  userMessage: {
+    type: String,
+  },
+  adminReply: {
+    type: String,
   },
   isRead: {
     type: Boolean,

@@ -29,7 +29,7 @@ const AdminSidebar = () => {
     },
     {
       label: "Customer Feedback",
-      path: "/admin/customer-feedback",
+      path: "/admin/user-feedback",
       icon: FileText,
     },
   ];

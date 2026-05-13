@@ -1,5 +1,3 @@
-// scratch
-
 const notificationModel = require("../models/notification.model");
 const orderModel = require("../models/order.model");
 
@@ -23,7 +21,7 @@ async function createNotification(
     });
     return notification;
   } catch (error) {
-    console.error("Error creating notification:", error);
+    throw error || new Error("Failed to create notification");
     return null;
   }
 }
@@ -147,10 +145,7 @@ async function clearAllNotifications(req, res) {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 
-    await notificationModel.updateMany(
-      { userId },
-      { hiddenForUser: true },
-    );
+    await notificationModel.updateMany({ userId }, { hiddenForUser: true });
 
     res.status(200).json({
       message: "All notifications cleared successfully",

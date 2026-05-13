@@ -1,5 +1,3 @@
-// scratch
-
 const nodemailer = require("nodemailer");
 
 // Setup email configuration
