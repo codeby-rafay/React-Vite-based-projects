@@ -249,7 +249,6 @@ async function login(req, res) {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-      // maxAge: 3 * 60 * 60 * 1000,
       // 3 hours
       maxAge: 3 * 60 * 60 * 1000, // 3 hours
     });

@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { toast, Slide } from "react-toastify";
 import axiosInstance from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import { SessionExpiredToast } from "../utils/toastUtils";
 
 const ShopContext = createContext();
 
@@ -23,15 +24,7 @@ export function ShopProvider({ children }) {
           navigate("/login", { replace: true });
         }, 800);
 
-        toast.error("Session expired. Please login again.", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          transition: Slide,
-        });
+        SessionExpiredToast();
       }
     };
     verifyUser();
@@ -114,15 +107,7 @@ export function ShopProvider({ children }) {
     }
 
     const timer = setTimeout(() => {
-      toast.error("Session expired. Please login again.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      SessionExpiredToast();
 
       logout();
 
@@ -157,7 +142,7 @@ export function ShopProvider({ children }) {
 
   // Fetch unread notification count periodically
   useEffect(() => {
-    if (!currentUser?.id) return;
+    if (!currentUser?.id || currentUser?.role !== "user") return;
 
     const fetchUnreadCount = async () => {
       try {
@@ -177,7 +162,7 @@ export function ShopProvider({ children }) {
     // Fetch every 15 seconds
     const interval = setInterval(fetchUnreadCount, 15000);
     return () => clearInterval(interval);
-  }, [currentUser?.id]);
+  }, [currentUser?.id, currentUser?.role]);
 
   useEffect(() => {
     if (currentUser) {

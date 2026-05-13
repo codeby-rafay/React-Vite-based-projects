@@ -8,9 +8,7 @@ import {
   Bell,
   Cuboid,
 } from "lucide-react";
-import axios from "axios";
 import { useShop } from "../../context/ShopContext";
-import { toast, Slide } from "react-toastify";
 import { LogoutToast } from "../../utils/toastUtils";
 
 const DesktopNavLinks = ({ navLinks, isActive }) => {
@@ -30,26 +28,7 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
   }, []);
 
   const handleLogout = async () => {
-    try {
-      await axios.post("http://localhost:3000/api/logout");
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          error.message ||
-          "An error occurred during logout.",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          transition: Slide,
-        },
-      );
-    }
-
-    logout(); // Clears user from context and localStorage
+    await logout();
     setDropdownOpen(false);
     LogoutToast();
     navigate("/login");
@@ -79,7 +58,7 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
       <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
         {currentUser ? (
           <div className="relative" ref={dropdownRef}>
-            {/* shows first letter of user's name */}
+            {/* shows first letter of user name */}
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="relative flex items-center gap-1 focus:outline-none"

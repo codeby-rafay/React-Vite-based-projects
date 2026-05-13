@@ -1,38 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, LogOut, Bell, Cuboid } from "lucide-react";
-import axios from "axios";
 import { useShop } from "../../context/ShopContext";
-import { toast, Slide } from "react-toastify";
 import { LogoutToast } from "../../utils/toastUtils";
 
 const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
-  const { currentUser, logout, savedItems, unreadNotificationCount } = useShop();
+  const { currentUser, logout, savedItems, unreadNotificationCount } =
+    useShop();
   const navigate = useNavigate();
 
   const hasSaved = savedItems.length > 0;
   const hasUnreadNotifications = unreadNotificationCount > 0;
 
   const handleLogout = async () => {
-    try {
-      await axios.post("http://localhost:3000/api/logout");
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          error.message ||
-          "An error occurred during logout.",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          transition: Slide,
-        },
-      );
-    }
-
-    logout();
+    await logout();
     setMenuOpen(false);
     LogoutToast();
     navigate("/login");

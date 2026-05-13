@@ -146,3 +146,15 @@ export const FailedToLoadOrdersToast = () => {
     transition: Slide,
   });
 };
+
+export const SessionExpiredToast = () => {
+  toast.error("Session expired. Please login again.", {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: false,
+    draggable: true,
+    transition: Slide,
+  });
+};

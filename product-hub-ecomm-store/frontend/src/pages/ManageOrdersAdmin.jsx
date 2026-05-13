@@ -667,7 +667,7 @@ const ManageOrdersAdmin = () => {
 
                       <button
                         onClick={() => handleDeleteClick(order._id)}
-                        className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition-colors cursor-pointer flex items-center gap-2"
+                        className="px-6 py-2 bg-red-500 hover:bg-red-700 text-white font-medium rounded-lg transition-colors cursor-pointer flex items-center gap-2"
                       >
                         <Trash2 size={18} />
                         Delete Order

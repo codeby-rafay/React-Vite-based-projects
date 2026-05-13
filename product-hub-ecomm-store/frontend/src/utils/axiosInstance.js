@@ -1,5 +1,5 @@
 import axios from "axios";
-import { toast, Slide } from "react-toastify";
+import { SessionExpiredToast } from "./toastUtils";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -14,15 +14,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem("currentUser");
 
-      toast.error("Session expired. Please login again.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        transition: Slide,
-      });
+      SessionExpiredToast();
 
       window.location.href = "/login";
     }
