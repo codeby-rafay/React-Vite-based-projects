@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from "react";
-import axiosInstance from "../utils/axiosInstance";
 import { useShop } from "../context/ShopContext";
 import { toast, Slide } from "react-toastify";
 import { DeleteOrderToast } from "../utils/toastUtils";
@@ -13,8 +12,9 @@ import {
   Loader,
   AlertCircle,
 } from "lucide-react";
-import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/axiosInstance";
+import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
 
 const ReviewOrdersUser = () => {
   const { currentUser } = useShop();

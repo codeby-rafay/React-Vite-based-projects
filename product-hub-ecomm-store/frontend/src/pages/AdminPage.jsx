@@ -5,7 +5,7 @@ import { useShop } from "../context/ShopContext";
 import { toast, Slide } from "react-toastify";
 import { DeleteRecordToast } from "../utils/toastUtils";
 import axiosInstance from "../utils/axiosInstance";
-import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");

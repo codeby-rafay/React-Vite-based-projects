@@ -6,7 +6,7 @@ import CheckoutBtn from "./CartPanelComponents/CheckoutBtn";
 import CartItems from "./CartPanelComponents/CartItems";
 import CartHeader from "./CartPanelComponents/CartHeader";
 import CartPanelFooter from "./CartPanelComponents/CartPanelFooter";
-import PaymentMethodModal from "./PaymentMethodModal";
+import PaymentMethodModal from "../components/ModalComponents/PaymentMethodModal";
 import axios from "axios";
 
 function CartDisplay() {

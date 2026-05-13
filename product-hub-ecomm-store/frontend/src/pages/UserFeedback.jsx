@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { toast, Slide } from "react-toastify";
 import { MessageCircle, Trash2, Reply, X, Send, Mail } from "lucide-react";
 import axiosInstance from "../utils/axiosInstance";
-import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
 
 function UserFeedback() {
   const [feedbacks, setFeedbacks] = useState([]);

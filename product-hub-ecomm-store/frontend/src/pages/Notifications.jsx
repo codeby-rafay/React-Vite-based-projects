@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import axiosInstance from "../utils/axiosInstance";
 import { useShop } from "../context/ShopContext";
 import { toast, Slide } from "react-toastify";
+import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
+import axiosInstance from "../utils/axiosInstance";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteAction, setDeleteAction] = useState(null); // 'clearAll' or null
   const [loading, setLoading] = useState(true);
   const {
     currentUser: user,
@@ -188,6 +191,19 @@ const Notifications = () => {
     }
   };
 
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false);
+    setDeleteAction(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteAction === "clearAll") {
+      await clearAllNotifications();
+    }
+    setShowDeleteModal(false);
+    setDeleteAction(null);
+  };
+
   // Fetch notifications on component mount
   useEffect(() => {
     if (!user?.id) return;
@@ -293,7 +309,10 @@ const Notifications = () => {
               </button>
             )}
             <button
-              onClick={clearAllNotifications}
+              onClick={() => {
+                setDeleteAction("clearAll");
+                setShowDeleteModal(true);
+              }}
               className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 cursor-pointer active:scale-95 transition text-sm font-medium"
             >
               Clear All
@@ -452,6 +471,14 @@ const Notifications = () => {
           </div>
         )}
       </div>
+      <DeleteConfirmationModal
+        showDeleteModal={showDeleteModal}
+        handleCancelDelete={handleCancelDelete}
+        handleConfirmDelete={handleConfirmDelete}
+        title="Clear All Notifications"
+        description="Are you sure you want to delete all notifications?"
+        buttonLabel="Delete"
+      />
     </div>
   );
 };

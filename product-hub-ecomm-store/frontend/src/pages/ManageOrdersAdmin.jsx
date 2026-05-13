@@ -14,7 +14,7 @@ import {
 import { toast, Slide } from "react-toastify";
 import axiosInstance from "../utils/axiosInstance";
 import OrderSearchBar from "../components/OrderSearchBar";
-import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
 
 const ManageOrdersAdmin = () => {
   const [orders, setOrders] = useState([]);
