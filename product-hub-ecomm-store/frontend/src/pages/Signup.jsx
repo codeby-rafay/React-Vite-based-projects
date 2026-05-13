@@ -34,7 +34,7 @@ function Signup() {
         const token = response.credential;
 
         // send token to backend using axios
-        const res = await axiosInstance.post("/google-login", {
+        const res = await axiosInstance.post("/auth/google-login", {
           token,
         });
 
@@ -144,7 +144,7 @@ function Signup() {
     try {
       setLoading(true);
 
-      const response = await axiosInstance.post("/signup", {
+      const response = await axiosInstance.post("/auth/signup", {
         fullName: formData.fullName.trim(),
         email: formData.email,
         password: formData.password,

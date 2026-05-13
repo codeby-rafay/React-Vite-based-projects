@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getAllProducts } from "../api/products";
-import ProductCard from "../components/ProductCard";
 import { Loading, ErrorMessage } from "../components/LoadingError";
 import { Sparkle } from "lucide-react";
+import ProductCard from "../components/ProductCard";
 import BrowseAllProductBtn from "../components/HomePageComponents/BrowseAllProductBtn";
 import ShopbyCategoryBtn from "../components/HomePageComponents/ShopbyCategoryBtn";
 import ViewAllLink from "../components/HomePageComponents/ViewAllLink";

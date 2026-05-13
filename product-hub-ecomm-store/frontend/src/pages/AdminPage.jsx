@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../utils/axiosInstance";
 import { Users, LogIn, UserPlus, Trash2, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
 import { toast, Slide } from "react-toastify";
-import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 import { DeleteRecordToast } from "../utils/toastUtils";
+import axiosInstance from "../utils/axiosInstance";
+import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");
@@ -42,7 +42,7 @@ function AdminPage() {
         setLoadingLogin(true);
         setErrorLogin(null);
 
-        const response = await axiosInstance.get("/login");
+        const response = await axiosInstance.get("/auth/login");
         const data = response.data;
         const formattedData = data.logins.map((record) => ({
           ...record,
@@ -67,7 +67,7 @@ function AdminPage() {
         setLoadingSignup(true);
         setErrorSignup(null);
 
-        const response = await axiosInstance.get("/signup");
+        const response = await axiosInstance.get("/auth/signup");
         const data = response.data;
         const formattedData = data.signups.map((record) => ({
           ...record,
@@ -102,10 +102,10 @@ function AdminPage() {
 
     try {
       if (deleteType === "login") {
-        await axiosInstance.delete(`/login/${recordToDelete}`);
+        await axiosInstance.delete(`/auth/login/${recordToDelete}`);
 
         // Refresh the login data after deletion
-        const response = await axiosInstance.get("/login");
+        const response = await axiosInstance.get("/auth/login");
 
         const data = response.data;
         const formattedData = data.logins.map((record) => ({
@@ -114,10 +114,10 @@ function AdminPage() {
         }));
         setLoginData(formattedData);
       } else if (deleteType === "signup") {
-        await axiosInstance.delete(`/signup/${recordToDelete}`);
+        await axiosInstance.delete(`/auth/signup/${recordToDelete}`);
 
         // Refresh the signup data after deletion
-        const response = await axiosInstance.get("/signup");
+        const response = await axiosInstance.get("/auth/signup");
 
         const data = response.data;
         const formattedData = data.signups.map((record) => ({

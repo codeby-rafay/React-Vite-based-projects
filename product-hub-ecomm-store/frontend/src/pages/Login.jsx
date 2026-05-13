@@ -24,7 +24,7 @@ function Login() {
         const token = response.credential;
 
         // send token to backend using axios
-        const res = await axiosInstance.post("/google-login", {
+        const res = await axiosInstance.post("/auth/google-login", {
           token,
         });
 
@@ -89,7 +89,7 @@ function Login() {
     try {
       setLoading(true);
 
-      const response = await axiosInstance.post("/login", {
+      const response = await axiosInstance.post("/auth/login", {
         email: formData.email,
         password: formData.password,
       });

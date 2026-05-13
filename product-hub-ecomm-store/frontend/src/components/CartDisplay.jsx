@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { toast, Slide } from "react-toastify";
-import axios from "axios";
 import { useShop } from "../context/ShopContext";
 import CheckoutBtn from "./CartPanelComponents/CheckoutBtn";
 import CartItems from "./CartPanelComponents/CartItems";
 import CartHeader from "./CartPanelComponents/CartHeader";
 import CartPanelFooter from "./CartPanelComponents/CartPanelFooter";
 import PaymentMethodModal from "./PaymentMethodModal";
+import axios from "axios";
 
 function CartDisplay() {
   const [isOpen, setIsOpen] = useState(false);

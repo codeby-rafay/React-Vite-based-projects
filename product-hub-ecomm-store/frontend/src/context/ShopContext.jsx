@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { toast, Slide } from "react-toastify";
-import axiosInstance from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { SessionExpiredToast } from "../utils/toastUtils";
+import axiosInstance from "../utils/axiosInstance";
 
 const ShopContext = createContext();
 
@@ -16,7 +16,7 @@ export function ShopProvider({ children }) {
       if (!currentUser) return;
 
       try {
-        await axiosInstance.get("/check-auth");
+        await axiosInstance.get("/auth/check-auth");
       } catch (error) {
         logout();
 
@@ -53,7 +53,7 @@ export function ShopProvider({ children }) {
         const decoded = JSON.parse(atob(token.split(".")[1]));
         setTokenExpiry(decoded.exp * 1000);
       } catch (error) {
-        console.error("Failed to schedule session expiry:", error);
+        throw error || new Error("Failed to schedule session expiry");
       }
     }
 
@@ -68,7 +68,7 @@ export function ShopProvider({ children }) {
   // called when user Sign out
   const logout = async () => {
     try {
-      await axiosInstance.post("/logout");
+      await axiosInstance.post("/auth/logout");
     } catch (error) {
       toast.error("Error occurred while logging out.", {
         position: "top-right",
@@ -151,7 +151,6 @@ export function ShopProvider({ children }) {
         );
         setUnreadNotificationCount(response.data.unreadCount || 0);
       } catch (error) {
-        console.error("Error fetching unread notifications:", error);
         throw error || new Error("Failed to fetch unread notifications");
       }
     };

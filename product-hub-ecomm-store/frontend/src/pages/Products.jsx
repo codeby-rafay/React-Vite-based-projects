@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getAllProducts, searchProducts } from "../api/products";
-import ProductCard from "../components/ProductCard";
-import SearchBar from "../components/SearchBar";
 import { Loading, ErrorMessage, NoResults } from "../components/LoadingError";
+import SearchBar from "../components/SearchBar";
+import ProductCard from "../components/ProductCard";
 import Pagination from "../components/ProductsPageComponents/Pagination";
 
 function Products() {

@@ -3,10 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import { getSingleProduct } from "../api/products";
 import { Loading, ErrorMessage } from "../components/LoadingError";
 import { Star, ArrowLeft } from "lucide-react";
-import AddtoCartBtn from "../components/SingleProductPageComponents/AddtoCartBtn";
-import SaveBtn from "../components/SingleProductPageComponents/SaveBtn";
-import CustomerReview from "../components/SingleProductPageComponents/CustomerReview";
 import { useShop } from "../context/ShopContext";
+import AddtoCartBtn from "../components/SingleProductPageComponents/AddtoCartBtn";
+import CustomerReview from "../components/SingleProductPageComponents/CustomerReview";
+import SaveBtn from "../components/SingleProductPageComponents/SaveBtn";
 
 function SingleProduct() {
   const { id } = useParams();

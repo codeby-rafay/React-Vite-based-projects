@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { DeleteOrderToast, FailedToLoadOrdersToast } from "../utils/toastUtils";
 import { useNavigate } from "react-router-dom";
 import {

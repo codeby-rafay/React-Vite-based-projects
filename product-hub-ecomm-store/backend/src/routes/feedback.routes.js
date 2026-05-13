@@ -17,10 +17,10 @@ const router = express.Router();
 router.post("/submit", authUser, submitFeedback);
 
 // Admin routes
-router.get("/all", authAdmin, getAllFeedback);
-router.get("/:feedbackId", authAdmin, getFeedbackById);
-router.put("/:feedbackId/mark-read", authAdmin, markFeedbackAsRead);
-router.put("/:feedbackId/reply", authAdmin, replyToFeedback);
-router.delete("/:feedbackId", authAdmin, deleteFeedback);
+router.get("/feedback/all", authAdmin, getAllFeedback);
+router.get("/feedback/:feedbackId", authAdmin, getFeedbackById);
+router.put("/feedback/:feedbackId/mark-read", authAdmin, markFeedbackAsRead);
+router.put("/feedback/:feedbackId/reply", authAdmin, replyToFeedback);
+router.delete("/feedback/:feedbackId", authAdmin, deleteFeedback);
 
 module.exports = router;

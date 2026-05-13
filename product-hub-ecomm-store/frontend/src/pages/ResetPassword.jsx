@@ -42,7 +42,7 @@ const ResetPassword = () => {
     try {
       setLoading(true);
 
-      await axiosInstance.post("/send-otp", { email });
+      await axiosInstance.post("/auth/send-otp", { email });
 
       setStep(2);
       toast.success("OTP sent to your Email. Check spam folder if needed.", {
@@ -105,7 +105,7 @@ const ResetPassword = () => {
     try {
       setLoading(true);
 
-      await axiosInstance.post("/verify-otp", {
+      await axiosInstance.post("/auth/verify-otp", {
         email,
         otp,
       });
@@ -163,7 +163,7 @@ const ResetPassword = () => {
 
     try {
       setLoading(true);
-      await axiosInstance.post("/reset-password", {
+      await axiosInstance.post("/auth/reset-password", {
         email,
         otp,
         newPassword,

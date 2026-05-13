@@ -25,6 +25,6 @@ app.use(cookies());
 app.use("/api", authRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", notificationRoutes);
-app.use("/api/feedback", feedbackRoutes);
+app.use("/api", feedbackRoutes);
 
 module.exports = app;

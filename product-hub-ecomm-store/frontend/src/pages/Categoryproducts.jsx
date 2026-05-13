@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getProductsByCategory } from "../api/products";
-import ProductCard from "../components/ProductCard";
 import { Loading, ErrorMessage } from "../components/LoadingError";
 import { ArrowLeft } from "lucide-react";
+import ProductCard from "../components/ProductCard";
 
 function CategoryProducts() {
   const { slug } = useParams(); // get category slug from URL
