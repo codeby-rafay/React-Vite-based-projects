@@ -3,6 +3,10 @@
 const express = require("express");
 const { authAdmin, authUser } = require("../middlewares/auth.middleware");
 const {
+  submitFeedbackValidationRules,
+  replyToFeedbackValidationRules,
+} = require("../middlewares/validation.middleware");
+const {
   submitFeedback,
   getAllFeedback,
   getFeedbackById,
@@ -14,13 +18,23 @@ const {
 const router = express.Router();
 
 // User routes
-router.post("/feedback/submit", authUser, submitFeedback);
+router.post(
+  "/feedback/submit",
+  authUser,
+  submitFeedbackValidationRules,
+  submitFeedback,
+);
 
 // Admin routes
 router.get("/feedback/all", authAdmin, getAllFeedback);
 router.get("/feedback/:feedbackId", authAdmin, getFeedbackById);
 router.put("/feedback/:feedbackId/mark-read", authAdmin, markFeedbackAsRead);
-router.put("/feedback/:feedbackId/reply", authAdmin, replyToFeedback);
+router.put(
+  "/feedback/:feedbackId/reply",
+  authAdmin,
+  replyToFeedbackValidationRules,
+  replyToFeedback,
+);
 router.delete("/feedback/:feedbackId", authAdmin, deleteFeedback);
 
 module.exports = router;

@@ -75,6 +75,36 @@ const resetPasswordValidationRules = [
   validateResult,
 ];
 
+const submitFeedbackValidationRules = [
+  body("userName")
+    .isString()
+    .withMessage("Name must be a string")
+    .isLength({ min: 4, max: 100 })
+    .withMessage("Name must be between 4 and 100 characters"),
+
+  body("userEmail")
+    .isEmail()
+    .withMessage("Please provide a valid email address"),
+
+  body("message")
+    .isString()
+    .withMessage("Message must be a string")
+    .isLength({ min: 4, max: 1000 })
+    .withMessage("Message must be between 4 and 1000 characters"),
+
+  validateResult,
+];
+
+const replyToFeedbackValidationRules = [
+  body("reply")
+    .isString()
+    .withMessage("Reply must be a string")
+    .isLength({ min: 4, max: 1000 })
+    .withMessage("Reply must be between 4 and 1000 characters"),
+
+  validateResult,
+];
+
 module.exports = {
   signupValidationRules,
   loginValidationRules,
@@ -82,4 +112,6 @@ module.exports = {
   sendOTPValidationRules,
   verifyOTPValidationRules,
   resetPasswordValidationRules,
+  submitFeedbackValidationRules,
+  replyToFeedbackValidationRules,
 };
