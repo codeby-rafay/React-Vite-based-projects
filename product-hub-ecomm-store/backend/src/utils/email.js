@@ -20,8 +20,8 @@ function orderPlacedEmail(userName, userEmail, order) {
         `<tr>
         <td style="padding: 10px; border: 1px solid #ddd;">${p.name}</td>
         <td style="padding: 10px; border: 1px solid #ddd;">Qty: ${p.quantity}</td>
-        <td style="padding: 10px; border: 1px solid #ddd;">Rs ${p.price}</td>
-        <td style="padding: 10px; border: 1px solid #ddd;">Rs ${p.price * p.quantity}</td>
+        <td style="padding: 10px; border: 1px solid #ddd;">$ ${p.price}</td>
+        <td style="padding: 10px; border: 1px solid #ddd;">$ ${p.price * p.quantity}</td>
       </tr>`,
     )
     .join("");
@@ -80,7 +80,7 @@ function orderPlacedEmail(userName, userEmail, order) {
           <div class="order-info">
             <h3>Order Summary</h3>
             <p><strong>Total Items:</strong> ${order.totalItems}</p>
-            <p><strong>Total Amount:</strong> Rs ${order.totalAmount}</p>
+            <p><strong>Total Amount:</strong> $ ${order.totalAmount}</p>
             <p><strong>Payment Method:</strong> ${isCOD ? "Cash on Delivery (COD)" : "Card Payment"}</p>
           </div>
 

@@ -14,7 +14,7 @@ const {
 const router = express.Router();
 
 // User routes
-router.post("/submit", authUser, submitFeedback);
+router.post("/feedback/submit", authUser, submitFeedback);
 
 // Admin routes
 router.get("/feedback/all", authAdmin, getAllFeedback);

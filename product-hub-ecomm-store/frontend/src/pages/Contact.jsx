@@ -122,7 +122,7 @@ function Contact() {
 
           <button
             onClick={() => setSubmitted(false)}
-            className="mt-6 bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-xl cursor-pointer text-sm font-medium transition-colors"
+            className="mt-6 bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-xl active:scale-95 cursor-pointer text-sm font-medium transition-colors"
           >
             Send Another Message
           </button>
