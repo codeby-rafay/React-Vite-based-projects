@@ -53,9 +53,9 @@ async function getUserNotifications(req, res) {
       totalNotifications: notifications.length,
     });
   } catch (error) {
+    console.error("Error loading notifications:", error);
     res.status(500).json({
-      message: "Error fetching notifications",
-      error: error.message,
+      message: "Error loading notifications",
     });
   }
 }
@@ -80,9 +80,9 @@ async function markNotificationAsRead(req, res) {
       notification,
     });
   } catch (error) {
+    console.error("Error marking notification as read:", error);
     res.status(500).json({
       message: "Error updating notification",
-      error: error.message,
     });
   }
 }
@@ -102,9 +102,9 @@ async function markAllNotificationsAsRead(req, res) {
       message: "All notifications marked as read",
     });
   } catch (error) {
+    console.error("Error marking all notifications as read:", error);
     res.status(500).json({
       message: "Error updating notifications",
-      error: error.message,
     });
   }
 }
@@ -129,9 +129,9 @@ async function deleteNotification(req, res) {
       notification,
     });
   } catch (error) {
+    console.error("Error deleting notification:", error);
     res.status(500).json({
       message: "Error deleting notification",
-      error: error.message,
     });
   }
 }
@@ -151,9 +151,9 @@ async function clearAllNotifications(req, res) {
       message: "All notifications cleared successfully",
     });
   } catch (error) {
+    console.error("Error clearing notifications:", error);
     res.status(500).json({
       message: "Error clearing notifications",
-      error: error.message,
     });
   }
 }

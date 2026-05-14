@@ -157,6 +157,7 @@ async function signup(req, res) {
       token,
     });
   } catch (error) {
+    console.error("Signup error:", error);
     res.status(500).json({ message: "Error creating account" });
   }
 }
@@ -173,7 +174,8 @@ async function getSignups(req, res) {
       signups,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching signup data" });
+    console.error("Error loading signup data:", error);
+    res.status(500).json({ message: "Error loading signup data" });
   }
 }
 
@@ -187,6 +189,7 @@ async function deleteSignup(req, res) {
     }
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
+    console.error("Delete signup error:", error);
     res.status(500).json({ message: "Error deleting user" });
   }
 }
@@ -278,7 +281,8 @@ async function getLogins(req, res) {
       logins,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching login data" });
+    console.error("Error loading login data:", error);
+    res.status(500).json({ message: "Error loading login data" });
   }
 }
 
@@ -292,6 +296,7 @@ async function deleteLogin(req, res) {
     }
     res.status(200).json({ message: "Login record deleted successfully" });
   } catch (error) {
+    console.error("Delete login error:", error);
     res.status(500).json({ message: "Error deleting login record" });
   }
 }
@@ -325,9 +330,9 @@ async function sendOTP(req, res) {
       message: "OTP sent successfully to your email",
     });
   } catch (error) {
+    console.error("Send OTP error:", error);
     res.status(500).json({
-      message: "Error sending OTP. Please check your email address.",
-      error: error.message,
+      message: "Error sending OTP. Please check your email address",
     });
   }
 }
@@ -353,9 +358,9 @@ async function verifyOTP(req, res) {
       verified: true,
     });
   } catch (error) {
+    console.error("Verify OTP error:", error);
     res.status(500).json({
       message: "Error verifying OTP",
-      error: error.message,
     });
   }
 }
@@ -397,9 +402,9 @@ async function resetPassword(req, res) {
       message: "Password reset successfully",
     });
   } catch (error) {
+    console.error("Reset password error:", error);
     res.status(500).json({
       message: "Error resetting password",
-      error: error.message,
     });
   }
 }
@@ -435,6 +440,7 @@ async function checkAuth(req, res) {
       user: decoded,
     });
   } catch (error) {
+    console.error("Check auth error:", error);
     return res.status(401).json({
       authenticated: false,
       message: "Invalid or expired token",

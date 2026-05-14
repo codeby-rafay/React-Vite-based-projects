@@ -202,7 +202,7 @@ function UserFeedback() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -324,7 +324,7 @@ function UserFeedback() {
                       {feedback.status === "unread" && (
                         <button
                           onClick={() => handleMarkAsRead(feedback._id)}
-                          className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition cursor-pointer text-xs font-medium"
+                          className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 font-semibold transition cursor-pointer text-xs"
                           title="Mark as read"
                         >
                           Mark Read

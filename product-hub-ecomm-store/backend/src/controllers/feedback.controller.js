@@ -31,6 +31,7 @@ async function submitFeedback(req, res) {
       feedback,
     });
   } catch (error) {
+    console.error("Error submitting feedback:", error);
     res.status(500).json({ message: "Error submitting feedback" });
   }
 }
@@ -62,6 +63,7 @@ async function getAllFeedback(req, res) {
       },
     });
   } catch (error) {
+    console.error("Error loading feedbacks:", error);
     res.status(500).json({ message: "Error loading feedbacks" });
   }
 }
@@ -91,6 +93,7 @@ async function getFeedbackById(req, res) {
       feedback,
     });
   } catch (error) {
+    console.error("Error loading feedback:", error);
     res.status(500).json({ message: "Error loading feedback" });
   }
 }
@@ -143,7 +146,7 @@ async function replyToFeedback(req, res) {
         isRead: false,
       });
     } catch (notifError) {
-      throw new Error("Failed to create notification for feedback reply");
+      console.error("Error creating notification for feedback reply:", notifError);
       res
         .status(500)
         .json({ message: "Error creating notification for feedback reply" });
@@ -154,6 +157,7 @@ async function replyToFeedback(req, res) {
       feedback,
     });
   } catch (error) {
+    console.error("Error replying to feedback:", error);
     res.status(500).json({ message: "Error replying to feedback" });
   }
 }
@@ -175,10 +179,12 @@ async function markFeedbackAsRead(req, res) {
     }
 
     res.status(200).json({
+      
       message: "Feedback marked as read",
       feedback,
     });
   } catch (error) {
+    console.error("Error marking feedback as read:", error);
     res.status(500).json({ message: "Error marking feedback as read" });
   }
 }
@@ -198,6 +204,7 @@ async function deleteFeedback(req, res) {
       message: "Feedback deleted successfully",
     });
   } catch (error) {
+    console.error("Error deleting feedback:", error);
     res.status(500).json({ message: "Error deleting feedback" });
   }
 }

@@ -108,10 +108,10 @@ async function createOrder(req, res) {
       order,
     });
   } catch (error) {
+    console.error("Error placing order:", error);
     res.status(500).json({
       message: "Error placing order",
     });
-    throw new Error("Error placing order: " + error.message);
   }
 }
 
@@ -129,8 +129,8 @@ async function getAllOrdersAdmin(req, res) {
       totalOrders: orders.length,
     });
   } catch (error) {
+    console.error("Error loading orders:", error);
     res.status(500).json({ message: "Error loading orders" });
-    throw new Error("Error loading orders: " + error.message);
   }
 }
 
@@ -148,8 +148,8 @@ async function getUserOrders(req, res) {
       totalOrders: orders.length,
     });
   } catch (error) {
+    console.error("Error loading user orders:", error);
     res.status(500).json({ message: "Error loading user orders" });
-    throw new Error("Error loading user orders: " + error.message);
   }
 }
 
@@ -245,9 +245,8 @@ async function updateOrderStatusAdmin(req, res) {
       order: updatedOrder,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating order", error: error.message });
+    console.error("Error updating order:", error);
+    res.status(500).json({ message: "Error updating order" });
   }
 }
 
@@ -265,6 +264,7 @@ async function deleteOrderAdmin(req, res) {
       message: "Order deleted successfully",
     });
   } catch (error) {
+    console.error("Error deleting order:", error);
     res.status(500).json({ message: "Error deleting order" });
   }
 }
@@ -299,6 +299,7 @@ async function deleteUserOrder(req, res) {
 
     res.status(200).json({ message: "Order deleted successfully" });
   } catch (error) {
+    console.error("Error deleting order:", error);
     res.status(500).json({ message: "Error deleting order" });
   }
 }
@@ -383,9 +384,8 @@ async function updateOrderStatusUser(req, res) {
 
     res.status(200).json({ message: "Order cancelled", order: updated });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating order", error: error.message });
+    console.error("Error updating order:", error);
+    res.status(500).json({ message: "Error updating order" });
   }
 }
 

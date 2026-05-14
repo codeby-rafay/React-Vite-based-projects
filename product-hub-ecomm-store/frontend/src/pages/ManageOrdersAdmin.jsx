@@ -659,6 +659,7 @@ const ManageOrdersAdmin = () => {
                         order.orderStatus === "cancelled" && (
                           <button
                             onClick={() => handleMarkReturned(order._id)}
+                            title="Mark as Returned"
                             className="px-4 py-2 bg-green-200 text-green-700 cursor-pointer hover:bg-green-300 border border-green-100 rounded-lg text-sm font-medium transition-colors"
                           >
                             Mark Returned
@@ -667,6 +668,7 @@ const ManageOrdersAdmin = () => {
 
                       <button
                         onClick={() => handleDeleteClick(order._id)}
+                        title="Delete Order"
                         className="px-6 py-2 bg-red-500 hover:bg-red-700 text-white font-medium rounded-lg transition-colors cursor-pointer flex items-center gap-2"
                       >
                         <Trash2 size={18} />

@@ -286,6 +286,7 @@ function AdminPage() {
                           <div className="flex items-center justify-center gap-2">
                             <button
                               onClick={() => handleloginDelete(record._id)}
+                              title="Delete"
                               className="p-2 hover:bg-red-100 rounded-lg transition-colors cursor-pointer"
                             >
                               <Trash2 size={18} className="text-red-600" />
@@ -355,6 +356,7 @@ function AdminPage() {
                             <button
                               onClick={() => handleSignupDelete(record._id)}
                               className="p-2 hover:bg-red-100 rounded-lg transition-colors cursor-pointer"
+                              title="Delete"
                             >
                               <Trash2 size={18} className="text-red-600" />
                             </button>
