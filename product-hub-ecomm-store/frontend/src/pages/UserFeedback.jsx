@@ -398,7 +398,10 @@ function UserFeedback() {
 
               {/* Reply Text Area */}
               <div>
-                <label htmlFor="reply-textarea" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="reply-textarea"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Your Reply *
                 </label>
                 <textarea
@@ -420,7 +423,7 @@ function UserFeedback() {
                   setReplyModal(false);
                   setReplyText("");
                 }}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition cursor-pointer"
+                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-200 transition cursor-pointer"
               >
                 Cancel
               </button>
@@ -430,7 +433,7 @@ function UserFeedback() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold cursor-pointer transition ${
                   replySending
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-orange-500 hover:bg-orange-600"
+                    : "bg-orange-500 hover:bg-orange-700"
                 }`}
               >
                 <Send size={18} />
