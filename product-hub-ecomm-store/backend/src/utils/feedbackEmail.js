@@ -56,7 +56,8 @@ const sendFeedbackEmail = async (email, userName, feedback) => {
     await transporter.sendMail(mailOptions);
     return true;
   } catch (error) {
-    throw new Error("Failed to send Feedback email");
+    console.error("Error sending feedback email:", error);
+    throw error;
   }
 };
 
