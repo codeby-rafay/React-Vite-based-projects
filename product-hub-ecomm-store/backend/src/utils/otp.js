@@ -63,9 +63,9 @@ const sendOTPEmail = async (email, otp) => {
   }
 };
 
-// expiration of OTP (10 minutes)
+// expiration of OTP (2 minutes)
 const storeOTP = (email, otp) => {
-  const expirationTime = Date.now() + 10 * 60 * 1000;
+  const expirationTime = Date.now() + 2 * 60 * 1000;
   otpStore.set(email, {
     otp,
     expiresAt: expirationTime,
