@@ -5,7 +5,7 @@ const {
   sendEmail,
   orderPlacedEmail,
   orderStatusUpdateEmail,
-} = require("../utils/email");
+} = require("../utils/orderEmail");
 
 // route 3: ORDERS
 // (POST API)
@@ -109,9 +109,9 @@ async function createOrder(req, res) {
     });
   } catch (error) {
     res.status(500).json({
-      message: "Error placing order: " + error.message,
-      error: error.toString(),
+      message: "Error placing order",
     });
+    throw new Error("Error placing order: " + error.message);
   }
 }
 
@@ -129,7 +129,8 @@ async function getAllOrdersAdmin(req, res) {
       totalOrders: orders.length,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching orders" });
+    res.status(500).json({ message: "Error loading orders" });
+    throw new Error("Error loading orders: " + error.message);
   }
 }
 
@@ -147,7 +148,8 @@ async function getUserOrders(req, res) {
       totalOrders: orders.length,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching user orders" });
+    res.status(500).json({ message: "Error loading user orders" });
+    throw new Error("Error loading user orders: " + error.message);
   }
 }
 

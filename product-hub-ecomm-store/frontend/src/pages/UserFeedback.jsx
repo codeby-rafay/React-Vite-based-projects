@@ -398,10 +398,11 @@ function UserFeedback() {
 
               {/* Reply Text Area */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="reply-textarea" className="block text-sm font-semibold text-gray-700 mb-2">
                   Your Reply *
                 </label>
                 <textarea
+                  id="reply-textarea"
                   value={replyText}
                   onChange={(e) => setReplyText(e.target.value)}
                   placeholder="Type your reply here..."

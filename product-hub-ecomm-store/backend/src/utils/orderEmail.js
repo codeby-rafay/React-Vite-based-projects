@@ -57,7 +57,7 @@ function orderPlacedEmail(userName, userEmail, order) {
 
           <div class="order-info">
             <h3>Order Details</h3>
-            <p><strong>Order ID:</strong>${String(order._id).slice(-8).toUpperCase()}</p>
+            <p><strong>Order ID: </strong>${String(order._id).slice(-8).toUpperCase()}</p>
             <p><strong>Order Date:</strong> ${orderDate}</p>
             <p><strong>Shipping Address:</strong> ${order.shippingAddress}</p>
           </div>
@@ -155,10 +155,10 @@ function orderStatusUpdateEmail(
 
           <div class="status-info">
             <h3>Order Update</h3>
-            <p><strong>Order ID:</strong>${String(order._id).slice(-8).toUpperCase()}</p>
+            <p><strong>Order ID: </strong>${String(order._id).slice(-8).toUpperCase()}</p>
             <p><strong>Current Status:</strong> ${newStatus}</p>
             <p><strong>Previous Status:</strong> ${previousStatus}</p>
-            <p><strong>Order Amount:</strong> Rs ${order.totalAmount}</p>
+            <p><strong>Order Amount:</strong> $ ${order.totalAmount}</p>
           </div>
 
           ${
