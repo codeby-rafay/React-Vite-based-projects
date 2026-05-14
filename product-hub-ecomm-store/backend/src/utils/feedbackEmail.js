@@ -1,5 +1,3 @@
-// scratch
-
 const nodemailer = require("nodemailer");
 
 const sendFeedbackEmail = async (email, userName, feedback) => {

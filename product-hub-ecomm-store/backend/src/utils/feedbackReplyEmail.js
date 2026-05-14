@@ -1,8 +1,11 @@
-// scratch
-
 const nodemailer = require("nodemailer");
 
-const sendFeedbackReplyEmail = async (email, userName, originalMessage, reply) => {
+const sendFeedbackReplyEmail = async (
+  email,
+  userName,
+  originalMessage,
+  reply,
+) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -66,7 +69,6 @@ const sendFeedbackReplyEmail = async (email, userName, originalMessage, reply) =
   } catch (error) {
     console.error("Error sending feedback reply email:", error);
     throw error;
-    return false;
   }
 };
 
