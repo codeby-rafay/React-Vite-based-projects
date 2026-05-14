@@ -16,6 +16,8 @@ const ResetPassword = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   // Step 1: Send OTP
   const handleSendOTP = async (e) => {
     e.preventDefault();
@@ -258,7 +260,7 @@ const ResetPassword = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 cursor-pointer disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-colors duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 cursor-pointer active:scale-95 disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
@@ -300,7 +302,7 @@ const ResetPassword = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 cursor-pointer disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-colors duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 cursor-pointer active:scale-95 disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
@@ -378,7 +380,7 @@ const ResetPassword = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 cursor-pointer disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-colors duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 cursor-pointer active:scale-95 disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>

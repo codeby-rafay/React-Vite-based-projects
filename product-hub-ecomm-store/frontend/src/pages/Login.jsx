@@ -239,7 +239,7 @@ function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-colors duration-200"
+              className="w-full cursor-pointer bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 active:scale-95 disabled:cursor-not-allowed text-white py-3 px-6 rounded-xl font-semibold text-sm transition-all duration-200"
             >
               {loading ? "Signing in..." : "Sign In"}
             </button>

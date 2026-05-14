@@ -430,6 +430,7 @@ async function checkAuth(req, res) {
     if (!token) {
       return res.status(401).json({
         authenticated: false,
+        message: "No token provided. Please login.",
       });
     }
 
@@ -438,6 +439,7 @@ async function checkAuth(req, res) {
     res.status(200).json({
       authenticated: true,
       user: decoded,
+      message: "User is authenticated.",
     });
   } catch (error) {
     console.error("Check auth error:", error);
