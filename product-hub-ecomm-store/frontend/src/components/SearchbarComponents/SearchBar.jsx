@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { searchProducts } from "../api/products";
+import { searchProducts } from "../../api/products";
 
 function SearchBar({ onSearch, placeholder = "Search products by name..." }) {
   const [query, setQuery] = useState("");

@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { toast, Slide } from "react-toastify";
 import axiosInstance from "../utils/axiosInstance";
-import OrderSearchBar from "../components/OrderSearchBar";
+import OrderSearchBar from "../components/SearchbarComponents/OrderSearchBar";
 import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
 
 const ManageOrdersAdmin = () => {

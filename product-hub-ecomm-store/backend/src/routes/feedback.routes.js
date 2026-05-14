@@ -1,5 +1,3 @@
-// scratch
-
 const express = require("express");
 const { authAdmin, authUser } = require("../middlewares/auth.middleware");
 const {
@@ -9,7 +7,6 @@ const {
 const {
   submitFeedback,
   getAllFeedback,
-  getFeedbackById,
   markFeedbackAsRead,
   replyToFeedback,
   deleteFeedback,
@@ -27,7 +24,6 @@ router.post(
 
 // Admin routes
 router.get("/feedback/all", authAdmin, getAllFeedback);
-router.get("/feedback/:feedbackId", authAdmin, getFeedbackById);
 router.put("/feedback/:feedbackId/mark-read", authAdmin, markFeedbackAsRead);
 router.put(
   "/feedback/:feedbackId/reply",

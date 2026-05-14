@@ -298,7 +298,7 @@ function UserFeedback() {
                       {feedback.adminReply && (
                         <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
                           <p className="text-sm font-semibold text-green-800 mb-2">
-                            ✓ Your Reply:
+                            Your Reply:
                           </p>
                           <p className="text-gray-700">
                             {feedback.adminReply.reply}

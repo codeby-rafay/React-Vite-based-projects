@@ -1,5 +1,3 @@
-// scratch
-
 const feedbackModel = require("../models/feedback.model");
 const notificationModel = require("../models/notification.model");
 const { sendFeedbackEmail } = require("../utils/feedbackEmail");
@@ -68,33 +66,29 @@ async function getAllFeedback(req, res) {
   }
 }
 
-// GET - Get specific feedback by ID
-async function getFeedbackById(req, res) {
+// PUT - Mark feedback as read (admin only)
+async function markFeedbackAsRead(req, res) {
   try {
     const { feedbackId } = req.params;
 
-    const feedback = await feedbackModel
-      .findById(feedbackId)
-      .populate("userId", "fullName email")
-      .populate("adminReply.repliedBy", "fullName email");
+    const feedback = await feedbackModel.findById(feedbackId);
 
     if (!feedback) {
       return res.status(404).json({ message: "Feedback not found" });
     }
 
-    // Mark as read if admin views it
     if (feedback.status === "unread") {
       feedback.status = "read";
       await feedback.save();
     }
 
     res.status(200).json({
-      message: "Feedback fetched successfully",
+      message: "Feedback marked as read",
       feedback,
     });
   } catch (error) {
-    console.error("Error loading feedback:", error);
-    res.status(500).json({ message: "Error loading feedback" });
+    console.error("Error marking feedback as read:", error);
+    res.status(500).json({ message: "Error marking feedback as read" });
   }
 }
 
@@ -146,7 +140,10 @@ async function replyToFeedback(req, res) {
         isRead: false,
       });
     } catch (notifError) {
-      console.error("Error creating notification for feedback reply:", notifError);
+      console.error(
+        "Error creating notification for feedback reply:",
+        notifError,
+      );
       res
         .status(500)
         .json({ message: "Error creating notification for feedback reply" });
@@ -159,33 +156,6 @@ async function replyToFeedback(req, res) {
   } catch (error) {
     console.error("Error replying to feedback:", error);
     res.status(500).json({ message: "Error replying to feedback" });
-  }
-}
-
-// PUT - Mark feedback as read (admin only)
-async function markFeedbackAsRead(req, res) {
-  try {
-    const { feedbackId } = req.params;
-
-    const feedback = await feedbackModel.findById(feedbackId);
-
-    if (!feedback) {
-      return res.status(404).json({ message: "Feedback not found" });
-    }
-
-    if (feedback.status === "unread") {
-      feedback.status = "read";
-      await feedback.save();
-    }
-
-    res.status(200).json({
-      
-      message: "Feedback marked as read",
-      feedback,
-    });
-  } catch (error) {
-    console.error("Error marking feedback as read:", error);
-    res.status(500).json({ message: "Error marking feedback as read" });
   }
 }
 
@@ -212,7 +182,6 @@ async function deleteFeedback(req, res) {
 module.exports = {
   submitFeedback,
   getAllFeedback,
-  getFeedbackById,
   markFeedbackAsRead,
   replyToFeedback,
   deleteFeedback,
