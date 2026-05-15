@@ -5,7 +5,7 @@ const {
   sendEmail,
   orderPlacedEmail,
   orderStatusUpdateEmail,
-} = require("../utils/orderEmail");
+} = require("../services/orderEmail.service");
 
 // route 3: ORDERS
 // (POST API)

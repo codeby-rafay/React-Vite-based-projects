@@ -1,7 +1,7 @@
 const feedbackModel = require("../models/feedback.model");
 const notificationModel = require("../models/notification.model");
-const { sendFeedbackEmail } = require("../utils/feedbackEmail");
-const { sendFeedbackReplyEmail } = require("../utils/feedbackReplyEmail");
+const { sendFeedbackEmail } = require("../services/feedbackEmail.service");
+const { sendFeedbackReplyEmail } = require("../services/feedbackReplyEmail.service");
 
 // POST - Submit contact us form
 async function submitFeedback(req, res) {

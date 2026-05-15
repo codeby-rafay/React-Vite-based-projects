@@ -9,7 +9,7 @@ const {
   storeOTP,
   verifyOTP: verifyOTPUtil,
   clearOTP,
-} = require("../utils/otp");
+} = require("../services/otp.service");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const JWT_SECRET = process.env.JWT_SECRET;
