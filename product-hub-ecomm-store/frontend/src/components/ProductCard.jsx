@@ -39,7 +39,7 @@ function ProductCard({ product }) {
             </div>
           )}
           {/* Category badge */}
-          <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm text-gray-600 text-xs px-2 py-1 rounded-full capitalize">
+          <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm text-gray-600 font-bold text-xs px-2 py-1 rounded-full capitalize">
             {product.category}
           </div>
         </div>

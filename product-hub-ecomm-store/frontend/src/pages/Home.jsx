@@ -52,7 +52,7 @@ function Home() {
             Discover thousands of quality products across all categories,
             shipped fast and priced right.
           </p>
-          <div className="mt-8 flex flex-row items-center gap-4 justify-center">
+          <div className="mt-8 flex items-center gap-4 justify-center">
             <BrowseAllProductBtn />
             <ShopbyCategoryBtn />
           </div>
