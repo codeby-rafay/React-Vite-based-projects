@@ -255,7 +255,6 @@ const Notifications = () => {
         border: "border-l-4 border-red-500",
         textColor: "text-red-700",
       },
-      //................................................
       feedback_reply: {
         icon: "💬",
         bg: "bg-orange-100",
@@ -263,7 +262,6 @@ const Notifications = () => {
         textColor: "text-orange-700",
       },
     };
-    //...................................................
 
     return styles[type] || styles.order_placed;
   };
@@ -366,7 +364,7 @@ const Notifications = () => {
                             {notification.message}
                           </p>
                         )}
-                        {/* ....................................................................... */}
+
                         {/* Show feedback reply details if available */}
                         {notification.type === "feedback_reply" &&
                           notification.userMessage && (
@@ -399,7 +397,7 @@ const Notifications = () => {
                               )}
                             </div>
                           )}
-                        {/* ....................................................................... */}
+
                         {/* Show order details if available */}
                         {notification.orderDetails && (
                           <div className="mt-3 text-sm text-gray-600 bg-white bg-opacity-50 p-2 rounded">

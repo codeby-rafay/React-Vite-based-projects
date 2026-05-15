@@ -1,5 +1,3 @@
-// scratch
-
 import { useState, useEffect } from "react";
 import { toast, Slide } from "react-toastify";
 import { MessageCircle, Trash2, Reply, X, Send, Mail } from "lucide-react";
