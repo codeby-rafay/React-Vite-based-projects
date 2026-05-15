@@ -33,8 +33,6 @@ function Contact() {
     }
   };
 
-  //.....................................................
-
   const handleSubmit = async (values, { resetForm }) => {
     try {
       // Get current user from localStorage
@@ -86,7 +84,6 @@ function Contact() {
       });
     }
   };
-  //.....................................................
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

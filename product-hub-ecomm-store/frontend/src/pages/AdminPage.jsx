@@ -6,6 +6,7 @@ import { toast, Slide } from "react-toastify";
 import { DeleteRecordToast } from "../utils/toastUtils";
 import axiosInstance from "../utils/axiosInstance";
 import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
+import UserSearchBar from "../components/SearchbarComponents/UserSearchBar";
 
 function AdminPage() {
   const [activeTab, setActiveTab] = useState("login");
@@ -22,7 +23,26 @@ function AdminPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState(null);
   const [deleteType, setDeleteType] = useState(null); // 'login' or 'signup'
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  const filteredLoginData = loginData.filter((record) => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      (record.email || "").toLowerCase().includes(query) ||
+      (record.fullName || "").toLowerCase().includes(query)
+    );
+  });
+
+  const filteredSignupData = signupData.filter((record) => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      (record.email || "").toLowerCase().includes(query) ||
+      (record.fullName || "").toLowerCase().includes(query)
+    );
+  });
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -173,6 +193,13 @@ function AdminPage() {
                 </p>
               </div>
             </div>
+
+            <div className="mt-6 flex items-center gap-4 flex-wrap md:w-auto">
+              <UserSearchBar
+                onSearch={setSearchQuery}
+                placeholder="Search by full name or email..."
+              />
+            </div>
           </div>
         </div>
 
@@ -249,9 +276,13 @@ function AdminPage() {
                 <div className="text-center py-12">
                   <p className="text-red-500">Error: {errorLogin}</p>
                 </div>
-              ) : loginData.length === 0 ? (
+              ) : filteredLoginData.length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-gray-500">No login records found</p>
+                  <p className="text-gray-500">
+                    {searchQuery
+                      ? "No matching login records found"
+                      : "No login records found"}
+                  </p>
                 </div>
               ) : (
                 <table className="w-full">
@@ -269,7 +300,7 @@ function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {loginData.map((record, index) => (
+                    {filteredLoginData.map((record, index) => (
                       <tr
                         key={record._id}
                         className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
@@ -312,9 +343,13 @@ function AdminPage() {
                 <div className="text-center py-12">
                   <p className="text-red-500">Error: {errorSignup}</p>
                 </div>
-              ) : signupData.length === 0 ? (
+              ) : filteredSignupData.length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-gray-500">No signup records found</p>
+                  <p className="text-gray-500">
+                    {searchQuery
+                      ? "No matching signup records found"
+                      : "No signup records found"}
+                  </p>
                 </div>
               ) : (
                 <table className="w-full">
@@ -335,7 +370,7 @@ function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {signupData.map((record, index) => (
+                    {filteredSignupData.map((record, index) => (
                       <tr
                         key={record._id}
                         className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${

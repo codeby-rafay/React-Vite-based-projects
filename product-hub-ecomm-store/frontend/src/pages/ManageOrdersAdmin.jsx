@@ -253,7 +253,7 @@ const ManageOrdersAdmin = () => {
             </p>
           </div>
           {/* Search Bar */}
-          <div className="mt-6 flex items-center gap-4 flex-wrap md:w-auto">
+          <div className="mt-12 flex items-center gap-4 flex-wrap md:w-auto">
             <OrderSearchBar
               onSearch={handleSearch}
               placeholder="Search orders by ID, name or email..."

@@ -5,6 +5,7 @@ import { toast, Slide } from "react-toastify";
 import { MessageCircle, Trash2, Reply, X, Send, Mail } from "lucide-react";
 import axiosInstance from "../utils/axiosInstance";
 import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
+import UserSearchBar from "../components/SearchbarComponents/UserSearchBar";
 
 function UserFeedback() {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -20,6 +21,7 @@ function UserFeedback() {
     unread: 0,
     replied: 0,
   });
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch all feedback
   useEffect(() => {
@@ -205,14 +207,22 @@ function UserFeedback() {
     <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
-            <Mail className="text-orange-500" size={32} />
-            User Feedback & Messages
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Manage user feedback and respond to their messages
-          </p>
+        <div className="mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
+              <Mail className="text-orange-500" size={32} />
+              User Feedback & Messages
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Manage user feedback and respond to their messages
+            </p>
+          </div>
+          <div className="mt-4 md:mt-6 flex items-center">
+            <UserSearchBar
+              onSearch={setSearchQuery}
+              placeholder="Search feedback by name, email or message..."
+            />
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -258,103 +268,127 @@ function UserFeedback() {
 
         {/* Feedback List */}
         <div className="bg-white rounded-lg shadow">
-          {feedbacks.length === 0 ? (
-            <div className="p-8 text-center">
-              <MessageCircle size={48} className="mx-auto text-gray-300 mb-4" />
-              <p className="text-gray-500">No feedback messages yet</p>
-            </div>
-          ) : (
-            <div className="divide-y">
-              {feedbacks.map((feedback) => (
-                <div
-                  key={feedback._id}
-                  className="p-6 hover:bg-gray-50 transition"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      {/* User and Status */}
-                      <div className="flex items-center gap-3 mb-3">
-                        <div>
-                          <h3 className="font-semibold text-gray-800">
-                            {feedback.userName}
-                          </h3>
-                          <p className="text-sm text-gray-500">
-                            {feedback.userEmail}
-                          </p>
+          {(() => {
+            const filtered = feedbacks.filter((f) => {
+              if (!searchQuery.trim()) return true;
+              const q = searchQuery.toLowerCase();
+              return (
+                (f.userName || "").toLowerCase().includes(q) ||
+                (f.userEmail || "").toLowerCase().includes(q) ||
+                (f.subject || "").toLowerCase().includes(q) ||
+                (f.message || "").toLowerCase().includes(q)
+              );
+            });
+
+            if (filtered.length === 0) {
+              return (
+                <div className="p-8 text-center">
+                  <MessageCircle
+                    size={48}
+                    className="mx-auto text-gray-300 mb-4"
+                  />
+                  <p className="text-gray-500">
+                    {searchQuery
+                      ? "No matching feedback found"
+                      : "No feedback messages yet"}
+                  </p>
+                </div>
+              );
+            }
+
+            return (
+              <div className="divide-y">
+                {filtered.map((feedback) => (
+                  <div
+                    key={feedback._id}
+                    className="p-6 hover:bg-gray-50 transition"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        {/* User and Status */}
+                        <div className="flex items-center gap-3 mb-3">
+                          <div>
+                            <h3 className="font-semibold text-gray-800">
+                              {feedback.userName}
+                            </h3>
+                            <p className="text-sm text-gray-500">
+                              {feedback.userEmail}
+                            </p>
+                          </div>
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                              feedback.status,
+                            )}`}
+                          >
+                            {getStatusLabel(feedback.status)}
+                          </span>
                         </div>
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                            feedback.status,
-                          )}`}
-                        >
-                          {getStatusLabel(feedback.status)}
-                        </span>
+
+                        {/* Message */}
+                        <p className="text-gray-700 mb-4">{feedback.message}</p>
+
+                        {/* Admin Reply if exists */}
+                        {feedback.adminReply && (
+                          <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                            <p className="text-sm font-semibold text-green-800 mb-2">
+                              Your Reply:
+                            </p>
+                            <p className="text-gray-700">
+                              {feedback.adminReply.reply}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-2">
+                              Sent on{" "}
+                              {new Date(
+                                feedback.adminReply.repliedAt,
+                              ).toLocaleDateString()}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Date */}
+                        <p className="text-xs text-gray-500 mt-3">
+                          Received on{" "}
+                          {new Date(feedback.createdAt).toLocaleDateString()}
+                        </p>
                       </div>
 
-                      {/* Message */}
-                      <p className="text-gray-700 mb-4">{feedback.message}</p>
-
-                      {/* Admin Reply if exists */}
-                      {feedback.adminReply && (
-                        <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                          <p className="text-sm font-semibold text-green-800 mb-2">
-                            Your Reply:
-                          </p>
-                          <p className="text-gray-700">
-                            {feedback.adminReply.reply}
-                          </p>
-                          <p className="text-xs text-gray-500 mt-2">
-                            Sent on{" "}
-                            {new Date(
-                              feedback.adminReply.repliedAt,
-                            ).toLocaleDateString()}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Date */}
-                      <p className="text-xs text-gray-500 mt-3">
-                        Received on{" "}
-                        {new Date(feedback.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-2 ml-4">
-                      {feedback.status === "unread" && (
+                      {/* Action Buttons */}
+                      <div className="flex gap-2 ml-4">
+                        {feedback.status === "unread" && (
+                          <button
+                            onClick={() => handleMarkAsRead(feedback._id)}
+                            className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 font-semibold transition cursor-pointer text-xs"
+                            title="Mark as read"
+                          >
+                            Mark Read
+                          </button>
+                        )}
+                        {feedback.status !== "replied" && (
+                          <button
+                            onClick={() => {
+                              setSelectedFeedback(feedback);
+                              setReplyModal(true);
+                            }}
+                            className="p-2 bg-orange-500 text-white rounded-lg hover:bg-orange-700 transition cursor-pointer"
+                            title="Reply"
+                          >
+                            <Reply size={20} />
+                          </button>
+                        )}
                         <button
-                          onClick={() => handleMarkAsRead(feedback._id)}
-                          className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 font-semibold transition cursor-pointer text-xs"
-                          title="Mark as read"
+                          onClick={() => handleDeleteClick(feedback._id)}
+                          className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition cursor-pointer"
+                          title="Delete"
                         >
-                          Mark Read
+                          <Trash2 size={20} />
                         </button>
-                      )}
-                      {feedback.status !== "replied" && (
-                        <button
-                          onClick={() => {
-                            setSelectedFeedback(feedback);
-                            setReplyModal(true);
-                          }}
-                          className="p-2 bg-orange-500 text-white rounded-lg hover:bg-orange-700 transition cursor-pointer"
-                          title="Reply"
-                        >
-                          <Reply size={20} />
-                        </button>
-                      )}
-                      <button
-                        onClick={() => handleDeleteClick(feedback._id)}
-                        className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition cursor-pointer"
-                        title="Delete"
-                      >
-                        <Trash2 size={20} />
-                      </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            );
+          })()}
         </div>
         <DeleteConfirmationModal
           showDeleteModal={showDeleteModal}
