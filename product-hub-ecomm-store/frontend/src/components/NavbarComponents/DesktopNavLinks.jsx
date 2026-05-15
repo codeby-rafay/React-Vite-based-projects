@@ -7,12 +7,14 @@ import {
   Bookmark,
   Bell,
   Cuboid,
+  UserPen,
 } from "lucide-react";
 import { useShop } from "../../context/ShopContext";
 import { LogoutToast } from "../../utils/toastUtils";
 
 const DesktopNavLinks = ({ navLinks, isActive }) => {
-  const { currentUser, logout, savedItems, unreadNotificationCount } = useShop();
+  const { currentUser, logout, savedItems, unreadNotificationCount } =
+    useShop();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null); // This ref is used to detect clicks outside the dropdown, to close it
@@ -93,6 +95,16 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
                   {currentUser.email}
                 </p>
               </div>
+
+              {/* Saved link */}
+              <Link
+                to="/user-profile"
+                onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+              >
+                <UserPen size={16} className="text-orange-500" fill="currentColor" />
+                My Profile
+              </Link>
 
               {/* Saved link */}
               <Link

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
 import { Heart } from "lucide-react";
 import { unsaveToast } from "../utils/toastUtils";
-
+ 
 function Saved() {
   const { savedItems, toggleSave } = useShop();
 
@@ -48,7 +48,7 @@ function Saved() {
             >
               {/* Image of product */}
               <Link to={`/products/${product.id}`}>
-                <div className="bg-gray-50 h-48 overflow-hidden">
+                <div className="bg-gray-200 h-48 overflow-hidden">
                   <img
                     src={product.thumbnail}
                     alt={product.title}

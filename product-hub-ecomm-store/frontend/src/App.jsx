@@ -25,6 +25,7 @@ const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Notifications = lazy(() => import("./pages/Notifications"));
 const ReviewOrdersUser = lazy(() => import("./pages/ReviewOrdersUser"));
 const UserFeedback = lazy(() => import("./pages/UserFeedback"));
+const UserProfile = lazy(() => import("./pages/UserProfile"));
 
 function App() {
   const location = useLocation();
@@ -52,6 +53,7 @@ function App() {
             <Route path="/my-orders" element={<ReviewOrdersUser />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/user-profile" element={<UserProfile />} />
             <Route
               path="/admin/dashboard"
               element={
