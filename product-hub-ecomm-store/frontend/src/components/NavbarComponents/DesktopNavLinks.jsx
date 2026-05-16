@@ -102,7 +102,11 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
                 onClick={() => setDropdownOpen(false)}
                 className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
               >
-                <UserPen size={16} className="text-orange-500" fill="currentColor" />
+                <UserPen
+                  size={16}
+                  className="text-orange-500"
+                  fill="currentColor"
+                />
                 My Profile
               </Link>
 
