@@ -7,12 +7,12 @@ const signupSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: [ true, "Email already exists"],
+    unique: [true, "Email already exists"],
     required: [true, "Email is required"],
   },
   password: {
     type: String,
-    required: function() {
+    required: function () {
       // Password only required for non-Google users
       return !this.googleId;
     },
@@ -26,6 +26,14 @@ const signupSchema = new mongoose.Schema({
     type: String,
     enum: ["user", "admin"],
     default: "user",
+  },
+  phone: {
+    type: String,
+    default: null,
+  },
+  deletedAccount: {
+    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Date,

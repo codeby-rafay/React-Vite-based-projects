@@ -66,14 +66,28 @@ async function googleLogin(req, res) {
         });
       }
     } else {
-      // existing user - update their Google ID if not already set
-      if (!user.googleId) {
+      // If account was deleted, reactivate it on re-register via Google
+      if (user.deletedAccount) {
+        user = await signupModel.findOneAndUpdate(
+          { email },
+          { deletedAccount: false, googleId: sub },
+          { returnDocument: "after" },
+        );
+        // existing user - update their Google ID if not already set
+      } else if (!user.googleId) {
         user = await signupModel.findOneAndUpdate(
           { email },
           { googleId: sub },
           { returnDocument: "after" },
         );
       }
+    }
+
+    // Block deleted accounts
+    if (user.deletedAccount) {
+      return res.status(403).json({
+        message: "This account has been deleted. Please register again.",
+      });
     }
 
     // JWT token
@@ -126,6 +140,49 @@ async function signup(req, res) {
 
     const existingUser = await signupModel.findOne({ email });
     if (existingUser) {
+      // If the account was previously deleted, reactivate it with new info
+      if (existingUser.deletedAccount) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const reactivated = await signupModel.findOneAndUpdate(
+          { email },
+          {
+            fullName,
+            password: hashedPassword,
+            deletedAccount: false,
+            phone: null,
+          },
+          { returnDocument: 'after' },
+        );
+
+        const token = jwt.sign(
+          {
+            id: reactivated._id,
+            fullName: reactivated.fullName,
+            email: reactivated.email,
+            role: reactivated.role || "user",
+          },
+          JWT_SECRET,
+          { expiresIn: "3h" },
+        );
+
+        res.cookie("authToken", token, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "lax",
+          maxAge: 3 * 60 * 60 * 1000,
+        });
+
+        return res.status(201).json({
+          message: "Account created successfully!",
+          user: {
+            id: reactivated._id,
+            fullName: reactivated.fullName,
+            email: reactivated.email,
+            role: reactivated.role || "user",
+          },
+          token,
+        });
+      }
       return res
         .status(400)
         .json({ message: "This email is already registered. Please login." });
@@ -133,12 +190,11 @@ async function signup(req, res) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = {
+    const createdUser = await signupModel.create({
       fullName,
       email,
       password: hashedPassword,
-    };
-    const createdUser = await signupModel.create(newUser);
+    });
 
     const token = jwt.sign(
       {
@@ -223,6 +279,14 @@ async function login(req, res) {
       });
     }
 
+    // Block deleted accounts
+    if (user.deletedAccount) {
+      return res.status(403).json({
+        message:
+          "This account has been deleted. Please register again to create a new account.",
+      });
+    }
+
     // Check if user only has Google login (no password set)
     if (!user.password) {
       return res.status(400).json({
@@ -270,6 +334,108 @@ async function login(req, res) {
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Error logging in. Please try again." });
+  }
+}
+
+// PROFILE
+// (get api)
+async function getProfile(req, res) {
+  try {
+    const userId = req.user.id; // comes from auth middleware (JWT)
+
+    const user = await signupModel.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error("Get profile error:", error);
+    res.status(500).json({ message: "Error loading profile" });
+  }
+}
+
+// (put api)
+async function updateProfile(req, res) {
+  try {
+    const { fullName, phone } = req.body;
+    const userId = req.user.id;
+
+    if (!fullName || fullName.trim() === "") {
+      return res.status(400).json({ message: "Full name cannot be empty" });
+    }
+
+    const updateData = {
+      fullName: fullName.trim(),
+      phone: phone && phone.trim() !== "" ? phone.trim() : null,
+    };
+
+    const updatedUser = await signupModel.findByIdAndUpdate(
+      userId,
+      updateData,
+      {
+        returnDocument: 'after',
+      },
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        id: updatedUser._id,
+        fullName: updatedUser.fullName,
+        email: updatedUser.email,
+        phone: updatedUser.phone,
+        role: updatedUser.role,
+      },
+    });
+  } catch (error) {
+    console.error("Update profile error:", error);
+    res.status(500).json({ message: "Error updating profile" });
+  }
+}
+
+// DELETE ACCOUNT
+// (delete api)
+async function deleteAccount(req, res) {
+  try {
+    const userId = req.user.id;
+
+    const user = await signupModel.findByIdAndUpdate(
+      userId,
+      { deletedAccount: true },
+      { returnDocument: 'after' },
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.clearCookie("authToken", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+
+    res.status(200).json({
+      message: "Account deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete account error:", error);
+    res.status(500).json({ message: "Error deleting account" });
   }
 }
 
@@ -359,8 +525,7 @@ async function resetPassword(req, res) {
     const updatedUser = await signupModel.findOneAndUpdate(
       { email },
       { password: hashedPassword },
-      { new: true },
-      { returnDocument: "after" },
+      { returnDocument: 'after' },
     );
 
     if (!updatedUser) {
@@ -428,6 +593,9 @@ module.exports = {
   getSignups,
   deleteSignup,
   login,
+  getProfile,
+  updateProfile,
+  deleteAccount,
   sendOTP,
   verifyOTP,
   resetPassword,

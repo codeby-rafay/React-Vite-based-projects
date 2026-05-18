@@ -12,8 +12,8 @@ const signupValidationRules = [
   body("fullName")
     .isString()
     .withMessage("Full name must be a string")
-    .isLength({ min: 3, max: 100 })
-    .withMessage("Full name must be between 3 and 100 characters long"),
+    .isLength({ min: 3, max: 30 })
+    .withMessage("Full name must be between 3 and 30 characters long"),
 
   body("email").isEmail().withMessage("Invalid email address"),
 
@@ -79,8 +79,8 @@ const submitFeedbackValidationRules = [
   body("userName")
     .isString()
     .withMessage("Name must be a string")
-    .isLength({ min: 4, max: 100 })
-    .withMessage("Name must be between 4 and 100 characters"),
+    .isLength({ min: 4, max: 30 })
+    .withMessage("Name must be between 4 and 30 characters"),
 
   body("userEmail")
     .isEmail()
@@ -105,6 +105,24 @@ const replyToFeedbackValidationRules = [
   validateResult,
 ];
 
+const updateProfileValidationRules = [
+  body("fullName")
+    .isString()
+    .withMessage("Full name must be a string")
+    .isLength({ min: 3, max: 30 })
+    .withMessage("Full name must be between 3 and 30 characters long"),
+  body("phone")
+    .optional()
+    .isString()
+    .withMessage("Phone number must be a string")
+    .matches(/^(?:\+92\d{10}|0\d{10})$/)
+    .withMessage(
+      "Phone number must be either +92 followed by 10 digits or 0 followed by 10 digits",
+    ),
+
+  validateResult,
+];
+
 module.exports = {
   signupValidationRules,
   loginValidationRules,
@@ -114,4 +132,5 @@ module.exports = {
   resetPasswordValidationRules,
   submitFeedbackValidationRules,
   replyToFeedbackValidationRules,
+  updateProfileValidationRules,
 };

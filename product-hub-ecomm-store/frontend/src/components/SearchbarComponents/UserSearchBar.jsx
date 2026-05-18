@@ -73,7 +73,7 @@ function UserSearchBar({
 
       <button
         type="submit"
-        className="bg-orange-500 hover:bg-orange-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium active:scale-95 transition-colors cursor-pointer"
+        className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium active:scale-95 transition-all cursor-pointer"
       >
         Search
       </button>

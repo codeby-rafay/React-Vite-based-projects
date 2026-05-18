@@ -74,7 +74,7 @@ function OrderSearchBar({
       {/* Search button */}
       <button
         type="submit"
-        className="px-4 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-medium transition-colors cursor-pointer active:scale-95"
+        className="px-4 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-medium transition-all cursor-pointer active:scale-95"
       >
         Search
       </button>

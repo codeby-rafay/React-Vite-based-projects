@@ -45,6 +45,18 @@
     }
   }
 
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
   .animate-slideInRight {
     animation: slideInRight 0.3s ease-out;
   }
@@ -59,6 +71,13 @@
 
   .animate-fadeOut {
     animation: fadeOut 0.3s ease-in-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
+  }
+  .animate-scale-out {
+    animation: scaleOut 0.3s ease-out;
   }
 }
 

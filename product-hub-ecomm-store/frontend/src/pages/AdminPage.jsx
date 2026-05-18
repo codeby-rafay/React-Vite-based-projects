@@ -8,8 +8,8 @@ import UserSearchBar from "../components/SearchbarComponents/UserSearchBar";
 
 function AdminPage() {
   const [userData, setUserData] = useState([]);
-  const [loadingSignup, setLoadingSignup] = useState(false);
-  const [errorSignup, setErrorSignup] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(false);
+  const [errorUser, setErrorUser] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,7 +19,8 @@ function AdminPage() {
     const query = searchQuery.toLowerCase();
     return (
       (record.email || "").toLowerCase().includes(query) ||
-      (record.fullName || "").toLowerCase().includes(query)
+      (record.fullName || "").toLowerCase().includes(query) ||
+      (record.phone || "").toLowerCase().includes(query)
     );
   });
 
@@ -38,8 +39,8 @@ function AdminPage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        setLoadingSignup(true);
-        setErrorSignup(null);
+        setLoadingUser(true);
+        setErrorUser(null);
 
         const response = await axiosInstance.get("/auth/signup");
         const data = response.data;
@@ -50,9 +51,9 @@ function AdminPage() {
         setUserData(formattedData);
       } catch (error) {
         console.error("Error fetching user data:", error);
-        setErrorSignup(error.message);
+        setErrorUser(error.message);
       } finally {
-        setLoadingSignup(false);
+        setLoadingUser(false);
       }
     };
 
@@ -83,11 +84,11 @@ function AdminPage() {
     } catch (error) {
       console.error("Error deleting record:", error);
       toast.error(`Failed to delete User record. Please try again.`, {
-        position: "bottom-right",
-        autoClose: 3000,
+        position: "top-right",
+        autoClose: 5000,
         hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
+        closeOnClick: false,
+        pauseOnHover: false,
         draggable: true,
         transition: Slide,
       });
@@ -139,7 +140,7 @@ function AdminPage() {
               <div>
                 <p className="text-gray-600 text-sm font-medium">Total Users</p>
                 <p className="text-3xl font-bold text-gray-900 mt-2">
-                  {loadingSignup ? "..." : userData.length}
+                  {loadingUser ? "..." : userData.length}
                 </p>
               </div>
               <div className="bg-green-100 p-4 rounded-lg">
@@ -165,13 +166,13 @@ function AdminPage() {
           {/* Signup Records Table */}
           {userData && (
             <div className="overflow-x-auto">
-              {loadingSignup ? (
+              {loadingUser ? (
                 <div className="text-center py-12">
                   <p className="text-gray-500">Loading user records...</p>
                 </div>
-              ) : errorSignup ? (
+              ) : errorUser ? (
                 <div className="text-center py-12">
-                  <p className="text-red-500">Error: {errorSignup}</p>
+                  <p className="text-red-500">Error: {errorUser}</p>
                 </div>
               ) : filteredUserData.length === 0 ? (
                 <div className="text-center py-12">
@@ -192,7 +193,13 @@ function AdminPage() {
                         Email
                       </th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        User Date
+                        Date
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                        Phone
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                        Account Status
                       </th>
                       <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
                         Actions
@@ -207,7 +214,7 @@ function AdminPage() {
                           index % 2 === 0 ? "bg-white" : "bg-gray-50"
                         }`}
                       >
-                        <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                        <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap font-medium">
                           {record.fullName}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-600">
@@ -215,6 +222,22 @@ function AdminPage() {
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-600">
                           {record.createdAt}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          {record.phone || (
+                            <span className="text-gray-300">—</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          {record.deletedAccount ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                              Deleted
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                              Active
+                            </span>
+                          )}
                         </td>
                         <td className="px-6 py-4 text-sm">
                           <div className="flex items-center justify-center gap-2">
