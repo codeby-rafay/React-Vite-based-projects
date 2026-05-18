@@ -5,8 +5,6 @@ const {
   getSignups,
   deleteSignup,
   login,
-  getLogins,
-  deleteLogin,
   sendOTP,
   verifyOTP,
   resetPassword,
@@ -29,8 +27,6 @@ router.post("/auth/signup", signupValidationRules, signup);
 router.get("/auth/signup", getSignups);
 router.delete("/auth/signup/:id", deleteSignup);
 router.post("/auth/login", loginValidationRules, login);
-router.get("/auth/login", getLogins);
-router.delete("/auth/login/:id", deleteLogin);
 router.post("/auth/send-otp", sendOTPValidationRules, sendOTP);
 router.post("/auth/verify-otp", verifyOTPValidationRules, verifyOTP);
 router.post("/auth/reset-password", resetPasswordValidationRules, resetPassword);

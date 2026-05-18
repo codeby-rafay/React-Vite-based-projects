@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { Users, LogIn, UserPlus, Trash2, LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useShop } from "../context/ShopContext";
+import { Users, UserPlus, Trash2 } from "lucide-react";
 import { toast, Slide } from "react-toastify";
 import { DeleteRecordToast } from "../utils/toastUtils";
 import axiosInstance from "../utils/axiosInstance";
@@ -9,33 +7,14 @@ import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirm
 import UserSearchBar from "../components/SearchbarComponents/UserSearchBar";
 
 function AdminPage() {
-  const [activeTab, setActiveTab] = useState("login");
-  const { currentUser } = useShop();
-  const [loginData, setLoginData] = useState([]);
-  const [signupData, setSignupData] = useState([]);
-  const [googleloginData, setGoogleLoginData] = useState([]);
-  const [loadingLogin, setLoadingLogin] = useState(false);
+  const [userData, setUserData] = useState([]);
   const [loadingSignup, setLoadingSignup] = useState(false);
-  const [loadingGoogleLogin, setLoadingGoogleLogin] = useState(false);
-  const [errorLogin, setErrorLogin] = useState(null);
   const [errorSignup, setErrorSignup] = useState(null);
-  const [errorGoogleLogin, setErrorGoogleLogin] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState(null);
-  const [deleteType, setDeleteType] = useState(null); // 'login' or 'signup'
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
 
-  const filteredLoginData = loginData.filter((record) => {
-    if (!searchQuery.trim()) return true;
-    const query = searchQuery.toLowerCase();
-    return (
-      (record.email || "").toLowerCase().includes(query) ||
-      (record.fullName || "").toLowerCase().includes(query)
-    );
-  });
-
-  const filteredSignupData = signupData.filter((record) => {
+  const filteredUserData = userData.filter((record) => {
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase();
     return (
@@ -55,34 +34,9 @@ function AdminPage() {
     });
   };
 
-  // get login data
+  // get user data
   useEffect(() => {
-    const fetchLoginData = async () => {
-      try {
-        setLoadingLogin(true);
-        setErrorLogin(null);
-
-        const response = await axiosInstance.get("/auth/login");
-        const data = response.data;
-        const formattedData = data.logins.map((record) => ({
-          ...record,
-          timestamp: formatDate(record.timestamp),
-        }));
-        setLoginData(formattedData);
-      } catch (error) {
-        console.error("Error fetching login data:", error);
-        setErrorLogin(error.message);
-      } finally {
-        setLoadingLogin(false);
-      }
-    };
-
-    fetchLoginData();
-  }, []);
-
-  // get signup data
-  useEffect(() => {
-    const fetchSignupData = async () => {
+    const fetchUserData = async () => {
       try {
         setLoadingSignup(true);
         setErrorSignup(null);
@@ -93,63 +47,42 @@ function AdminPage() {
           ...record,
           createdAt: formatDate(record.createdAt),
         }));
-        setSignupData(formattedData);
+        setUserData(formattedData);
       } catch (error) {
-        console.error("Error fetching signup data:", error);
+        console.error("Error fetching user data:", error);
         setErrorSignup(error.message);
       } finally {
         setLoadingSignup(false);
       }
     };
 
-    fetchSignupData();
+    fetchUserData();
   }, []);
-
-  const handleloginDelete = (id) => {
-    setRecordToDelete(id);
-    setDeleteType("login");
-    setShowDeleteModal(true);
-  };
 
   const handleSignupDelete = (id) => {
     setRecordToDelete(id);
-    setDeleteType("signup");
     setShowDeleteModal(true);
   };
 
   const handleConfirmDelete = async () => {
-    if (!recordToDelete || !deleteType) return;
+    if (!recordToDelete) return;
 
     try {
-      if (deleteType === "login") {
-        await axiosInstance.delete(`/auth/login/${recordToDelete}`);
+      await axiosInstance.delete(`/auth/signup/${recordToDelete}`);
 
-        // Refresh the login data after deletion
-        const response = await axiosInstance.get("/auth/login");
+      // Refresh the signup data after deletion
+      const response = await axiosInstance.get("/auth/signup");
 
-        const data = response.data;
-        const formattedData = data.logins.map((record) => ({
-          ...record,
-          timestamp: formatDate(record.timestamp),
-        }));
-        setLoginData(formattedData);
-      } else if (deleteType === "signup") {
-        await axiosInstance.delete(`/auth/signup/${recordToDelete}`);
-
-        // Refresh the signup data after deletion
-        const response = await axiosInstance.get("/auth/signup");
-
-        const data = response.data;
-        const formattedData = data.signups.map((record) => ({
-          ...record,
-          createdAt: formatDate(record.createdAt),
-        }));
-        setSignupData(formattedData);
-      }
+      const data = response.data;
+      const formattedData = data.signups.map((record) => ({
+        ...record,
+        createdAt: formatDate(record.createdAt),
+      }));
+      setUserData(formattedData);
       DeleteRecordToast();
     } catch (error) {
       console.error("Error deleting record:", error);
-      toast.error(`Failed to delete ${deleteType} record. Please try again.`, {
+      toast.error(`Failed to delete User record. Please try again.`, {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -161,14 +94,12 @@ function AdminPage() {
     } finally {
       setShowDeleteModal(false);
       setRecordToDelete(null);
-      setDeleteType(null);
     }
   };
 
   const handleCancelDelete = () => {
     setShowDeleteModal(false);
     setRecordToDelete(null);
-    setDeleteType(null);
   };
 
   return (
@@ -188,9 +119,7 @@ function AdminPage() {
                 >
                   Admin Dashboard
                 </h1>
-                <p className="text-gray-500 mt-1">
-                  Manage login and signup records
-                </p>
+                <p className="text-gray-500 mt-1">Manage Users Records</p>
               </div>
             </div>
 
@@ -208,27 +137,9 @@ function AdminPage() {
           <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 text-sm font-medium">
-                  Total Logins
-                </p>
+                <p className="text-gray-600 text-sm font-medium">Total Users</p>
                 <p className="text-3xl font-bold text-gray-900 mt-2">
-                  {loadingLogin ? "..." : loginData.length}
-                </p>
-              </div>
-              <div className="bg-blue-100 p-4 rounded-lg">
-                <LogIn className="text-blue-600" size={28} />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">
-                  Total Signups
-                </p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">
-                  {loadingSignup ? "..." : signupData.length}
+                  {loadingSignup ? "..." : userData.length}
                 </p>
               </div>
               <div className="bg-green-100 p-4 rounded-lg">
@@ -241,114 +152,33 @@ function AdminPage() {
         {/* Tabs */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="flex border-b border-gray-200">
-            <button
-              onClick={() => setActiveTab("login")}
-              className={`flex-1 py-4 px-6 cursor-pointer font-semibold flex items-center justify-center gap-2 transition-all ${
-                activeTab === "login"
-                  ? "text-orange-600 bg-orange-50 border-b-2 border-orange-500"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              <LogIn size={20} />
-              Login Records
-            </button>
-            <button
-              onClick={() => setActiveTab("signup")}
-              className={`flex-1 py-4 px-6 cursor-pointer font-semibold flex items-center justify-center gap-2 transition-all ${
-                activeTab === "signup"
-                  ? "text-orange-600 bg-orange-50 border-b-2 border-orange-500"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
+            <div
+              className={
+                "flex-1 py-4 px-6 font-semibold flex items-center justify-center gap-2 transition-all text-orange-600 bg-orange-50 border-b-2 border-orange-500"
+              }
             >
               <UserPlus size={20} />
-              Signup Records
-            </button>
+              Users Records
+            </div>
           </div>
 
-          {/* Login Records Table */}
-          {activeTab === "login" && (
-            <div className="overflow-x-auto">
-              {loadingLogin ? (
-                <div className="text-center py-12">
-                  <p className="text-gray-500">Loading login records...</p>
-                </div>
-              ) : errorLogin ? (
-                <div className="text-center py-12">
-                  <p className="text-red-500">Error: {errorLogin}</p>
-                </div>
-              ) : filteredLoginData.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-gray-500">
-                    {searchQuery
-                      ? "No matching login records found"
-                      : "No login records found"}
-                  </p>
-                </div>
-              ) : (
-                <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Email
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Timestamp
-                      </th>
-                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredLoginData.map((record, index) => (
-                      <tr
-                        key={record._id}
-                        className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
-                          index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                        }`}
-                      >
-                        <td className="px-6 py-4 text-sm text-gray-900">
-                          {record.email}
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">
-                          {record.timestamp}
-                        </td>
-                        <td className="px-6 py-4 text-sm">
-                          <div className="flex items-center justify-center gap-2">
-                            <button
-                              onClick={() => handleloginDelete(record._id)}
-                              title="Delete"
-                              className="p-2 hover:bg-red-100 rounded-lg transition-colors cursor-pointer"
-                            >
-                              <Trash2 size={18} className="text-red-600" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          )}
-
           {/* Signup Records Table */}
-          {activeTab === "signup" && (
+          {userData && (
             <div className="overflow-x-auto">
               {loadingSignup ? (
                 <div className="text-center py-12">
-                  <p className="text-gray-500">Loading signup records...</p>
+                  <p className="text-gray-500">Loading user records...</p>
                 </div>
               ) : errorSignup ? (
                 <div className="text-center py-12">
                   <p className="text-red-500">Error: {errorSignup}</p>
                 </div>
-              ) : filteredSignupData.length === 0 ? (
+              ) : filteredUserData.length === 0 ? (
                 <div className="text-center py-12">
                   <p className="text-gray-500">
                     {searchQuery
-                      ? "No matching signup records found"
-                      : "No signup records found"}
+                      ? "No matching user records found"
+                      : "No user records found"}
                   </p>
                 </div>
               ) : (
@@ -362,7 +192,7 @@ function AdminPage() {
                         Email
                       </th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Signup Date
+                        User Date
                       </th>
                       <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
                         Actions
@@ -370,7 +200,7 @@ function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredSignupData.map((record, index) => (
+                    {filteredUserData.map((record, index) => (
                       <tr
                         key={record._id}
                         className={`border-b border-gray-200 hover:bg-gray-50 transition-colors ${
@@ -411,16 +241,8 @@ function AdminPage() {
         showDeleteModal={showDeleteModal}
         handleCancelDelete={handleCancelDelete}
         handleConfirmDelete={handleConfirmDelete}
-        title={
-          deleteType === "login"
-            ? "Delete Login Record"
-            : "Delete Signup Record"
-        }
-        description={
-          deleteType === "login"
-            ? "Are you sure you want to delete this login record?"
-            : "Are you sure you want to delete this signup record?"
-        }
+        title={"Delete User Record"}
+        description={"Are you sure you want to delete this user record?"}
         buttonLabel="Delete"
       />
     </div>

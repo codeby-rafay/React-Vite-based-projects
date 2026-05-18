@@ -1,6 +1,5 @@
 const OAuth2Client = require("google-auth-library").OAuth2Client;
 const signupModel = require("../models/signup.model");
-const loginModel = require("../models/login.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {
@@ -24,13 +23,26 @@ async function googleLogin(req, res) {
       return res.status(400).json({ message: "Token is required" });
     }
 
-    // verify token from Google
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: client._clientId,
-    });
+    // Verify token from Google
+    let ticket;
+    try {
+      ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: client._clientId,
+      });
+    } catch (tokenError) {
+      console.error("Token verification failed:", tokenError.message);
+      return res.status(401).json({
+        message: "Invalid or expired token",
+        error: tokenError.message,
+      });
+    }
 
     const payload = ticket.getPayload();
+
+    if (!payload || !payload.email) {
+      return res.status(400).json({ message: "Invalid token payload" });
+    }
 
     const { sub, name, email } = payload;
 
@@ -39,12 +51,20 @@ async function googleLogin(req, res) {
     });
 
     if (!user) {
-      user = await signupModel.create({
-        fullName: name,
-        email,
-        password: null, // No password for Google users
-        googleId: sub,
-      });
+      try {
+        user = await signupModel.create({
+          fullName: name,
+          email,
+          password: null, // No password for Google users
+          googleId: sub,
+        });
+      } catch (dbError) {
+        console.error("Database error creating new user:", dbError.message);
+        return res.status(400).json({
+          message: "Error creating user account",
+          error: dbError.message,
+        });
+      }
     } else {
       // existing user - update their Google ID if not already set
       if (!user.googleId) {
@@ -55,16 +75,6 @@ async function googleLogin(req, res) {
         );
       }
     }
-
-    // Store only last login
-    await loginModel.findOneAndUpdate(
-      { email: user.email },
-      {
-        fullName: user.fullName,
-        timestamp: new Date(),
-      },
-      { upsert: true, returnDocument: "after" },
-    );
 
     // JWT token
     const jwtToken = jwt.sign(
@@ -96,12 +106,15 @@ async function googleLogin(req, res) {
       },
     });
   } catch (error) {
-    console.error("Google login error:", error);
-    res.status(500).json({ message: "Error logging in with Google" });
+    console.error("Google login error:", error.message || error);
+    res.status(500).json({
+      message: "Error logging in with Google",
+      error: error.message,
+    });
   }
 }
 
-// route 1: SIGNUP
+// SIGNUP
 // (post api)
 async function signup(req, res) {
   try {
@@ -142,7 +155,6 @@ async function signup(req, res) {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-      // maxAge: 3 * 60 * 60 * 1000, // 3 hours
       maxAge: 3 * 60 * 60 * 1000, // 3 hours
     });
 
@@ -194,7 +206,7 @@ async function deleteSignup(req, res) {
   }
 }
 
-// route 2: LOGIN
+// LOGIN
 // (post api)
 async function login(req, res) {
   try {
@@ -226,16 +238,6 @@ async function login(req, res) {
       });
     }
 
-    // Store only last login
-    await loginModel.findOneAndUpdate(
-      { email: user.email },
-      {
-        fullName: user.fullName,
-        timestamp: new Date(),
-      },
-      { upsert: true, returnDocument: "after" },
-    );
-
     // login token creation
     const token = jwt.sign(
       {
@@ -252,7 +254,6 @@ async function login(req, res) {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-      // 3 hours
       maxAge: 3 * 60 * 60 * 1000, // 3 hours
     });
 
@@ -269,35 +270,6 @@ async function login(req, res) {
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Error logging in. Please try again." });
-  }
-}
-
-// (get api)
-async function getLogins(req, res) {
-  try {
-    const logins = await loginModel.find().sort({ timestamp: -1 });
-    res.status(200).json({
-      message: "Login Data fetched successfully",
-      logins,
-    });
-  } catch (error) {
-    console.error("Error loading login data:", error);
-    res.status(500).json({ message: "Error loading login data" });
-  }
-}
-
-// (delete api)
-async function deleteLogin(req, res) {
-  const id = req.params.id;
-  try {
-    const deletedLogin = await loginModel.findOneAndDelete({ _id: id });
-    if (!deletedLogin) {
-      return res.status(404).json({ message: "Login record not found" });
-    }
-    res.status(200).json({ message: "Login record deleted successfully" });
-  } catch (error) {
-    console.error("Delete login error:", error);
-    res.status(500).json({ message: "Error deleting login record" });
   }
 }
 
@@ -456,8 +428,6 @@ module.exports = {
   getSignups,
   deleteSignup,
   login,
-  getLogins,
-  deleteLogin,
   sendOTP,
   verifyOTP,
   resetPassword,

@@ -12,7 +12,10 @@ const signupSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Password is required"],
+    required: function() {
+      // Password only required for non-Google users
+      return !this.googleId;
+    },
     default: null, // null for Google users
   },
   googleId: {
