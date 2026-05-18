@@ -20,7 +20,8 @@ function AdminPage() {
     return (
       (record.email || "").toLowerCase().includes(query) ||
       (record.fullName || "").toLowerCase().includes(query) ||
-      (record.phone || "").toLowerCase().includes(query)
+      (record.phone || "").toLowerCase().includes(query) ||
+      (record.gender || "").toLowerCase().includes(query)
     );
   });
 
@@ -193,6 +194,9 @@ function AdminPage() {
                         Email
                       </th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                        Gender
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                         Date
                       </th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
@@ -219,6 +223,11 @@ function AdminPage() {
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-600">
                           {record.email}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          {record.gender || (
+                            <span className="text-gray-300">—</span>
+                          )}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-600">
                           {record.createdAt}

@@ -150,8 +150,9 @@ async function signup(req, res) {
             password: hashedPassword,
             deletedAccount: false,
             phone: null,
+            gender: null,
           },
-          { returnDocument: 'after' },
+          { returnDocument: "after" },
         );
 
         const token = jwt.sign(
@@ -202,6 +203,7 @@ async function signup(req, res) {
         fullName: createdUser.fullName,
         email: createdUser.email,
         role: createdUser.role || "user",
+        gender: createdUser.gender,
       },
       JWT_SECRET,
       { expiresIn: "3h" },
@@ -354,6 +356,7 @@ async function getProfile(req, res) {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
+        gender: user.gender,
         phone: user.phone,
         role: user.role,
         createdAt: user.createdAt,
@@ -368,15 +371,20 @@ async function getProfile(req, res) {
 // (put api)
 async function updateProfile(req, res) {
   try {
-    const { fullName, phone } = req.body;
+    const { fullName, phone, gender } = req.body;
     const userId = req.user.id;
 
     if (!fullName || fullName.trim() === "") {
       return res.status(400).json({ message: "Full name cannot be empty" });
     }
 
+    if (gender && !["male", "female", "other"].includes(gender)) {
+      return res.status(400).json({ message: "Invalid gender value" });
+    }
+
     const updateData = {
       fullName: fullName.trim(),
+      gender: req.body.gender,
       phone: phone && phone.trim() !== "" ? phone.trim() : null,
     };
 
@@ -384,7 +392,7 @@ async function updateProfile(req, res) {
       userId,
       updateData,
       {
-        returnDocument: 'after',
+        returnDocument: "after",
       },
     );
 
@@ -400,6 +408,7 @@ async function updateProfile(req, res) {
         email: updatedUser.email,
         phone: updatedUser.phone,
         role: updatedUser.role,
+        gender: updatedUser.gender,
       },
     });
   } catch (error) {
@@ -417,7 +426,7 @@ async function deleteAccount(req, res) {
     const user = await signupModel.findByIdAndUpdate(
       userId,
       { deletedAccount: true },
-      { returnDocument: 'after' },
+      { returnDocument: "after" },
     );
 
     if (!user) {
@@ -525,7 +534,7 @@ async function resetPassword(req, res) {
     const updatedUser = await signupModel.findOneAndUpdate(
       { email },
       { password: hashedPassword },
-      { returnDocument: 'after' },
+      { returnDocument: "after" },
     );
 
     if (!updatedUser) {

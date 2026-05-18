@@ -119,6 +119,10 @@ const updateProfileValidationRules = [
     .withMessage(
       "Phone number must be either +92 followed by 10 digits or 0 followed by 10 digits",
     ),
+  body("gender")
+    .optional()
+    .isIn(["male", "female", "other"])
+    .withMessage("Gender must be either male, female, or other"),
 
   validateResult,
 ];

@@ -23,6 +23,7 @@ const profileSchema = z.object({
           "Phone number must be either +92 followed by 10 digits or 0 followed by 10 digits",
       },
     ),
+  gender: z.enum(["male", "female", "other"]).optional().or(z.literal("")),
 });
 
 // Convert Zod errors to Formik errors
@@ -90,6 +91,9 @@ function UserProfile() {
       if (values.phone && values.phone.trim().length > 0) {
         payload.phone = values.phone.trim();
       }
+      if (values.gender) {
+        payload.gender = values.gender;
+      }
 
       const res = await axiosInstance.put("/auth/profile", payload);
 
@@ -102,6 +106,7 @@ function UserProfile() {
         ...prev,
         fullName: res.data.user.fullName,
         phone: res.data.user.phone,
+        gender: res.data.user.gender,
       }));
 
       toast.success("Profile updated successfully!", {
@@ -178,7 +183,10 @@ function UserProfile() {
       <div className="max-w-xl mx-auto">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-orange-500"> <span className="text-black">My</span> Profile</h1>
+          <h1 className="text-2xl font-bold text-orange-500">
+            {" "}
+            <span className="text-black">My</span> Profile
+          </h1>
           <p className="text-sm text-gray-500 mt-1">
             Manage your personal information
           </p>
@@ -220,6 +228,7 @@ function UserProfile() {
                 initialValues={{
                   fullName: profileData?.fullName || "",
                   phone: profileData?.phone || "",
+                  gender: profileData?.gender || "",
                 }}
                 validate={validate}
                 onSubmit={handleSubmit}
@@ -231,7 +240,7 @@ function UserProfile() {
                     <div>
                       <label
                         htmlFor="fullName-input"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-medium text-gray-900 mb-1"
                       >
                         Full Name
                       </label>
@@ -245,7 +254,7 @@ function UserProfile() {
                           name="fullName"
                           id="fullName-input"
                           placeholder="Your full name"
-                          className="w-full pl-9 pr-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
+                          className="w-full pl-9 pr-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
                         />
                       </div>
                       <ErrorMessage
@@ -259,7 +268,7 @@ function UserProfile() {
                     <div>
                       <label
                         htmlFor="email-input"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-medium text-gray-900 mb-1"
                       >
                         Email Address
                       </label>
@@ -282,7 +291,7 @@ function UserProfile() {
                     <div>
                       <label
                         htmlFor="phone-input"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-medium text-gray-900 mb-1"
                       >
                         Phone Number
                         <span className="ml-2 text-xs text-gray-400 font-normal">
@@ -299,7 +308,8 @@ function UserProfile() {
                           name="phone"
                           id="phone-input"
                           placeholder="e.g. +92 300 1234567"
-                          className="w-full pl-9 pr-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
+                          autoComplete="tel"
+                          className="w-full pl-9 pr-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition"
                         />
                       </div>
                       <ErrorMessage
@@ -310,6 +320,56 @@ function UserProfile() {
                       <p className="text-xs text-gray-400 mt-1">
                         Adding a phone number is optional
                       </p>
+                    </div>
+
+                    {/* Gender*/}
+                    <div>
+                      <label
+                        htmlFor="gender-input"
+                        className="block text-sm font-medium text-gray-900 mb-3"
+                      >
+                        Gender
+                        <span className="ml-2 text-xs text-gray-400 font-normal">
+                          (optional)
+                        </span>
+                      </label>
+                      <div className="flex gap-6">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <Field
+                            type="radio"
+                            name="gender"
+                            value="male"
+                            id="gender-input"
+                            className="w-4 h-4 cursor-pointer"
+                          />
+                          <span className="text-sm text-gray-700">Male</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <Field
+                            type="radio"
+                            name="gender"
+                            value="female"
+                            id="gender-input"
+                            className="w-4 h-4 cursor-pointer"
+                          />
+                          <span className="text-sm text-gray-700">Female</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <Field
+                            type="radio"
+                            name="gender"
+                            value="other"
+                            id="gender-input"
+                            className="w-4 h-4 cursor-pointer"
+                          />
+                          <span className="text-sm text-gray-700">Other</span>
+                        </label>
+                      </div>
+                      <ErrorMessage
+                        name="gender"
+                        component="p"
+                        className="text-red-500 text-xs mt-2 ml-1"
+                      />
                     </div>
 
                     {/* Save Button */}

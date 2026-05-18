@@ -27,6 +27,11 @@ const signupSchema = new mongoose.Schema({
     enum: ["user", "admin"],
     default: "user",
   },
+  gender: {
+    type: String,
+    enum: ["male", "female", "other"],
+    default: null,
+  },
   phone: {
     type: String,
     default: null,
