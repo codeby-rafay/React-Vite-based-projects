@@ -203,7 +203,6 @@ async function signup(req, res) {
         fullName: createdUser.fullName,
         email: createdUser.email,
         role: createdUser.role || "user",
-        gender: createdUser.gender,
       },
       JWT_SECRET,
       { expiresIn: "3h" },
@@ -213,7 +212,7 @@ async function signup(req, res) {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-      maxAge: 3 * 60 * 60 * 1000, // 3 hours
+      maxAge: 3 * 60 * 60 * 1000,
     });
 
     res.status(201).json({
@@ -320,7 +319,7 @@ async function login(req, res) {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
-      maxAge: 3 * 60 * 60 * 1000, // 3 hours
+      maxAge: 3 * 60 * 60 * 1000,
     });
 
     res.json({

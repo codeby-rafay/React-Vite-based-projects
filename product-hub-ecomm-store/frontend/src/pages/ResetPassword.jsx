@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Mail, ArrowLeft, Loader, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast, Slide } from "react-toastify";
-import { EnterValidEmailToast, FillAllFieldsToast, PasswordLengthToast, PasswordNotMatchToast } from "../utils/toastUtils";
+import {
+  EnterValidEmailToast,
+  FillAllFieldsToast,
+  PasswordLengthToast,
+  PasswordNotMatchToast,
+} from "../utils/toastUtils";
 import axiosInstance from "../utils/axiosInstance";
 
 const ResetPassword = () => {
@@ -217,9 +222,21 @@ const ResetPassword = () => {
             className="text-4xl font-bold text-gray-900 mb-2"
             style={{ fontFamily: "Playfair Display, serif" }}
           >
-            {step === 1 && "Reset Password"}
-            {step === 2 && "Verify OTP"}
-            {step === 3 && "Create New Password"}
+            {step === 1 && (
+              <>
+                Reset <span className="text-orange-500">Password</span>
+              </>
+            )}
+            {step === 2 && (
+              <>
+                Verify <span className="text-orange-500">OTP</span>
+              </>
+            )}
+            {step === 3 && (
+              <>
+                Create New <span className="text-orange-500">Password</span>
+              </>
+            )}
           </h1>
           <p className="text-gray-600 text-sm">
             {step === 1 && "Enter your email to receive an OTP"}

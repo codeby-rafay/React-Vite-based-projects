@@ -283,9 +283,11 @@ const Notifications = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl font-bold text-gray-800">Notifications</h1>
+            <h1 className="text-4xl font-bold text-gray-800">
+              Notifi<span className="text-orange-500">cations</span>
+            </h1>
             {unreadNotificationCount > 0 && (
-              <span className="bg-orange-500 text-white rounded-full px-3 py-1 text-sm font-semibold">
+              <span className="bg-orange-500 text-white rounded-full px-3 py-1 text-md font-semibold">
                 {unreadNotificationCount} New
               </span>
             )}

@@ -176,7 +176,7 @@ const ReviewOrdersUser = () => {
               className="text-4xl md:text-5xl font-bold text-gray-900 mb-2"
               style={{ fontFamily: "Playfair Display, serif" }}
             >
-              My Orders
+              My <span className="text-orange-500">Orders</span>
             </h1>
             <p className="text-gray-600 text-lg">
               Track and manage your purchases

@@ -53,7 +53,7 @@ function App() {
             <Route path="/my-orders" element={<ReviewOrdersUser />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/user-profile" element={<UserProfile />} />
+            <Route path="/my-profile" element={<UserProfile />} />
             <Route
               path="/admin/dashboard"
               element={

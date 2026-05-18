@@ -87,7 +87,7 @@ function Categories() {
           className="text-3xl font-bold text-gray-900"
           style={{ fontFamily: "Playfair Display, serif" }}
         >
-          Product Categories
+          Product <span className="text-orange-500">Categories</span>
         </h1>
         <p className="text-gray-500 text-sm mt-1">
           {categories.length} categories available

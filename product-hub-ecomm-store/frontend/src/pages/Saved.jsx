@@ -7,15 +7,15 @@ function Saved() {
   const { savedItems, toggleSave } = useShop();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 ">
       {/* Heading */}
       <h1
-        className="text-3xl font-bold text-gray-900 mb-2"
+        className="text-4xl font-bold text-gray-900 mb-2"
         style={{ fontFamily: "Playfair Display, serif" }}
       >
-        Saved Items
+        Saved <span className="text-orange-500">Items</span>
       </h1>
-      <p className="text-gray-400 text-sm mb-8">
+      <p className="text-gray-400 text-md mb-8">
         {savedItems.length} item{savedItems.length !== 1 ? "s" : ""} saved
       </p>
 

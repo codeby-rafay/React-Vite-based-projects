@@ -119,7 +119,7 @@ function AdminPage() {
                   className="text-4xl font-bold text-gray-900"
                   style={{ fontFamily: "Playfair Display, serif" }}
                 >
-                  Admin Dashboard
+                  Admin <span className="text-orange-500">Dashboard</span>
                 </h1>
                 <p className="text-gray-500 mt-1">Manage Users Records</p>
               </div>

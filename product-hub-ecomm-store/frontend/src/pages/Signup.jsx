@@ -203,7 +203,7 @@ function Signup() {
             className="text-4xl font-bold text-gray-900 mb-2"
             style={{ fontFamily: "Playfair Display, serif" }}
           >
-            Create Account
+            Create <span className="text-orange-500">Account</span>
           </h1>
           <p className="text-gray-500">
             Join us to start shopping amazing products

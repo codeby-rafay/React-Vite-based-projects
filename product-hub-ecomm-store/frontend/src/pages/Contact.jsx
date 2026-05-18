@@ -93,7 +93,7 @@ function Contact() {
           className="text-4xl font-bold text-gray-900"
           style={{ fontFamily: "Playfair Display, serif" }}
         >
-          Contact Us
+          Contact <span className="text-orange-500">Us</span>
         </h1>
 
         <p className="text-gray-500 mt-3">

@@ -96,9 +96,9 @@ const DesktopNavLinks = ({ navLinks, isActive }) => {
                 </p>
               </div>
 
-              {/* Saved link */}
+              {/* Profile link */}
               <Link
-                to="/user-profile"
+                to="/my-profile"
                 onClick={() => setDropdownOpen(false)}
                 className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
               >

@@ -1,5 +1,3 @@
-//scratch
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -12,7 +10,6 @@ import axiosInstance from "../utils/axiosInstance";
 // Zod Schema
 const profileSchema = z.object({
   fullName: z.string().min(3, "Full name must be at least 3 characters"),
-  // phone is optional - empty string is allowed, but if filled must look like a phone number
   phone: z
     .string()
     .optional()
@@ -83,11 +80,9 @@ function UserProfile() {
     }
   }, [currentUser]);
 
-  // Formik submit handler
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      // Build payload: only include phone if user provided a non-empty value
-      const payload = { fullName: values.fullName };
+      const payload = { fullName: values.fullName.trim() };
       if (values.phone && values.phone.trim().length > 0) {
         payload.phone = values.phone.trim();
       }
@@ -160,7 +155,7 @@ function UserProfile() {
 
       navigate("/signup");
     } catch (error) {
-      console.error("Delete account error:", error);
+      console.error("Error deleting account:", error);
       toast.error(error.response?.data?.message || "Error deleting account.", {
         position: "top-right",
         autoClose: 5000,
@@ -183,11 +178,11 @@ function UserProfile() {
       <div className="max-w-xl mx-auto">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-orange-500">
+          <h1 className="text-4xl font-bold text-orange-500">
             {" "}
             <span className="text-black">My</span> Profile
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-md text-gray-500 mt-1">
             Manage your personal information
           </p>
         </div>
@@ -264,7 +259,7 @@ function UserProfile() {
                       />
                     </div>
 
-                    {/* Email - read-only, not part of Formik since it can't be edited */}
+                    {/* Email */}
                     <div>
                       <label
                         htmlFor="email-input"
@@ -428,7 +423,7 @@ function UserProfile() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/40 px-4 animate-fade-in">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 animate-scale-in">
             <div className="flex flex-col items-center text-center gap-3">
               <div className="bg-red-100 p-3 rounded-full">

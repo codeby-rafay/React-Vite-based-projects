@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Heart, LogOut, Bell, Cuboid } from "lucide-react";
+import { Heart, LogOut, Bell, Cuboid, UserPen } from "lucide-react";
 import { useShop } from "../../context/ShopContext";
 import { LogoutToast } from "../../utils/toastUtils";
 
@@ -51,6 +51,20 @@ const MobileMenuLinks = ({ navLinks, isActive, menuOpen, setMenuOpen }) => {
                   </p>
                   <p className="text-xs text-gray-500">{currentUser.email}</p>
                 </div>
+
+                {/* Profile link */}
+                <Link
+                  to="/my-profile"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 px-4 py-2 text-sm rounded-lg text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                >
+                  <UserPen
+                    size={16}
+                    className="text-orange-500"
+                    fill="currentColor"
+                  />
+                  My Profile
+                </Link>
 
                 {/* Saved Items link */}
                 <Link

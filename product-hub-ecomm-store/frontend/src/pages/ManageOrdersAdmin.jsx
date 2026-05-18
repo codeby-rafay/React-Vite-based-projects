@@ -246,7 +246,7 @@ const ManageOrdersAdmin = () => {
               className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 mt-6"
               style={{ fontFamily: "Playfair Display, serif" }}
             >
-              Customer Orders
+              Customer <span className="text-orange-500">Orders</span>
             </h1>
             <p className="text-gray-600 text-lg">
               Manage and track all customer purchases

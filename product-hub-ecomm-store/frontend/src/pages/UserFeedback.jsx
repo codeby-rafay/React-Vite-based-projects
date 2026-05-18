@@ -207,15 +207,15 @@ function UserFeedback() {
         {/* Header */}
         <div className="mb-8 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
+            <h1 className="text-4xl font-bold text-gray-800 flex items-center gap-3 mb-2 mt-6">
               <Mail className="text-orange-500" size={32} />
-              User Feedback & Messages
+              User Feedback & <span className="text-orange-500">Messages</span>
             </h1>
             <p className="text-gray-600 mt-2">
               Manage user feedback and respond to their messages
             </p>
           </div>
-          <div className="mt-4 md:mt-6 flex items-center">
+          <div className="md:mt-8 flex items-center">
             <UserSearchBar
               onSearch={setSearchQuery}
               placeholder="Search feedback by name, email or message..."

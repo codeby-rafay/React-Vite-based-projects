@@ -147,7 +147,7 @@ function Login() {
             className="text-4xl font-bold text-gray-900 mb-2"
             style={{ fontFamily: "Playfair Display, serif" }}
           >
-            Welcome Back
+            Welcome <span className="text-orange-500">Back</span>
           </h1>
           <p className="text-gray-500">
             Sign in to your account to continue shopping
