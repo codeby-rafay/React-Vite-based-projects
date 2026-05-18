@@ -52,7 +52,6 @@ function UserProfile() {
     }
   }, [currentUser, navigate]);
 
-  // Fetch latest profile data from DB when page loads
   useEffect(() => {
     const fetchProfile = async () => {
       try {
