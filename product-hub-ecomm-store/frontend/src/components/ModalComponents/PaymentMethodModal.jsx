@@ -241,14 +241,14 @@ function PaymentMethodModal({
                   <button
                     type="button"
                     onClick={onClose}
-                    className="px-6 py-2 text-gray-700 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                    className="px-6 py-2 text-gray-700 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-200 active:scale-95 transition-all font-medium"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting || !(isValid && dirty)}
-                    className={`px-8 py-2 rounded-lg font-bold text-white transition-colors ${
+                    className={`px-8 py-2 rounded-lg font-bold text-white transition-all ${
                       isValid && dirty && !isSubmitting
                         ? "active:scale-95 cursor-pointer bg-orange-500 hover:bg-orange-700"
                         : "bg-gray-400 cursor-not-allowed"
