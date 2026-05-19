@@ -109,17 +109,27 @@ function Home() {
       {/* Scrolling marquee of product titles */}
       {!loading && products.length > 0 && (
         <section className="bg-gray-900 py-4 overflow-hidden">
-          <div className="flex gap-8 animate-pulse">
-            <div className="flex gap-8 whitespace-nowrap">
-              {products.concat(products).map((product, i) => (
-                <span
-                  key={i}
-                  className="text-gray-400 text-sm font-medium flex gap-1 items-center"
-                >
-                  <Sparkle size={14} strokeWidth={1.75} fill="currentColor" />{" "}
-                  {product.title}
-                </span>
-              ))}
+          <style>{`
+            .marquee { --marquee-speed: 30s; }
+            .marquee__inner { display: inline-flex; gap: 2rem; white-space: nowrap; animation: marquee var(--marquee-speed) linear infinite; }
+            .marquee__inner:hover { animation-play-state: paused; }
+            @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+          `}</style>
+
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="marquee">
+              <div className="marquee__inner" aria-hidden={false} role="list">
+                {products.concat(products).map((product, i) => (
+                  <span
+                    key={i}
+                    role="listitem"
+                    className="text-gray-400 text-sm font-medium flex gap-1 items-center"
+                  >
+                    <Sparkle size={14} strokeWidth={1.75} fill="currentColor" />
+                    <span className="ml-1">{product.title}</span>
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </section>

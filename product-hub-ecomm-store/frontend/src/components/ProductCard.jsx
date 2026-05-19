@@ -24,7 +24,7 @@ function ProductCard({ product }) {
 
   return (
     <Link to={`/products/${product.id}`}>
-      <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
+      <div className="bg-gray-100 rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg hover:-translate-y-3 transition-all duration-300 group cursor-pointer">
         {/* Product Image */}
         <div className="relative overflow-hidden bg-gray-50 h-52">
           <img
@@ -50,14 +50,14 @@ function ProductCard({ product }) {
             {product.title}
           </h3>
 
-          <p className="text-gray-400 text-xs line-clamp-2 mb-3">
+          <p className="text-gray-500 text-xs line-clamp-2 mb-3">
             {product.description}
           </p>
 
           {/* Rating */}
           <div className="flex items-center gap-1 mb-3">
             <div className="flex text-xs">{renderStars(product.rating)}</div>
-            <span className="text-gray-400 text-xs">({product.rating})</span>
+            <span className="text-gray-500 text-xs">({product.rating})</span>
           </div>
 
           {/* Price & Stock */}
@@ -68,7 +68,7 @@ function ProductCard({ product }) {
               </span>
             </div>
             <span
-              className={`text-xs px-2 py-1 rounded-full font-medium ${
+              className={`text-xs px-2 py-1 rounded-full font-bold ${
                 stockRemaining > 10
                   ? "bg-green-100 text-green-700"
                   : stockRemaining > 0
