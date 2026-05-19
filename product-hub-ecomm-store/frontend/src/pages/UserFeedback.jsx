@@ -21,6 +21,8 @@ function UserFeedback() {
   });
   const [searchQuery, setSearchQuery] = useState("");
 
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   // Fetch all feedback
   useEffect(() => {
     fetchFeedback();

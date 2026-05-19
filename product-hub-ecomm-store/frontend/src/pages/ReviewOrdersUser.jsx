@@ -26,6 +26,8 @@ const ReviewOrdersUser = () => {
   const [actionType, setActionType] = useState(null); // delete or cancel
   const [expandedOrderId, setExpandedOrderId] = useState(null);
 
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   useEffect(() => {
     const fetchOrders = async () => {
       if (!currentUser) return;
@@ -256,7 +258,9 @@ const ReviewOrdersUser = () => {
                         Order ID
                       </p>
                       <p className="text-sm font-mono font-bold text-gray-900 mt-1">
-                        {String(order._id || "").slice(-8).toUpperCase()}
+                        {String(order._id || "")
+                          .slice(-8)
+                          .toUpperCase()}
                       </p>
                     </div>
 
@@ -512,7 +516,9 @@ const ReviewOrdersUser = () => {
               ? "Are you sure you want to cancel this order?"
               : "Are you sure you want to delete this order?"
           }
-          buttonLabel={actionType === "cancel" ? "Cancel Order" : "Delete Order"}
+          buttonLabel={
+            actionType === "cancel" ? "Cancel Order" : "Delete Order"
+          }
         />
       </div>
     </div>
