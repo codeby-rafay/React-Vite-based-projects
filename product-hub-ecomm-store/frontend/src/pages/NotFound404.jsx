@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { Home, ShoppingBag, HelpCircle, ArrowRight } from "lucide-react";
 
 function NotFound404() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   return (
     <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 flex items-center justify-center px-4 py-12">
       <div className="text-center max-w-2xl">
