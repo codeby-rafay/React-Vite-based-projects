@@ -76,6 +76,7 @@
   .animate-scale-in {
     animation: scaleIn 0.3s ease-out;
   }
+
   .animate-scale-out {
     animation: scaleOut 0.3s ease-out;
   }
@@ -84,4 +85,9 @@
 body {
   font-family: 'DM Sans', sans-serif;
   background-color: #fafaf8;
+}
+
+html,
+body {
+  overflow-x: hidden;
 }

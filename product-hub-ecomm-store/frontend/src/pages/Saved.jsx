@@ -44,7 +44,7 @@ function Saved() {
           {savedItems.map((product) => (
             <div
               key={product.id}
-              className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow"
+              className="bg-white rounded-2xl overflow-hidden border hover:-translate-y-3 group border-gray-100 hover:shadow-lg transition-all duration-300"
             >
               {/* Image of product */}
               <Link to={`/products/${product.id}`}>

@@ -7,13 +7,14 @@ import BrowseAllProductBtn from "../components/HomePageComponents/BrowseAllProdu
 import ShopbyCategoryBtn from "../components/HomePageComponents/ShopbyCategoryBtn";
 import ViewAllLink from "../components/HomePageComponents/ViewAllLink";
 import SeeAllProducts from "../components/HomePageComponents/SeeAllProducts";
+import ThreeBackground from "../components/ThreeBackground";
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
   useEffect(() => {
     // Fetch products when the page loads
@@ -35,8 +36,10 @@ function Home() {
   return (
     <div>
       {/* Main Section */}
-      <section className="bg-linear-to-br from-orange-50 to-amber-50 py-16 px-4">
-        <div className="max-w-7xl mx-auto text-center">
+      <section className="relative isolate overflow-hidden bg-linear-to-br from-orange-50 to-amber-50 py-16 px-4">
+        <ThreeBackground className="pointer-events-none absolute inset-0 z-0 h-full w-full" />
+
+        <div className="relative z-10 max-w-7xl mx-auto text-center">
           <span className="bg-orange-100 text-orange-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
             New Arrivals 2026
           </span>
