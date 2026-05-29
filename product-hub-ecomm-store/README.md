@@ -27,6 +27,7 @@ A modern, full-stack e-commerce application built with **React 19** and **Vite**
 ## Features
 
 ### Authentication & Security
+
 - **User Authentication**: Secure login with JWT tokens + password hashing (signup creates the account; login issues the JWT)
 - **Google OAuth Integration**: Quick login and registration with Google OAuth
 - **Password Reset**: Secure OTP-based password recovery via email (Nodemailer integration)
@@ -34,6 +35,7 @@ A modern, full-stack e-commerce application built with **React 19** and **Vite**
 - **Session Management**: Persistent sessions with browser localStorage and secure token storage
 
 ### Shopping Experience
+
 - **Product Listing**: Display all available products with detailed information and pagination
 - **Product Search**: Real-time search for products with instant feedback
 - **Category Filtering**: Browse products organized by categories
@@ -43,6 +45,7 @@ A modern, full-stack e-commerce application built with **React 19** and **Vite**
 - **Responsive Design**: Mobile-friendly interface using Tailwind CSS with auto-scroll to top
 
 ### Admin Features
+
 - **Admin Dashboard**: Comprehensive admin panel for managing users and viewing activity
 - **Login/Signup History**: Track all user login and registration records with timestamps
 - **User Management**: View and manage registered users and their information
@@ -52,6 +55,7 @@ A modern, full-stack e-commerce application built with **React 19** and **Vite**
 - **Protected Routes**: Admin dashboard is protected with role-based access control
 
 ### Order & Notification System
+
 - **Order Management**: Users can view, track, and manage their personal orders
 - **Order Status Tracking**: Track order progress (pending, confirmed, shipped, delivered, cancelled)
 - **Notifications**: Real-time notifications for orders, payments, and customer feedback replies
@@ -59,6 +63,7 @@ A modern, full-stack e-commerce application built with **React 19** and **Vite**
 - **Toast Notifications**: Real-time feedback with React Toastify for all user actions
 
 ### User Interface
+
 - **Modern UI**: Clean and intuitive user interface with Lucide React icons
 - **Animated Modals**: Beautiful confirmation dialogs using Framer Motion
 - **Loading States**: Skeleton loading components (react-loading-skeleton) for better UX
@@ -68,39 +73,41 @@ A modern, full-stack e-commerce application built with **React 19** and **Vite**
 ## Tech Stack
 
 ### Frontend Stack
-| Technology | Version | Purpose |
-|-----------|---------|---------|
-| **React** | 19.2.4 | UI Framework |
-| **Vite** | 8.0.1 | Build Tool & Development Server |
-| **React Router DOM** | 7.13.2 | Client-side Routing |
-| **Tailwind CSS** | 4.2.2 | Utility-first CSS Framework |
-| **Axios** | 1.13.6 | HTTP Client |
-| **React Context API** | Built-in | Global State Management |
-| **Framer Motion** | 12.38.0 | Animations & Transitions |
-| **React Toastify** | 11.0.5 | Toast Notifications |
-| **Lucide React** | 1.3.0 | Icon Library |
-| **React Loading Skeleton** | 3.5.0 | Loading States |
-| **Formik** | 2.4.9 | Form Management |
-| **Zod** | 4.4.3 | Schema Validation |
-| **Three.js** | 0.184.0 | 3D Graphics (optional) |
+
+| Technology                 | Version  | Purpose                         |
+| -------------------------- | -------- | ------------------------------- |
+| **React**                  | 19.2.4   | UI Framework                    |
+| **Vite**                   | 8.0.1    | Build Tool & Development Server |
+| **React Router DOM**       | 7.13.2   | Client-side Routing             |
+| **Tailwind CSS**           | 4.2.2    | Utility-first CSS Framework     |
+| **Axios**                  | 1.13.6   | HTTP Client                     |
+| **React Context API**      | Built-in | Global State Management         |
+| **Framer Motion**          | 12.38.0  | Animations & Transitions        |
+| **React Toastify**         | 11.0.5   | Toast Notifications             |
+| **Lucide React**           | 1.3.0    | Icon Library                    |
+| **React Loading Skeleton** | 3.5.0    | Loading States                  |
+| **Formik**                 | 2.4.9    | Form Management                 |
+| **Zod**                    | 4.4.3    | Schema Validation               |
+| **Three.js**               | 0.184.0  | 3D Graphics (optional)          |
 
 ### Backend Stack
-| Technology | Version | Purpose |
-|-----------|---------|---------|
-| **Node.js** | 20.x | Runtime Environment |
-| **Express.js** | 4.22.1 | Web Framework |
-| **MongoDB** | 5.x+ | NoSQL Database |
-| **Mongoose** | 9.5.0 | MongoDB ODM |
-| **JWT** | 9.0.2 | Authentication |
-| **bcryptjs** | 2.4.3 | Password Hashing |
-| **Nodemailer** | 8.0.7 | Email Delivery |
-| **Google Auth Library** | 10.6.2 | OAuth Authentication |
-| **Express Validator** | 7.3.2 | Input Validation |
-| **CORS** | 2.8.5 | Cross-Origin Support |
-| **Morgan** | 1.10.1 | HTTP Logging |
-| **Redis** | 5.12.1 | Caching & Sessions |
-| **Jest** | 30.3.0 | Testing Framework |
-| **Supertest** | 7.2.2 | HTTP Testing |
+
+| Technology              | Version | Purpose              |
+| ----------------------- | ------- | -------------------- |
+| **Node.js**             | 20.x    | Runtime Environment  |
+| **Express.js**          | 4.22.1  | Web Framework        |
+| **MongoDB**             | 5.x+    | NoSQL Database       |
+| **Mongoose**            | 9.5.0   | MongoDB ODM          |
+| **JWT**                 | 9.0.2   | Authentication       |
+| **bcryptjs**            | 2.4.3   | Password Hashing     |
+| **Nodemailer**          | 8.0.7   | Email Delivery       |
+| **Google Auth Library** | 10.6.2  | OAuth Authentication |
+| **Express Validator**   | 7.3.2   | Input Validation     |
+| **CORS**                | 2.8.5   | Cross-Origin Support |
+| **Morgan**              | 1.10.1  | HTTP Logging         |
+| **Redis**               | 5.12.1  | Caching & Sessions   |
+| **Jest**                | 30.3.0  | Testing Framework    |
+| **Supertest**           | 7.2.2   | HTTP Testing         |
 
 ## Project Structure
 
@@ -220,24 +227,22 @@ The application uses **React Context API** for global state management through t
 // Available context values
 {
   // Authentication
-  currentUser,           // Currently logged-in user object with role (null if not logged in)
-  login,                 // Function to login user (saves user & token)
-  logout,                // Function to logout user
-  
-  // Shopping Cart (user-specific)
-  cartItems,             // Array of items in cart for current user
-  addToCart,             // Add product to cart
-  increaseQty,           // Increase product quantity
-  decreaseQty,           // Decrease product quantity
-  removeFromCart,        // Remove item from cart
-  cartCount,             // Total quantity of items in cart
-  isInCart,              // Check if product is in cart
-  getQtyInCart,          // Get quantity of specific product in cart
-  
-  // Saved Items (user-specific, wishlist)
-  savedItems,            // Array of saved/favorited items for current user
-  toggleSave,            // Save/unsave a product
-  isSaved                // Check if product is saved
+  (currentUser, // Currently logged-in user object with role (null if not logged in)
+    login, // Function to login user (saves user & token)
+    logout, // Function to logout user
+    // Shopping Cart (user-specific)
+    cartItems, // Array of items in cart for current user
+    addToCart, // Add product to cart
+    increaseQty, // Increase product quantity
+    decreaseQty, // Decrease product quantity
+    removeFromCart, // Remove item from cart
+    cartCount, // Total quantity of items in cart
+    isInCart, // Check if product is in cart
+    getQtyInCart, // Get quantity of specific product in cart
+    // Saved Items (user-specific, wishlist)
+    savedItems, // Array of saved/favorited items for current user
+    toggleSave, // Save/unsave a product
+    isSaved); // Check if product is saved
 }
 ```
 
@@ -249,6 +254,7 @@ Each user's cart and saved items are stored separately in localStorage with user
 - **`savedItems_[userId]`** - User's saved items (persisted across sessions)
 
 This ensures **complete data isolation**:
+
 - When a user logs in, they see only their items
 - When they log out, their items remain saved
 - Items are automatically loaded when they log back in
@@ -257,6 +263,7 @@ This ensures **complete data isolation**:
 ## Quick Start
 
 ### Prerequisites
+
 - **Node.js** 20.x or higher
 - **MongoDB** 5.x or higher (local or cloud instance)
 - **npm** or **yarn** package manager
@@ -402,7 +409,6 @@ Ensure you have the following installed:
 - **Google OAuth Credentials** - For implementing Google login
   - [Create OAuth credentials](https://console.cloud.google.com)
   - Get Client ID for both backend and frontend
-  
 - **Gmail Account** - For OTP-based password reset
   - Use [Gmail App Passwords](https://myaccount.google.com/apppasswords)
   - Note: Regular Gmail password won't work; you need App Password
@@ -447,6 +453,7 @@ VITE_API_URL=http://localhost:3000
 ```
 
 **Important Notes**:
+
 - Replace placeholder values with your actual credentials
 - Keep these files secure; never commit them to version control
 - Use `.env.example` as a template for team members
@@ -455,11 +462,13 @@ VITE_API_URL=http://localhost:3000
 ### Backend Setup
 
 1. Navigate to backend directory:
+
    ```bash
    cd backend
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -467,6 +476,7 @@ VITE_API_URL=http://localhost:3000
 3. Create `.env` file with configuration (see above)
 
 4. Start the backend server:
+
    ```bash
    npm run dev        # Development with auto-reload
    # or
@@ -484,11 +494,13 @@ VITE_API_URL=http://localhost:3000
 ### Frontend Setup
 
 1. Navigate to frontend directory:
+
    ```bash
    cd frontend
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -496,6 +508,7 @@ VITE_API_URL=http://localhost:3000
 3. Create `.env` file with configuration (see above)
 
 4. Start the development server with Hot Module Replacement (HMR):
+
    ```bash
    npm run dev
    ```
@@ -531,6 +544,7 @@ npm run dev
 ### Frontend Routes
 
 #### Public Routes
+
 - **`/`** - Home page with featured products and categories
 - **`/products`** - All products listing page with pagination
 - **`/categories`** - Product categories overview page
@@ -542,66 +556,64 @@ npm run dev
 - **`/contact`** - Contact page with feedback form
 
 #### Protected Routes (Requires Login)
+
 - **`/saved`** - Saved/favorited items page (user-specific, wishlist)
 - **`/notifications`** - User notifications for orders and feedback replies
 - **`/my-orders`** - User's personal orders and order history
 - **`/products/:id`** - Single product details (auto-scrolls to top)
 
 #### Admin Routes (Admin Only)
+
 - **`/admin/dashboard`** - Admin dashboard with login/signup history and user management
 - **`/admin/manage-orders`** - Admin order management interface
 - **`/admin/user-feedback`** - Admin user feedback management panel
 
 #### Error Routes
+
 - **`/404`** - Not Found page for invalid routes
 
 ### Backend API Endpoints
 
 #### Authentication Routes
+
 - **`POST /api/signup`** - Register new user
   - Body: `{ fullName, email, password }`
   - Returns: User object + JWT token
-  
 - **`POST /api/login`** - Login with email/password
   - Body: `{ email, password }`
   - Returns: User object + JWT token
-  
 - **`POST /api/google-login`** - Login/register with Google OAuth
   - Body: `{ tokenId }`
   - Returns: User object + JWT token
-  
 - **`POST /api/send-otp`** - Send OTP to email
   - Body: `{ email }`
   - Returns: Success message
-  
 - **`POST /api/verify-otp`** - Verify OTP from email
   - Body: `{ email, otp }`
   - Returns: Success message
-  
 - **`POST /api/reset-password`** - Reset password using OTP
   - Body: `{ email, newPassword }`
   - Returns: Success message
 
 #### Admin Records Routes
+
 - **`GET /api/signup`** - Fetch all signup records (Admin only)
 - **`DELETE /api/signup/:id`** - Delete signup record (Admin only)
 - **`GET /api/login`** - Fetch all login records (Admin only)
 - **`DELETE /api/login/:id`** - Delete login record (Admin only)
 
 #### Order Management Routes
+
 - **`POST /api/orders`** - Create new order
   - Body: `{ userId, products, totalAmount, ... }`
-  
 - **`GET /api/orders`** - Fetch all orders (Admin only)
-  
 - **`GET /api/orders/:userId`** - Fetch orders for specific user
-  
 - **`PATCH /api/orders/:orderId`** - Update order status (Admin only)
   - Body: `{ status }`
-  
 - **`DELETE /api/orders/:orderId`** - Delete order
 
 #### Notifications Routes
+
 - **`GET /api/notifications/:userId`** - Fetch user notifications
 - **`PUT /api/notifications/:notificationId/read`** - Mark notification as read
 - **`PUT /api/notifications/:userId/read-all`** - Mark all notifications as read
@@ -609,21 +621,19 @@ npm run dev
 - **`DELETE /api/notifications/:userId/clear-all`** - Clear all notifications
 
 #### User Feedback Routes
+
 - **`POST /api/feedback`** - Submit customer feedback
   - Body: `{ userId, subject, message }`
-  
 - **`GET /api/feedback`** - Fetch all feedback (Admin only)
-  
 - **`GET /api/feedback/:userId`** - Fetch user's feedback
-  
 - **`POST /api/feedback/:feedbackId/reply`** - Admin reply to feedback (Admin only)
   - Body: `{ reply }`
-  
 - **`DELETE /api/feedback/:feedbackId`** - Delete feedback
 
 ## Security
 
 ### Authentication & Authorization
+
 - **JWT Tokens**: Secure token-based authentication
 - **Password Hashing**: bcryptjs for secure password storage
 - **Role-Based Access Control**: Admin vs user permissions
@@ -631,6 +641,7 @@ npm run dev
 - **Token Storage**: Secure localStorage with automatic expiration
 
 ### Data Privacy
+
 - **User Isolation**: Complete data isolation between users
 - **Cart & Wishlist**: User-specific storage with ID-based keys
 - **CORS Configuration**: Restricted cross-origin access
@@ -638,6 +649,7 @@ npm run dev
 - **Error Handling**: Secure error messages without exposing sensitive info
 
 ### Best Practices
+
 - **Environment Variables**: Sensitive data stored in `.env` files
 - **HTTPS Ready**: Backend supports HTTPS in production
 - **Secure Headers**: CORS, helmet, and security middleware
@@ -697,6 +709,7 @@ npm run build
 ```
 
 This creates an optimized production build in the `dist/` directory with:
+
 - Minified JavaScript and CSS
 - Tree-shaking for unused code
 - Asset optimization
@@ -729,6 +742,7 @@ npm run lint
 ### Project Structure
 
 The project follows best practices:
+
 - **Component-Based**: Reusable, modular components
 - **Separation of Concerns**: Clear separation between UI, logic, and data
 - **Custom Hooks**: Reusable logic in custom React hooks
@@ -1075,12 +1089,14 @@ Comprehensive order management for both users and admins:
 ## Browser Support
 
 This application works on all modern browsers that support:
+
 - ES6+ JavaScript features
 - CSS Grid and Flexbox
 - LocalStorage API
 - Fetch/Async-Await
 
 Tested on:
+
 - Chrome 90+
 - Firefox 88+
 - Safari 14+
@@ -1091,6 +1107,7 @@ Tested on:
 ### Common Issues
 
 #### Backend won't connect to MongoDB
+
 ```bash
 # Check MongoDB URI in .env
 # Verify MongoDB is running locally or Atlas cluster is accessible
@@ -1098,6 +1115,7 @@ Tested on:
 ```
 
 #### Frontend can't reach backend
+
 ```bash
 # Ensure backend is running on http://localhost:3000
 # Check VITE_API_URL in .env
@@ -1105,6 +1123,7 @@ Tested on:
 ```
 
 #### Google OAuth not working
+
 ```bash
 # Verify GOOGLE_CLIENT_ID in both .env files
 # Check OAuth credentials are set to localhost:3000 and localhost:5173
@@ -1112,6 +1131,7 @@ Tested on:
 ```
 
 #### Password reset OTP not received
+
 ```bash
 # Verify EMAIL_USER and EMAIL_PASSWORD in .env
 # Ensure Gmail App Password is used (not regular password)
@@ -1129,6 +1149,7 @@ Contributions are welcome! Feel free to:
 5. Open a Pull Request
 
 Please ensure:
+
 - Code follows the existing style
 - Components are properly documented
 - Tests pass before submitting PR
@@ -1144,12 +1165,14 @@ For issues, questions, or suggestions:
 ## Performance Tips
 
 ### Frontend Optimization
+
 - Use React DevTools Profiler for component performance
 - Implement code splitting for large components
 - Use lazy loading for routes and images
 - Monitor bundle size with `npm run build`
 
 ### Backend Optimization
+
 - Enable database indexing for frequently queried fields
 - Implement caching for static data
 - Use Redis for session storage
@@ -1160,6 +1183,7 @@ For issues, questions, or suggestions:
 ### Deploy to Production
 
 **Frontend (Vercel recommended)**:
+
 ```bash
 # Build
 npm run build
@@ -1171,6 +1195,7 @@ vercel deploy
 ```
 
 **Backend (Heroku, Railway, or similar)**:
+
 ```bash
 # Set environment variables on hosting platform
 # Deploy code
@@ -1180,6 +1205,7 @@ vercel deploy
 ### Environment Checklist
 
 Before deploying to production:
+
 - [ ] Change JWT_SECRET to a strong, random value
 - [ ] Use production MongoDB URI (Atlas cluster)
 - [ ] Set NODE_ENV=production
@@ -1195,6 +1221,7 @@ Before deploying to production:
 ## Resources
 
 ### Documentation
+
 - [React Documentation](https://react.dev)
 - [Vite Guide](https://vitejs.dev/guide/)
 - [Tailwind CSS](https://tailwindcss.com/docs)
@@ -1202,6 +1229,7 @@ Before deploying to production:
 - [Express.js Guide](https://expressjs.com/en/guide/routing.html)
 
 ### Related Technologies
+
 - [JWT Introduction](https://jwt.io/introduction)
 - [RESTful API Principles](https://restfulapi.net)
 - [CORS Explained](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
@@ -1214,6 +1242,7 @@ Before deploying to production:
 ## Changelog
 
 ### [1.0.0] - 2024-05-29
+
 - Initial project launch
 - Complete e-commerce functionality
 - User authentication system
@@ -1224,28 +1253,18 @@ Before deploying to production:
 
 ## License
 
-This project is open source and available under the **MIT License**. You are free to:
+This project is open source and available for free use. You are free to:
+
 - Use commercially
 - Modify the code
 - Distribute the software
 - Use privately
-
-See LICENSE file for more details.
 
 ## Acknowledgments
 
 - **DummyJSON API** for providing product data
 - **React Community** for amazing libraries and tools
 - **Tailwind Labs** for the CSS framework
-- All contributors and users who provide feedback
-
-## Author
-
-**Rafay Ali Saleem**
-
-- GitHub: [@rafay-ali](https://github.com)
-- Email: rafayalisaleem@example.com
-- LinkedIn: [Rafay Ali Saleem](https://linkedin.com)
 
 ---
 
@@ -1280,3 +1299,11 @@ A: Yes, simply remove Google OAuth related code from login pages and backend aut
 
 **Last Updated**: May 29, 2024  
 **Status**: Active Development
+
+## Author
+
+Rafay Ali Saleem
+
+- Email: rafayalisaleem@example.com
+
+**Happy Coding!**
