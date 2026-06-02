@@ -125,7 +125,7 @@ function Contact() {
           </button>
         </div>
       ) : (
-        <div className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
+        <div className="bg-white shadow-xl rounded-2xl p-8 border-t-4 border-orange-500">
           <Formik
             initialValues={{
               name: "",
@@ -265,7 +265,7 @@ function Contact() {
         ].map((item) => (
           <div
             key={item.label}
-            className="bg-white border border-gray-100 rounded-xl p-4 text-center"
+            className="bg-white border border-gray-100 rounded-xl p-4 text-center shadow-xl"
           >
             <div className="text-2xl mb-1 flex justify-center">{item.icon}</div>
 

@@ -55,7 +55,7 @@ function About() {
           {features.map((item) => (
             <div
               key={item.title}
-              className="bg-white border border-gray-100 rounded-xl p-4"
+              className="bg-white border border-gray-100 rounded-xl p-4 shadow-xl"
             >
               <span
                 className={`text-xs font-bold px-2 py-1 rounded-full ${item.color}`}
@@ -69,7 +69,7 @@ function About() {
       </div>
 
       {/* Mission */}
-      <div className="bg-orange-50 border border-orange-100 rounded-2xl p-6">
+      <div className="bg-orange-50 border border-orange-100 rounded-2xl p-6 shadow-xl">
         <h2 className="text-lg font-bold text-orange-800 mb-3">Our Mission</h2>
         <p className="text-sm text-orange-700 leading-relaxed">
           Our goal is to provide a simple, fast, and user-friendly platform for

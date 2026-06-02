@@ -24,7 +24,7 @@ function ProductCard({ product }) {
 
   return (
     <Link to={`/products/${product.id}`}>
-      <div className="bg-gray-100 rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg hover:-translate-y-3 transition-all duration-300 group cursor-pointer">
+      <div className="bg-gray-100 rounded-2xl overflow-hidden shadow-xl border border-gray-100 hover:shadow-2xl hover:-translate-y-3 transition-all duration-300 group cursor-pointer">
         {/* Product Image */}
         <div className="relative overflow-hidden bg-gray-50 h-52">
           <img
