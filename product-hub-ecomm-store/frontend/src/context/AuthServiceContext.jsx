@@ -1,5 +1,4 @@
 // ...
-
 import {
   createContext,
   useContext,
@@ -12,7 +11,10 @@ import { toast, Slide } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { setUser, clearUser, markAuthAsReady } from "../redux/slices/authSlice";
 import { loadCart, clearCart } from "../redux/slices/cartSlice";
-import { loadSavedItems, clearSavedItems } from "../redux/slices/savedItemsSlice";
+import {
+  loadSavedItems,
+  clearSavedItems,
+} from "../redux/slices/savedItemsSlice";
 import { setUnreadCount } from "../redux/slices/notificationSlice";
 import axiosInstance, {
   clearAccessToken,
@@ -40,7 +42,7 @@ export function AuthProvider({ children }) {
   const cartItems = useSelector((state) => state.cart.items);
   const savedItems = useSelector((state) => state.savedItems.items);
   const unreadNotificationCount = useSelector(
-    (state) => state.notification.unreadCount
+    (state) => state.notification.unreadCount,
   );
 
   const getCartKey = (userId) => `cart_${userId}`;
@@ -105,7 +107,12 @@ export function AuthProvider({ children }) {
     };
 
     restoreSession();
-  }, [currentUser, handleSessionExpired, hydrateAccessTokenFromCookie, dispatch]);
+  }, [
+    currentUser,
+    handleSessionExpired,
+    hydrateAccessTokenFromCookie,
+    dispatch,
+  ]);
 
   const login = async (userData, token, options = {}) => {
     const { refreshFromCookie = !token } = options;
@@ -182,7 +189,7 @@ export function AuthProvider({ children }) {
     if (currentUser) {
       localStorage.setItem(
         getCartKey(currentUser.id),
-        JSON.stringify(cartItems)
+        JSON.stringify(cartItems),
       );
     }
   }, [cartItems, currentUser]);
@@ -192,7 +199,7 @@ export function AuthProvider({ children }) {
     if (currentUser) {
       localStorage.setItem(
         getSavedItemsKey(currentUser.id),
-        JSON.stringify(savedItems)
+        JSON.stringify(savedItems),
       );
     }
   }, [savedItems, currentUser]);
@@ -205,7 +212,7 @@ export function AuthProvider({ children }) {
       try {
         await hydrateAccessTokenFromCookie();
         const response = await axiosInstance.get(
-          `/notifications/${currentUser.id}`
+          `/notifications/${currentUser.id}`,
         );
         dispatch(setUnreadCount(response.data.unreadCount || 0));
       } catch (error) {

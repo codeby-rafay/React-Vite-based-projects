@@ -1,4 +1,3 @@
-// ...
 import { Link } from "react-router-dom";
 import { useCart } from "../redux/hooks";
 import { Star } from "lucide-react";

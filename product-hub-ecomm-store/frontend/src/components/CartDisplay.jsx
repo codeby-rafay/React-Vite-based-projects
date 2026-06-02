@@ -1,4 +1,3 @@
-// ...
 import { useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { toast, Slide } from "react-toastify";

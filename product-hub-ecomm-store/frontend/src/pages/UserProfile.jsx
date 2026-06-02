@@ -1,4 +1,3 @@
-// ...
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -41,7 +40,7 @@ const validate = (values) => {
 
 function UserProfile() {
   const { logout, login } = useAuthService();
-    const { currentUser, authReady } = useAuth();
+  const { currentUser, authReady } = useAuth();
   const navigate = useNavigate();
 
   const [profileData, setProfileData] = useState(null);

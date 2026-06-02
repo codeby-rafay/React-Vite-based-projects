@@ -1,4 +1,3 @@
-// ...
 import { ShoppingCart, Check } from "lucide-react";
 import { useCart, useAuth } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";

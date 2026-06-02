@@ -1,4 +1,3 @@
-// ...
 import { Link } from "react-router-dom";
 import { useSavedItems } from "../redux/hooks";
 import { Heart } from "lucide-react";
