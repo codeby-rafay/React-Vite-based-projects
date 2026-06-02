@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import axios from "axios";
 import App from "./App.jsx";
-import { ShopProvider } from "./context/ShopContext.jsx";
+import { AuthProvider } from "./context/AuthServiceContext.jsx";
 import store from "./redux/store.js";
 import "./index.css";
 
@@ -15,9 +15,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ShopProvider>
+        <AuthProvider>
           <App />
-        </ShopProvider>
+        </AuthProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

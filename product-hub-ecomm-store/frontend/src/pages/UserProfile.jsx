@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { z } from "zod";
 import { User, Mail, Phone, Trash2, Save, AlertTriangle } from "lucide-react";
-import { useShop } from "../context/ShopContext";
+import { useAuthService } from "../context/AuthServiceContext";
 import { useAuth } from "../redux/hooks";
 import { toast, Slide } from "react-toastify";
 import axiosInstance from "../utils/axiosInstance";
@@ -40,7 +40,7 @@ const validate = (values) => {
 };
 
 function UserProfile() {
-  const { logout, login } = useShop();
+  const { logout, login } = useAuthService();
     const { currentUser, authReady } = useAuth();
   const navigate = useNavigate();
 

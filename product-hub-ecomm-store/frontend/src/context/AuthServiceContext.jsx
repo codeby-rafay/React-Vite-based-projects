@@ -20,17 +20,17 @@ import axiosInstance, {
   setAccessToken,
 } from "../utils/axiosInstance";
 
-const ShopContext = createContext();
+const AuthContext = createContext();
 
-export const useShop = () => {
-  const context = useContext(ShopContext);
+export const useAuthService = () => {
+  const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useShop must be used within ShopProvider");
+    throw new Error("useAuthService must be used within AuthProvider");
   }
   return context;
 };
 
-export function ShopProvider({ children }) {
+export function AuthProvider({ children }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -231,13 +231,13 @@ export function ShopProvider({ children }) {
   // This Context only provides business logic functions
 
   return (
-    <ShopContext.Provider
+    <AuthContext.Provider
       value={{
         login,
         logout,
       }}
     >
       {children}
-    </ShopContext.Provider>
+    </AuthContext.Provider>
   );
 }

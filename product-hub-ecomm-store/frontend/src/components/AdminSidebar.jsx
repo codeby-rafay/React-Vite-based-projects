@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useShop } from "../context/ShopContext";
+import { useAuthService } from "../context/AuthServiceContext";
 import {
   LayoutDashboard,
   FileText,
@@ -14,7 +14,7 @@ const AdminSidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const { logout } = useShop();
+  const { logout } = useAuthService();
 
   const navItems = [
     {

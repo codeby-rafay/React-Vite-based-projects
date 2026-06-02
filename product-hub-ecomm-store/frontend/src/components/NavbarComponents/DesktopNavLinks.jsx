@@ -11,11 +11,11 @@ import {
   UserPen,
 } from "lucide-react";
 import { useAuth, useSavedItems, useNotification } from "../../redux/hooks";
-import { useShop } from "../../context/ShopContext";
+import { useAuthService } from "../../context/AuthServiceContext";
 import { LogoutToast } from "../../utils/toastUtils";
 
 const DesktopNavLinks = ({ navLinks, isActive }) => {
-  const { logout } = useShop();
+  const { logout } = useAuthService();
   const { currentUser } = useAuth();
   const { savedItems } = useSavedItems();
   const { unreadCount: unreadNotificationCount } = useNotification();
