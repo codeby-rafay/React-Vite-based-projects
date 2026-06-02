@@ -1,10 +1,11 @@
+// ...
 import { Link } from "react-router-dom";
-import { useShop } from "../context/ShopContext";
+import { useSavedItems } from "../redux/hooks";
 import { Heart } from "lucide-react";
 import { unsaveToast } from "../utils/toastUtils";
 
 function Saved() {
-  const { savedItems, toggleSave } = useShop();
+  const { savedItems, toggleSave } = useSavedItems();
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 

@@ -1,3 +1,4 @@
+// ...
 import { useEffect, useState, useMemo } from "react";
 import { DeleteOrderToast, FailedToLoadOrdersToast } from "../utils/toastUtils";
 import {
@@ -11,7 +12,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { toast, Slide } from "react-toastify";
-import { useShop } from "../context/ShopContext";
+import { useAuth } from "../redux/hooks";
 import axiosInstance from "../utils/axiosInstance";
 import OrderSearchBar from "../components/SearchbarComponents/OrderSearchBar";
 import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
@@ -24,7 +25,7 @@ const ManageOrdersAdmin = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState(null);
-  const { currentUser, authReady } = useShop();
+  const { currentUser, authReady } = useAuth();
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

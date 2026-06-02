@@ -1,5 +1,6 @@
+// ...
 import { Link } from "react-router-dom";
-import { useShop } from "../context/ShopContext";
+import { useCart } from "../redux/hooks";
 import { Star } from "lucide-react";
 
 function ProductCard({ product }) {
@@ -16,7 +17,7 @@ function ProductCard({ product }) {
   };
 
   // Get how many of this product are already in the cart
-  const { getQtyInCart } = useShop();
+  const { getQtyInCart } = useCart();
 
   // Stock remaining = original stock minus what's already in cart
   const qtyInCart = getQtyInCart(product.id);

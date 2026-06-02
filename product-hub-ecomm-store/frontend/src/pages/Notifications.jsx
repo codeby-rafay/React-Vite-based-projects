@@ -1,5 +1,7 @@
+// ...
 import { useState, useEffect } from "react";
-import { useShop } from "../context/ShopContext";
+import { useAuth } from "../redux/hooks";
+import { useNotification } from "../redux/hooks";
 import { toast, Slide } from "react-toastify";
 import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
 import axiosInstance from "../utils/axiosInstance";
@@ -9,12 +11,11 @@ const Notifications = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteAction, setDeleteAction] = useState(null); // 'clearAll' or null
   const [loading, setLoading] = useState(true);
+  const { currentUser: user, authReady } = useAuth();
   const {
-    currentUser: user,
-    authReady,
-    unreadNotificationCount,
-    setUnreadNotificationCount,
-  } = useShop();
+    unreadCount: unreadNotificationCount,
+    setUnreadCount: setUnreadNotificationCount,
+  } = useNotification();
 
   // Fetch notifications from backend
   const fetchNotifications = async () => {
