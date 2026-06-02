@@ -1,7 +1,6 @@
 // ...
 import { ShoppingCart, Check } from "lucide-react";
-import { useCart } from "../../redux/hooks";
-import { useAuth } from "../../redux/hooks";
+import { useCart, useAuth } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { addtocartToast } from "../../utils/toastUtils";
 

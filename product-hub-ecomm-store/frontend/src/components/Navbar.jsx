@@ -1,8 +1,7 @@
 // ...
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useSavedItems } from "../redux/hooks";
-import { useNotification } from "../redux/hooks";
+import { useSavedItems, useNotification } from "../redux/hooks";
 import { Link } from "react-router-dom";
 import DesktopNavLinks from "./NavbarComponents/DesktopNavLinks";
 import MobileMenuLinks from "./NavbarComponents/MobileMenuLinks";

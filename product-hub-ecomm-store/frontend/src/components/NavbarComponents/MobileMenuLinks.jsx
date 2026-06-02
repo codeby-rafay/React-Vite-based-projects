@@ -1,9 +1,7 @@
 // ...
 import { Link, useNavigate } from "react-router-dom";
 import { Heart, LogOut, Bell, Cuboid, UserPen } from "lucide-react";
-import { useAuth } from "../../redux/hooks";
-import { useSavedItems } from "../../redux/hooks";
-import { useNotification } from "../../redux/hooks";
+import { useAuth, useSavedItems, useNotification } from "../../redux/hooks";
 import { useShop } from "../../context/ShopContext";
 import { LogoutToast } from "../../utils/toastUtils";
 

@@ -2,8 +2,7 @@
 import { useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { toast, Slide } from "react-toastify";
-import { useCart } from "../redux/hooks";
-import { useAuth } from "../redux/hooks";
+import { useCart, useAuth } from "../redux/hooks";
 import CheckoutBtn from "./CartPanelComponents/CheckoutBtn";
 import CartItems from "./CartPanelComponents/CartItems";
 import CartHeader from "./CartPanelComponents/CartHeader";

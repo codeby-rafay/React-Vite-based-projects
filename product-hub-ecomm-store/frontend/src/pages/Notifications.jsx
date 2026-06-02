@@ -1,7 +1,6 @@
 // ...
 import { useState, useEffect } from "react";
-import { useAuth } from "../redux/hooks";
-import { useNotification } from "../redux/hooks";
+import { useAuth, useNotification } from "../redux/hooks";
 import { toast, Slide } from "react-toastify";
 import DeleteConfirmationModal from "../components/ModalComponents/DeleteConfirmationModal";
 import axiosInstance from "../utils/axiosInstance";
