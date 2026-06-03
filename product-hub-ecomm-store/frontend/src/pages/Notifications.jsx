@@ -25,7 +25,9 @@ const Notifications = () => {
 
       setLoading(true);
 
-      const response = await axiosInstance.get(`/notifications/${currentUser.id}`);
+      const response = await axiosInstance.get(
+        `/notifications/${currentUser.id}`,
+      );
 
       setNotifications(response.data.notifications || []);
       const count = response.data.unreadCount || 0;
@@ -129,8 +131,13 @@ const Notifications = () => {
   const deleteNotification = async (notificationId) => {
     try {
       await axiosInstance.delete(`/notifications/${notificationId}`);
+      const deletedNotification = notifications.find(
+        (n) => n._id === notificationId,
+      );
+      if (deletedNotification && !deletedNotification.isRead) {
+        setUnreadNotificationCount(Math.max(0, unreadNotificationCount - 1));
+      }
       setNotifications((prev) => prev.filter((n) => n._id !== notificationId));
-      setUnreadNotificationCount((prev) => Math.max(0, prev - 1));
       toast.success("Notification deleted!", {
         position: "top-right",
         autoClose: 5000,
