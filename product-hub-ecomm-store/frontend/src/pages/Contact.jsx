@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { z } from "zod";
 import { toast, Slide } from "react-toastify";
+import { ContactSkeletonLoader } from "../components/SkeletonLoader";
 import axiosInstance from "../utils/axiosInstance";
 
 // Zod Schema
@@ -16,6 +17,7 @@ const contactSchema = z.object({
 
 function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -84,6 +86,8 @@ function Contact() {
       });
     }
   };
+
+  if (loading) return <ContactSkeletonLoader />;
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
