@@ -169,6 +169,7 @@ export function AuthProvider({ children }) {
           });
         }
       } else {
+        console.error("Error occurred during logout:", error);
         toast.error("Error occurred while logging out.", {
           position: "top-right",
           autoClose: 5000,
