@@ -21,6 +21,7 @@ function CategoryProducts() {
         const data = await getProductsByCategory(slug);
         setProducts(data.products);
       } catch (err) {
+        console.error("Error fetching products for category:", err);
         setError(err.message);
       } finally {
         setLoading(false);

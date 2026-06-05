@@ -52,6 +52,7 @@ function Signup() {
           navigate("/");
         }, 100);
       } catch (error) {
+        console.error("Error with Google login:", error);
         toast.error(
           error.response?.data?.message ||
             error.response?.data?.errors?.[0]?.msg ||
@@ -171,6 +172,7 @@ function Signup() {
         navigate("/login");
       }, 1000);
     } catch (error) {
+      console.error("Error during signup:", error);
       toast.error(
         error.response?.data?.message ||
           error.response?.data?.errors?.[0]?.msg ||

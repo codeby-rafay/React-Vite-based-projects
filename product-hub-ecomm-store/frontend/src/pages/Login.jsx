@@ -40,6 +40,7 @@ function Login() {
         window.scrollTo({ top: 0, behavior: "auto" });
         navigate("/");
       } catch (error) {
+        console.error("Error during Google login:", error);
         toast.error(
           error.response?.data?.message ||
             error.response?.data?.errors?.[0]?.msg ||
@@ -111,6 +112,7 @@ function Login() {
         navigate("/");
       }
     } catch (error) {
+      console.error("Error during login:", error);
       toast.error(
         error.response?.data?.message ||
           error.response?.data?.errors?.[0]?.msg ||
