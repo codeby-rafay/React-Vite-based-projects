@@ -151,7 +151,6 @@ function UserFeedback() {
       await axiosInstance.put(`/feedback/${selectedFeedback._id}/reply`, {
         reply: replyText,
       });
-
       toast.success("Reply sent successfully!", {
         position: "top-right",
         autoClose: 5000,

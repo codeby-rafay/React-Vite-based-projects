@@ -34,7 +34,6 @@ function Login() {
 
         // Save user info and set the access token immediately
         await login(data.user, data.accessToken);
-
         Welcometoast(data.user);
 
         window.scrollTo({ top: 0, behavior: "auto" });
@@ -100,7 +99,6 @@ function Login() {
       // login successful
       // Save user info and set the access token immediately
       await login(data.user, data.accessToken);
-
       Welcometoast(data.user);
 
       setFormData({ email: "", password: "" });

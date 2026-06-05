@@ -43,7 +43,6 @@ function Signup() {
 
         // Save user info and hydrate access token from the refresh cookie
         await login(data.user);
-
         Welcometoast(data.user);
 
         // Navigate to home
