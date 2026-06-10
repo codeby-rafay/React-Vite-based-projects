@@ -173,7 +173,9 @@ function CartDisplay() {
       {/* Floating Cart Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 z-50 bg-orange-500 hover:bg-orange-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition-colors cursor-pointer"
+        className="fixed bottom-6 left-6 z-50 bg-gray-900 hover:bg-black text-white hover:scale-110 rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition-all cursor-pointer"
+        title="View Cart"
+        aria-label={`View cart with ${cartCount} items`}
       >
         <ShoppingCart size={24} />
         {/* Notification badge if items are in cart */}
