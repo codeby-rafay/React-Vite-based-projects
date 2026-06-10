@@ -314,6 +314,7 @@ const ReviewOrdersUser = () => {
                               e.stopPropagation();
                               handleCancelOrderClick(order._id);
                             }}
+                            title="cancel order"
                             className="px-3 py-2 bg-yellow-50 text-yellow-700 border cursor-pointer border-yellow-200 rounded-lg text-sm font-medium hover:bg-yellow-100 transition-colors"
                           >
                             Cancel

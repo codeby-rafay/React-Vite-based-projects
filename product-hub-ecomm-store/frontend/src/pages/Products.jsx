@@ -74,6 +74,7 @@ function Products() {
         <SearchBar
           onSearch={handleSearch}
           placeholder="Search products by name..."
+          title="Search products"
         />
       </div>
 
