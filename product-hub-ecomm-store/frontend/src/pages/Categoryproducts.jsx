@@ -13,6 +13,10 @@ function CategoryProducts() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     // Fetch products for this category
     const fetchCategoryProducts = async () => {
       try {

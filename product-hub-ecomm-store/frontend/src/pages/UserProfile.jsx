@@ -50,6 +50,10 @@ function UserProfile() {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     if (!authReady) {
       return;
     }
@@ -182,9 +186,7 @@ function UserProfile() {
       <div className="min-h-screen bg-linear-to-br from-orange-50 to-amber-50 flex items-center justify-center p-4">
         <div className="text-center">
           <AlertCircle size={48} className="text-orange-500 mx-auto mb-4" />
-          <p className="text-gray-600 font-medium">
-            Problem Loading Profile.
-          </p>
+          <p className="text-gray-600 font-medium">Problem Loading Profile.</p>
         </div>
       </div>
     );

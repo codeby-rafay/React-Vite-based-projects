@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { toast, Slide } from "react-toastify";
@@ -27,6 +27,10 @@ function Signup() {
   const navigate = useNavigate();
   const { login } = useAuthService();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   // Define Google response handler with useCallback
   const handleGoogleResponse = useCallback(
     async (response) => {
@@ -47,7 +51,7 @@ function Signup() {
 
         // Navigate to home
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo({ top: 0, behavior: "smooth" });
           navigate("/");
         }, 100);
       } catch (error) {
